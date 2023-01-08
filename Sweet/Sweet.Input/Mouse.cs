@@ -34,7 +34,7 @@ public static class Mouse
     /// 押している間を取得する
     /// </summary>
     /// <param name="keyCode">キーコード</param>
-    /// <returns></returns>
+    /// <returns>押された: True</returns>
     public static bool IsPushing(MouseKey keyCode)
         => value[GetMouseKeyIndex(keyCode)] > 0;
 
@@ -42,7 +42,7 @@ public static class Mouse
     /// 推した瞬間を取得する
     /// </summary>
     /// <param name="keyCode">キーコード</param>
-    /// <returns></returns>
+    /// <returns>押された: True</returns>
     public static bool IsPushed(MouseKey keyCode)
         => value[GetMouseKeyIndex(keyCode)] == 1;
 
@@ -50,7 +50,7 @@ public static class Mouse
     /// 離した瞬間を取得する
     /// </summary>
     /// <param name="keyCode">キーコード</param>
-    /// <returns></returns>
+    /// <returns>離された: True</returns>
     public static bool IsSeparate(MouseKey keyCode)
         => value[GetMouseKeyIndex(keyCode)] == -1;
 

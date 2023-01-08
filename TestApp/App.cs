@@ -1,4 +1,5 @@
 ﻿using DxLibDLL;
+using Sweet.Input;
 
 namespace TestApp;
 
@@ -26,6 +27,11 @@ internal class App
         while (DX.ProcessMessage() != -1)
         {
             DX.ClearDrawScreen();
+
+            Touch.Update();
+
+            if(Touch.IsSeparate())
+                Console.WriteLine("Tap");
 
             DX.ScreenFlip();
         }
