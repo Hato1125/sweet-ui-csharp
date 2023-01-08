@@ -75,6 +75,9 @@ public static class Mouse
     };
 }
 
+/// <summary>
+/// マウスのキーコード
+/// </summary>
 public enum MouseKey
 {
     Left = DX.MOUSE_INPUT_LEFT,

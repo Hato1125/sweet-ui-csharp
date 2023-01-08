@@ -28,10 +28,10 @@ internal class App
         {
             DX.ClearDrawScreen();
 
-            Touch.Update();
+            Joypad.Update();
 
-            if(Touch.IsSeparate())
-                Console.WriteLine("Tap");
+            if (Joypad.IsSeparate(JoypadKey.Up))
+                Console.WriteLine("Up!!!");
 
             DX.ScreenFlip();
         }
