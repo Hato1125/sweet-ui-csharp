@@ -10,17 +10,17 @@ public static class Mouse
     /// <summary>
     /// マウスポインターのX座標
     /// </summary>
-    public static int X { get; set; }
+    public static int X { get; private set; }
 
     /// <summary>
     /// マウスポインターのY座標
     /// </summary>
-    public static int Y { get; set; }
+    public static int Y { get; private set; }
 
     /// <summary>
     /// ホイールの回転量
     /// </summary>
-    public static float Wheel { get; set; }
+    public static float Wheel { get; private set; }
 
     /// <summary>
     /// 更新する
