@@ -1,4 +1,5 @@
 ﻿using DxLibDLL;
+using System.Xml.Serialization;
 
 namespace Sweet.Input;
 
@@ -7,10 +8,29 @@ public static class Mouse
     private static sbyte[] value = new sbyte[5];
 
     /// <summary>
+    /// マウスポインターのX座標
+    /// </summary>
+    public static int X { get; set; }
+
+    /// <summary>
+    /// マウスポインターのY座標
+    /// </summary>
+    public static int Y { get; set; }
+
+    /// <summary>
+    /// ホイールの回転量
+    /// </summary>
+    public static float Wheel { get; set; }
+
+    /// <summary>
     /// 更新する
     /// </summary>
     public static void Update()
     {
+        DX.GetMousePoint(out int x, out int y);
+        (X, Y) = (x, y);
+        Wheel = DX.GetMouseWheelRotVolF();
+
         for (int i = 0; i < value.Length; i++)
         {
             if (DX.GetMouseInput() == (int)GetMouseKey(i))
