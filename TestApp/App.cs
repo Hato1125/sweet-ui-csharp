@@ -1,6 +1,7 @@
 ﻿using DxLibDLL;
 using Sweet.Input;
 using Sweet.Elements;
+using System.Drawing;
 
 namespace TestApp;
 
@@ -8,6 +9,7 @@ internal class App
 {
     private UIView? testView;
     private int opacity;
+    private int img;
 
     public void Run()
     {
@@ -21,7 +23,7 @@ internal class App
         DX.SetOutApplicationLogValidFlag(DX.FALSE);
         DX.SetGraphMode(1000, 1000, 32);
         DX.SetWindowSize(1000, 1000);
-        DX.SetBackgroundColor(255, 0, 255);
+        DX.SetBackgroundColor(255, 255, 255);
         DX.ChangeWindowMode(DX.TRUE);
         DX.DxLib_Init();
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
@@ -30,8 +32,10 @@ internal class App
         testView = new(100, 100);
         testView.X = 100;
         testView.Y = 100;
+        testView.BackgroundColor = Color.Violet;
 
         opacity = 255;
+        img = DX.LoadGraph($"{AppContext.BaseDirectory}test.png");
     }
 
     private void Loop()
@@ -44,6 +48,8 @@ internal class App
             Mouse.Update();
             Touch.Update();
             Joypad.Update();
+
+            DX.DrawRotaGraph2F(0, 0, 0, 0, 4.0f, 0.0f, img, DX.TRUE);
 
             if (Keyboard.IsPushing(DX.KEY_INPUT_UP))
                 opacity += 1;

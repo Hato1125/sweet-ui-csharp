@@ -125,9 +125,10 @@ public class UIView : UIResponder, IDisposable
         // 領域にレンダリング
         RenderViewArea(_viewHandle, renderMask);
 
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
+
         // viewをレンダリング
         DX.DrawGraph(X, Y, _viewHandle, DX.TRUE);
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
     }
 
     /// <summary>
@@ -162,9 +163,12 @@ public class UIView : UIResponder, IDisposable
         uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
 
         // 背景をレンダリング
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
-        DX.DrawFillBox(0, 0, Width, Height, backColor);
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+        if (BackgroundColor != Color.Empty)
+        {
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
+            DX.DrawFillBox(0, 0, Width, Height, backColor);
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+        }
 
         Rendering?.Invoke();
         OnRendering?.Invoke();
