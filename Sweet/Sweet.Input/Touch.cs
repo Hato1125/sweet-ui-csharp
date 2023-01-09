@@ -1,4 +1,6 @@
-﻿namespace Sweet.Input;
+﻿using DxLibDLL;
+
+namespace Sweet.Input;
 
 public static class Touch
 {
@@ -20,10 +22,22 @@ public static class Touch
     };
 
     /// <summary>
+    /// 一番最後に置いた番号のX座標
+    /// </summary>
+    public static int X { get; private set; }
+
+    /// <summary>
+    /// 一番最後に置いた番号のY座標
+    /// </summary>
+    public static int Y { get; private set; }
+
+    /// <summary>
     /// 更新する
     /// </summary>
     public static void Update()
     {
+        DX.GetTouchInput(DX.GetTouchInputNum() - 1, out int tx, out int ty, out int _, out int _, out float _);
+        (X, Y) = (tx, ty);
         foreach (var info in TouchInfos)
             info.Update();
     }
