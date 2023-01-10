@@ -31,14 +31,29 @@ public class UIView : UIResponder, IDisposable
     public int BackgroundAlpha { get; set; }
 
     /// <summary>
+    /// ボーダーの透明度
+    /// </summary>
+    public int BorderAlpha { get; set; }
+
+    /// <summary>
     /// 背景の角の半径
     /// </summary>
     public float BackgroundCornerRadius { get; set; }
 
     /// <summary>
+    /// ボーダーのサイズ
+    /// </summary>
+    public float BorderSize { get; set; }
+
+    /// <summary>
     /// 背景の色
     /// </summary>
     public Color BackgroundColor { get; set; }
+
+    /// <summary>
+    /// ボーダーの色
+    /// </summary>
+    public Color BorderColor { get; set; }
 
     /// <summary>
     /// レンダリング時に呼ばれる
@@ -59,8 +74,11 @@ public class UIView : UIResponder, IDisposable
         bufWidth = width;
         bufHeight = height;
         BackgroundAlpha = 255;
+        BorderAlpha = 255;
         BackgroundCornerRadius = 35.0f;
+        BorderSize = 2.0f;
         BackgroundColor = Color.White;
+        BorderColor = Color.Gray;
     }
 
     ~UIView() => Dispose();
@@ -98,6 +116,7 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     public virtual void Render()
     {
+        RenderBorder();
         RenderRect();
     }
 
@@ -118,7 +137,11 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     private void RenderRect()
     {
-        Action renderMask = RenderMask;
+        Action renderMask = () =>
+        {
+            RenderMask();
+            RenderChildren();
+        };
 
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
 
@@ -139,17 +162,30 @@ public class UIView : UIResponder, IDisposable
         // マスクの内容
         Action renderRect = () =>
         {
-            DX.DrawRoundRectAA(
-                0,
-                0,
-                Width,
-                Height,
-                BackgroundCornerRadius,
-                BackgroundCornerRadius,
-                byte.MaxValue,
-                0xffffff,
-                DX.TRUE
-            );
+            if (BackgroundCornerRadius <= 0)
+            {
+                DX.DrawFillBox(
+                    0,
+                    0,
+                    Width,
+                    Height,
+                    0xffffff
+                );
+            }
+            else
+            {
+                DX.DrawRoundRectAA(
+                    0,
+                    0,
+                    Width,
+                    Height,
+                    BackgroundCornerRadius,
+                    BackgroundCornerRadius,
+                    byte.MaxValue,
+                    0xffffff,
+                    DX.TRUE
+                );
+            }
 
             DX.SetMaskScreenGraph(_maskHandle);
         };
@@ -163,7 +199,7 @@ public class UIView : UIResponder, IDisposable
         uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
 
         // 背景をレンダリング
-        if (BackgroundColor != Color.Empty)
+        if (BackgroundColor != Color.Empty && BackgroundAlpha > 0)
         {
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
             DX.DrawFillBox(0, 0, Width, Height, backColor);
@@ -175,6 +211,66 @@ public class UIView : UIResponder, IDisposable
 
         DX.SetUseMaskScreenFlag(DX.FALSE);
         DX.SetMaskReverseEffectFlag(DX.FALSE);
+    }
+
+    /// <summary>
+    /// ボーダーをレンダリングする
+    /// </summary>
+    private void RenderBorder()
+    {
+        if (BorderColor == Color.Empty || BorderAlpha <= 0)
+            return;
+
+        uint borderColor = DX.GetColor(BorderColor.R, BorderColor.G, BorderColor.B);
+
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, BorderAlpha);
+
+        if (BackgroundCornerRadius <= 0)
+        {
+            DX.DrawBoxAA(
+                X,
+                Y,
+                X + Width,
+                Y + Height,
+                borderColor,
+                DX.FALSE,
+                BorderSize * 2
+            );
+        }
+        else
+        {
+            DX.DrawRoundRectAA(
+                X,
+                Y,
+                X + Width,
+                Y + Height,
+                BackgroundCornerRadius,
+                BackgroundCornerRadius,
+                byte.MaxValue,
+                borderColor,
+                DX.FALSE,
+                BorderSize * 2
+            );
+        }
+
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+    }
+
+    /// <summary>
+    /// 子要素をレンダリングする
+    /// </summary>
+    private void RenderChildren()
+    {
+        foreach (var item in Children)
+        {
+            // UIResponderはレンダリング機能はないので
+            // UIResponder以外の子要素をレンダリング
+            if (this.GetType() != typeof(UIResponder))
+            {
+                var child = (UIView)item;
+                child.Render();
+            }
+        }
     }
 
     /// <summary>
