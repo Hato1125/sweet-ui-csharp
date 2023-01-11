@@ -1,4 +1,5 @@
 ﻿using DxLibDLL;
+using System.Diagnostics;
 using Sweet.Input;
 using Sweet.Elements;
 using System.Drawing;
@@ -11,7 +12,6 @@ internal class App
     private UIStyle testStyle2 = new();
 
     private UIView? testView;
-    private UIView? testView2;
     private int opacity;
     private int img;
 
@@ -27,21 +27,18 @@ internal class App
         DX.SetOutApplicationLogValidFlag(DX.FALSE);
         DX.SetGraphMode(1000, 1000, 32);
         DX.SetWindowSize(1000, 1000);
-        DX.SetBackgroundColor(255, 255, 255);
+        DX.SetBackgroundColor(0, 0, 0);
         DX.ChangeWindowMode(DX.TRUE);
+        DX.SetWaitVSyncFlag(DX.TRUE);
         DX.DxLib_Init();
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        testView2 = new(50, 50);
-        testView2.X = 10;
-        testView2.Y = 10;
-        testView2.BackgroundCornerRadius = 5.0f;
-
         testView = new(100, 100);
         testView.X = 100;
         testView.Y = 100;
-        testView.Children.Add(testView2);
+        testView.VerticalAlignment = VerticalAlignment.Top;
+        testView.VerticalOffset = 20;
 
         opacity = 255;
         img = DX.LoadGraph($"{AppContext.BaseDirectory}test.png");
@@ -59,6 +56,7 @@ internal class App
             Joypad.Update();
 
             //DX.DrawRotaGraph2F(0, 0, 0, 0, 1.0f, 0.0f, img, DX.TRUE);
+            DX.GetWindowSize(out int w, out int h);
 
             if (Keyboard.IsPushing(DX.KEY_INPUT_UP))
                 opacity += 1;
@@ -68,6 +66,8 @@ internal class App
 
             if (testView != null)
             {
+                testView.ParentWidth = w;
+                testView.ParentHeight = h;
                 testView.Update();
                 testView.Render();
 

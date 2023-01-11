@@ -20,10 +20,9 @@ public record UIStyle : IViewStyle
     public float CornerRadius { get; set; }
 
     /// <summary>
-    /// ボーダーのサイズ
+    /// /// ボーダーのサイズ
     /// </summary>
     public float BorderSize { get; set; }
-
 
     /// <summary>
     /// 背景の色

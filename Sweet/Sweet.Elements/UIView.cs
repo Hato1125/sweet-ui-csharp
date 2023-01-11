@@ -9,6 +9,7 @@ public class UIView : UIResponder, IDisposable
     private int _maskHandle;
     private int bufWidth;
     private int bufHeight;
+    private bool _isLog = true;
 
     /// <summary>
     /// レンダリングアクション
@@ -24,6 +25,16 @@ public class UIView : UIResponder, IDisposable
     /// Radiusを丸めるか
     /// </summary>
     public bool IsRoundRadius { get; set; }
+
+    /// <summary>
+    /// 親要素の横幅
+    /// </summary>
+    public int ParentWidth { get; set; }
+
+    /// <summary>
+    /// 親要素の高さ
+    /// </summary>
+    public int ParentHeight { get; set; }
 
     /// <summary>
     /// 背景の透明度
@@ -44,6 +55,26 @@ public class UIView : UIResponder, IDisposable
     /// ボーダーのサイズ
     /// </summary>
     public float BorderSize { get; set; }
+
+    /// <summary>
+    /// 水平方向のオフセット
+    /// </summary>
+    public int HorizontalOffset { get; set; }
+
+    /// <summary>
+    /// 垂直方向のオフセット
+    /// </summary>
+    public int VerticalOffset { get; set; }
+
+    /// <summary>
+    /// 親要素に対しての水平方向の位置
+    /// </summary>
+    public HorizontalAlignment HorizontalAlignment { get; set; }
+
+    /// <summary>
+    /// 親要素に対しての垂直方向の位置
+    /// </summary>
+    public VerticalAlignment VerticalAlignment { get; set; }
 
     /// <summary>
     /// 背景の色
@@ -76,9 +107,11 @@ public class UIView : UIResponder, IDisposable
         BackgroundAlpha = 255;
         BorderAlpha = 255;
         BackgroundCornerRadius = 35.0f;
-        BorderSize = 2.0f;
-        BackgroundColor = Color.White;
-        BorderColor = Color.Gray;
+        BorderSize = 1.0f;
+        BackgroundColor = Color.FromArgb(254, 252, 255);
+        BorderColor = Color.FromArgb(240, 240, 240);
+        HorizontalAlignment = HorizontalAlignment.Center;
+        VerticalAlignment = VerticalAlignment.Center;
     }
 
     ~UIView() => Dispose();
@@ -105,6 +138,7 @@ public class UIView : UIResponder, IDisposable
     {
         CheckResize();
         Build();
+        UpdateUIPosition();
 
         base.Update();
 
@@ -265,7 +299,7 @@ public class UIView : UIResponder, IDisposable
         {
             // UIResponderはレンダリング機能はないので
             // UIResponder以外の子要素をレンダリング
-            if (this.GetType() != typeof(UIResponder))
+            if (IsUIView())
             {
                 var child = (UIView)item;
                 child.Render();
@@ -311,5 +345,55 @@ public class UIView : UIResponder, IDisposable
 
         if (BackgroundCornerRadius > Height / 2.0f)
             BackgroundCornerRadius = Height / 2.0f;
+    }
+
+    /// <summary>
+    /// UIの位置の更新
+    /// </summary>
+    private void UpdateUIPosition()
+    {
+        UpdateChildrenPos();
+
+        var pos = UIPositionUtilt.CalUIPosition(
+            HorizontalAlignment,
+            VerticalAlignment,
+            HorizontalOffset,
+            VerticalOffset,
+            ParentWidth,
+            ParentHeight,
+            Width,
+            Height
+        );
+
+        (X, Y) = pos;
+    }
+
+    /// <summary>
+    /// 子要素の親要素情報の更新
+    /// </summary>
+    private void UpdateChildrenPos()
+    {
+        foreach (var item in Children)
+        {
+            // UIResponderは位置指定機能はないので
+            // UIResponder以外の子要素の親サイズを更新
+            if (IsUIView())
+            {
+                var child = (UIView)item;
+                child.ParentWidth = Width;
+                child.ParentHeight = Height;
+            }
+        }
+    }
+
+    /// <summary>
+    /// このインスタンスがUIViewかどうかを取得する
+    /// </summary>
+    private bool IsUIView()
+    {
+        if (this.GetType() != typeof(UIResponder))
+            return true;
+        else
+            return false;
     }
 }
