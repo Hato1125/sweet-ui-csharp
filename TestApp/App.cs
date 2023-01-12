@@ -11,6 +11,9 @@ internal class App
     private UIStyle testStyle = new();
     private UIStyle testStyle2 = new();
 
+    private double ms = 1.0 / 60.0;
+    private Stopwatch stopwatch = new();
+
     private UIView? testView;
     private int opacity;
     private int img;
@@ -48,6 +51,8 @@ internal class App
     {
         while (DX.ProcessMessage() != -1)
         {
+            stopwatch.Restart();
+
             DX.ClearDrawScreen();
 
             Keyboard.Update();
@@ -92,12 +97,23 @@ internal class App
             }
 
             DX.ScreenFlip();
+
+            if(stopwatch.Elapsed.TotalSeconds < ms)
+            {
+                double sleepMs = (ms - stopwatch.Elapsed.TotalSeconds) * 1000.0;
+
+                // Thread.Sleepで止めたらCPU使用率上がらない!!!!
+                Thread.Sleep((int)sleepMs);
+
+                // WaitTimerで止めるとCPU使用率が上がる...
+                //DX.WaitTimer((int)sleepMs);
+            }
         }
     }
 
     private void End()
     {
-        testView?.Dispose();
+        testView?.Dispose(true);
 
         DX.DxLib_End();
     }

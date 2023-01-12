@@ -2,7 +2,7 @@
 
 namespace Sweet.Elements;
 
-public record UIStyle : IViewStyle
+public record UIStyle
 {
     /// <summary>
     /// 背景の透明度

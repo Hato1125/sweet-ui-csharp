@@ -3,13 +3,12 @@ using DxLibDLL;
 
 namespace Sweet.Elements;
 
-public class UIView : UIResponder, IDisposable
+public class UIView : UIResponder, IUIDisposable
 {
     private int _viewHandle;
     private int _maskHandle;
     private int bufWidth;
     private int bufHeight;
-    private bool _isLog = true;
 
     /// <summary>
     /// レンダリングアクション
@@ -114,7 +113,7 @@ public class UIView : UIResponder, IDisposable
         VerticalAlignment = VerticalAlignment.Center;
     }
 
-    ~UIView() => Dispose();
+    ~UIView() => Dispose(true);
 
     /// <summary>
     /// ビルドする
@@ -124,7 +123,7 @@ public class UIView : UIResponder, IDisposable
         if (!IsBuild)
             return;
 
-        Dispose();
+        Dispose(false);
         _viewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
         _maskHandle = DX.MakeScreen(Width, Height, DX.TRUE);
 
@@ -136,13 +135,13 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     public override void Update()
     {
-        CheckResize();
+        if (!IsBuild)
+            IsBuild = WatchBuild();
         Build();
-        UpdateUIPosition();
 
+        UpdatePosition();
         base.Update();
-
-        RoundRadius();
+        UpdateRenderProperty();
     }
 
     /// <summary>
@@ -157,13 +156,110 @@ public class UIView : UIResponder, IDisposable
     /// <summary>
     /// 解放する
     /// </summary>
-    public virtual void Dispose()
+    public virtual void Dispose(bool isChildDispoes = true)
     {
         if (_viewHandle != -1 && _viewHandle != 0)
             DX.DeleteGraph(_viewHandle);
 
         if (_maskHandle != -1 && _maskHandle != 0)
             DX.DeleteGraph(_maskHandle);
+
+        if (isChildDispoes)
+        {
+            foreach (var item in Children)
+            {
+                if (IsUIView())
+                {
+                    var child = (UIView)item;
+                    child.Dispose(true);
+                }
+            }
+
+            Children.Clear();
+        }
+    }
+
+    /// <summary>
+    /// UIをビルドすべきかを判断する
+    /// </summary>
+    protected virtual bool WatchBuild()
+    {
+        if (bufWidth != Width || bufHeight != Height)
+        {
+            bufWidth = Width;
+            bufHeight = Height;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// UIの位置の更新
+    /// </summary>
+    protected virtual void UpdatePosition()
+    {
+        SetChildParentSize();
+        SetUIPosition();
+    }
+
+    /// <summary>
+    /// レンダリング前のレンダリング用プロパティの更新
+    /// </summary>
+    protected virtual void UpdateRenderProperty()
+    {
+        RoundCornerRadius();
+    }
+
+    /// <summary>
+    /// 角の半径を調整する
+    /// </summary>
+    private void RoundCornerRadius()
+    {
+        if (!IsRoundRadius)
+            return;
+
+        if (BackgroundCornerRadius > Height / 2.0f)
+            BackgroundCornerRadius = Height / 2.0f;
+    }
+
+    /// <summary>
+    /// UIの位置をセットする
+    /// </summary>
+    private void SetUIPosition()
+    {
+        var pos = UIPositionUtilt.CalUIPosition(
+            HorizontalAlignment,
+            VerticalAlignment,
+            HorizontalOffset,
+            VerticalOffset,
+            ParentWidth,
+            ParentHeight,
+            Width,
+            Height
+        );
+
+        (X, Y) = pos;
+    }
+
+    /// <summary>
+    /// 子要素に親要素のサイズをセットする
+    /// </summary>
+    private void SetChildParentSize()
+    {
+        foreach (var item in Children)
+        {
+            // UIResponderは位置指定機能はないので
+            // UIResponder以外の子要素の親サイズを更新
+            if (IsUIView())
+            {
+                var child = (UIView)item;
+                child.ParentWidth = Width;
+                child.ParentHeight = Height;
+            }
+        }
     }
 
     /// <summary>
@@ -171,7 +267,7 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     private void RenderRect()
     {
-        Action renderMask = () =>
+        var renderMask = () =>
         {
             RenderMask();
             RenderChildren();
@@ -194,7 +290,7 @@ public class UIView : UIResponder, IDisposable
     private void RenderMask()
     {
         // マスクの内容
-        Action renderRect = () =>
+        var renderRect = () =>
         {
             if (BackgroundCornerRadius <= 0)
             {
@@ -323,77 +419,8 @@ public class UIView : UIResponder, IDisposable
     }
 
     /// <summary>
-    /// サイズが変更されたかを監視しビルドさせる
-    /// </summary>
-    private void CheckResize()
-    {
-        if (bufWidth != Width || bufHeight != Height)
-        {
-            IsBuild = true;
-            bufWidth = Width;
-            bufHeight = Height;
-        }
-    }
-
-    /// <summary>
-    /// Radiusを丸める
-    /// </summary>
-    private void RoundRadius()
-    {
-        if (!IsRoundRadius)
-            return;
-
-        if (BackgroundCornerRadius > Height / 2.0f)
-            BackgroundCornerRadius = Height / 2.0f;
-    }
-
-    /// <summary>
-    /// UIの位置の更新
-    /// </summary>
-    private void UpdateUIPosition()
-    {
-        UpdateChildrenPos();
-
-        var pos = UIPositionUtilt.CalUIPosition(
-            HorizontalAlignment,
-            VerticalAlignment,
-            HorizontalOffset,
-            VerticalOffset,
-            ParentWidth,
-            ParentHeight,
-            Width,
-            Height
-        );
-
-        (X, Y) = pos;
-    }
-
-    /// <summary>
-    /// 子要素の親要素情報の更新
-    /// </summary>
-    private void UpdateChildrenPos()
-    {
-        foreach (var item in Children)
-        {
-            // UIResponderは位置指定機能はないので
-            // UIResponder以外の子要素の親サイズを更新
-            if (IsUIView())
-            {
-                var child = (UIView)item;
-                child.ParentWidth = Width;
-                child.ParentHeight = Height;
-            }
-        }
-    }
-
-    /// <summary>
     /// このインスタンスがUIViewかどうかを取得する
     /// </summary>
-    private bool IsUIView()
-    {
-        if (this.GetType() != typeof(UIResponder))
-            return true;
-        else
-            return false;
-    }
+    protected bool IsUIView()
+        => this.GetType() != typeof(UIResponder);
 }
