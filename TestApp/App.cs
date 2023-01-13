@@ -2,19 +2,27 @@
 using System.Diagnostics;
 using Sweet.Input;
 using Sweet.Elements;
+using Sweet.Controls;
 using System.Drawing;
 
 namespace TestApp;
 
 internal class App
 {
-    private UIStyle testStyle = new();
-    private UIStyle testStyle2 = new();
-
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
     private UIView? testView;
+    private UIView? testView2;
+    private UIView? testView3;
+
+    private UIView? testView1_0;
+    private UIView? testView1_2;
+    private UIView? testView1_3;
+
+    private VStackPanel? vstack;
+    private HStackPanel? hstack;
+
     private int opacity;
     private int img;
 
@@ -37,11 +45,47 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        testView = new(100, 100);
-        testView.X = 100;
-        testView.Y = 100;
-        testView.VerticalAlignment = VerticalAlignment.Top;
-        testView.VerticalOffset = 20;
+        testView = new(50, 50);
+        testView2 = new(50, 50);
+        testView3 = new(50, 50);
+        testView.BorderColor = Color.Empty;
+        testView2.BorderColor = Color.Empty;
+        testView3.BorderColor = Color.Empty;
+        testView.BackgroundCornerRadius = 100;
+        testView2.BackgroundCornerRadius = 100;
+        testView3.BackgroundCornerRadius = 100;
+        testView.BackgroundColor = Color.Green;
+        testView2.BackgroundColor = Color.Yellow;
+        testView3.BackgroundColor = Color.Red;
+
+        testView1_0 = new(50, 50);
+        testView1_2 = new(50, 50);
+        testView1_3 = new(50, 50);
+        testView1_0.BorderColor = Color.Empty;
+        testView1_2.BorderColor = Color.Empty;
+        testView1_3.BorderColor = Color.Empty;
+        testView1_0.BackgroundCornerRadius = 100;
+        testView1_2.BackgroundCornerRadius = 100;
+        testView1_3.BackgroundCornerRadius = 100;
+        testView1_0.BackgroundColor = Color.Green;
+        testView1_2.BackgroundColor = Color.Yellow;
+        testView1_3.BackgroundColor = Color.Red;
+
+        hstack = new(200, 250);
+        hstack.Children.Add(testView);
+        hstack.Children.Add(testView2);
+        hstack.Children.Add(testView3);
+
+        vstack = new(200, 250);
+        vstack.Children.Add(testView1_0);
+        vstack.Children.Add(testView1_2);
+        vstack.Children.Add(testView1_3);
+
+        hstack.HorizontalAlignment = HorizontalAlignment.Left;
+        vstack.HorizontalAlignment = HorizontalAlignment.Right;
+
+        hstack.HorizontalOffset = 200;
+        vstack.HorizontalOffset = -200;
 
         opacity = 255;
         img = DX.LoadGraph($"{AppContext.BaseDirectory}test.png");
@@ -69,36 +113,31 @@ internal class App
             if (Keyboard.IsPushing(DX.KEY_INPUT_DOWN))
                 opacity -= 1;
 
-            if (testView != null)
+            if (hstack != null)
             {
-                testView.ParentWidth = w;
-                testView.ParentHeight = h;
-                testView.Update();
-                testView.Render();
+                hstack.ParentWidth = w;
+                hstack.ParentHeight = h;
+                hstack.X = 100;
+                hstack.Y = 100;
 
-                testView.BackgroundAlpha = opacity;
+                hstack.Update();
+                hstack.Render();
+            }
 
-                testView.OnRendering = () =>
-                {
-                    DX.DrawString(15, 10, testView.BackgroundAlpha.ToString(), 0x000000);
-                };
+            if (vstack != null)
+            {
+                vstack.ParentWidth = w;
+                vstack.ParentHeight = h;
+                vstack.X = 800;
+                vstack.Y = 100;
 
-                testView.OnPushed = () =>
-                {
-                    testView.Width += 20;
-                    testView.Height += 20;
-                };
-
-                if (Keyboard.IsPushed(DX.KEY_INPUT_A))
-                {
-                    testView.Width -= 20;
-                    testView.Height -= 20;
-                }
+                vstack.Update();
+                vstack.Render();
             }
 
             DX.ScreenFlip();
 
-            if(stopwatch.Elapsed.TotalSeconds < ms)
+            if (stopwatch.Elapsed.TotalSeconds < ms)
             {
                 double sleepMs = (ms - stopwatch.Elapsed.TotalSeconds) * 1000.0;
 

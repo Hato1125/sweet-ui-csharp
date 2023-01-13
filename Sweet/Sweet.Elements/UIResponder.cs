@@ -157,14 +157,7 @@ public class UIResponder
             mouseY = Mouse.Y - RelativeY;
         }
 
-        foreach (var child in Children)
-        {
-            child.RelativeX = X + child.X;
-            child.RelativeY = Y + child.Y;
-            child.Update();
-
-            isHoverJudge = child.IsHover() ? false : true;
-        }
+        UpdateChildPosition();
 
         // Actionを発生させる
         ActiveOnAction(OnHover, IsHover());
@@ -180,6 +173,21 @@ public class UIResponder
         ActiveOnAction(OnJoypadPushing, IsJoyPadPushing());
         ActiveOnAction(OnJoypadPushed, IsJoyPadPushed());
         ActiveOnAction(OnJoypadSeparate, IsJoyPadSeparate());
+    }
+
+    /// <summary>
+    /// 子要素の位置を更新する
+    /// </summary>
+    protected virtual void UpdateChildPosition()
+    {
+        foreach (var child in Children)
+        {
+            child.RelativeX = X + child.X;
+            child.RelativeY = Y + child.Y;
+            child.Update();
+
+            isHoverJudge = child.IsHover() ? false : true;
+        }
     }
 
     /// <summary>
