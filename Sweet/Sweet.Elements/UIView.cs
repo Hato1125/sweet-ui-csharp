@@ -21,6 +21,11 @@ public class UIView : UIResponder, IUIDisposable
     public bool IsBuild { get; set; }
 
     /// <summary>
+    /// 描画前にアルファブレンドからノーブレンドに変更するか
+    /// </summary>
+    public bool IsChangeNoBlend { get; set; }
+
+    /// <summary>
     /// Radiusを丸めるか
     /// </summary>
     public bool IsRoundRadius { get; set; }
@@ -101,6 +106,7 @@ public class UIView : UIResponder, IUIDisposable
         RunBuild();
 
         IsRoundRadius = true;
+        IsChangeNoBlend = true;
         bufWidth = width;
         bufHeight = height;
         BackgroundAlpha = 255;
@@ -287,7 +293,8 @@ public class UIView : UIResponder, IUIDisposable
         // 領域にレンダリング
         RenderViewArea(_viewHandle, renderMask);
 
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
+        if (IsChangeNoBlend)
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
 
         // viewをレンダリング
         DX.DrawGraph(X, Y, _viewHandle, DX.TRUE);
@@ -407,6 +414,7 @@ public class UIView : UIResponder, IUIDisposable
             if (IsUIView())
             {
                 var child = (UIView)item;
+                child.IsChangeNoBlend = false;
                 child.Render();
             }
         }
