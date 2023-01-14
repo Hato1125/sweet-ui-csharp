@@ -16,9 +16,11 @@ internal class App
     private UIView? testView2;
     private UIView? testView3;
 
-    private UIView? testView1_0;
-    private UIView? testView1_2;
-    private UIView? testView1_3;
+    private Label? testView1_0;
+    private Label? testView1_2;
+    private Label? testView1_3;
+
+    private Label? label;
 
     private VStackPanel? vstack;
     private HStackPanel? hstack;
@@ -58,9 +60,9 @@ internal class App
         testView2.BackgroundColor = Color.Yellow;
         testView3.BackgroundColor = Color.Red;
 
-        testView1_0 = new(50, 50);
-        testView1_2 = new(50, 50);
-        testView1_3 = new(50, 50);
+        testView1_0 = new(150, 30, "Segoe UI", 18, 5);
+        testView1_2 = new(150, 30, "Segoe UI", 18, 5);
+        testView1_3 = new(150, 30, "Segoe UI", 18, 5);
         testView1_0.BorderColor = Color.Empty;
         testView1_2.BorderColor = Color.Empty;
         testView1_3.BorderColor = Color.Empty;
@@ -87,15 +89,25 @@ internal class App
         hstack.HorizontalOffset = 200;
         vstack.HorizontalOffset = -200;
 
+        label = new(170, 30, "Segoe UI", 18, 5);
+        label.BackgroundColor = Color.Empty;
+        label.BorderColor = Color.Empty;
+        label.ForegroundColor = Color.White;
+
         opacity = 255;
         img = DX.LoadGraph($"{AppContext.BaseDirectory}test.png");
     }
 
     private void Loop()
     {
-        while (DX.ProcessMessage() != -1)
+        while (true)
         {
             stopwatch.Restart();
+
+            int ml = DX.ProcessMessage();
+
+            if (ml == -1)
+                break;
 
             DX.ClearDrawScreen();
 
@@ -133,6 +145,14 @@ internal class App
 
                 vstack.Update();
                 vstack.Render();
+            }
+
+            if (label != null)
+            {
+                label.ParentWidth = w;
+                label.ParentHeight = h;
+                label.Update();
+                label.Render();
             }
 
             DX.ScreenFlip();

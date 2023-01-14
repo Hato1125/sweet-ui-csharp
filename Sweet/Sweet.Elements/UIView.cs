@@ -98,7 +98,7 @@ public class UIView : UIResponder, IUIDisposable
     public UIView(int width, int height) : base(width, height)
     {
         IsBuild = true;
-        Build();
+        RunBuild();
 
         IsRoundRadius = true;
         bufWidth = width;
@@ -116,28 +116,13 @@ public class UIView : UIResponder, IUIDisposable
     ~UIView() => Dispose(true);
 
     /// <summary>
-    /// ビルドする
-    /// </summary>
-    protected virtual void Build()
-    {
-        if (!IsBuild)
-            return;
-
-        Dispose(false);
-        _viewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
-        _maskHandle = DX.MakeScreen(Width, Height, DX.TRUE);
-
-        IsBuild = false;
-    }
-
-    /// <summary>
     /// 更新する
     /// </summary>
     public override void Update()
     {
         if (!IsBuild)
             IsBuild = WatchBuild();
-        Build();
+        RunBuild();
 
         UpdatePosition();
         base.Update();
@@ -180,6 +165,16 @@ public class UIView : UIResponder, IUIDisposable
     }
 
     /// <summary>
+    /// ビルドする
+    /// </summary>
+    protected virtual void Build()
+    {
+        Dispose(false);
+        _viewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
+        _maskHandle = DX.MakeScreen(Width, Height, DX.TRUE);
+    }
+
+    /// <summary>
     /// UIをビルドすべきかを判断する
     /// </summary>
     protected virtual bool WatchBuild()
@@ -188,6 +183,7 @@ public class UIView : UIResponder, IUIDisposable
         {
             bufWidth = Width;
             bufHeight = Height;
+
             return true;
         }
         else
@@ -211,6 +207,19 @@ public class UIView : UIResponder, IUIDisposable
     protected virtual void UpdateRenderProperty()
     {
         RoundCornerRadius();
+    }
+
+    /// <summary>
+    /// ビルドを実行する
+    /// </summary>
+    protected void RunBuild()
+    {
+        if (!IsBuild)
+            return;
+
+        Build();
+
+        IsBuild = false;
     }
 
     /// <summary>
