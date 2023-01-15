@@ -31,16 +31,6 @@ public class Label : UITextBase
     public string Text { get; set; }
 
     /// <summary>
-    /// 前景の透明度
-    /// </summary>
-    public int ForegroundAlpha { get; set; }
-
-    /// <summary>
-    /// 前景の色
-    /// </summary>
-    public Color ForegroundColor { get; set; }
-
-    /// <summary>
     /// 初期化する
     /// </summary>
     /// <param name="width">横幅</param>
@@ -55,14 +45,13 @@ public class Label : UITextBase
         TextVerticalAlignment = VerticalAlignment.Center;
         ForegroundAlpha = 255;
         Text = "Label";
-        ForegroundColor = Color.Black;
     }
 
-    public override void Render()
+    protected override void RenderForeground()
     {
-        Rendering = RenderText;
+        base.RenderForeground();
 
-        base.Render();
+        RenderText();
     }
 
     /// <summary>

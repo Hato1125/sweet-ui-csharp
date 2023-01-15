@@ -11,11 +11,6 @@ public class UIView : UIResponder, IUIDisposable
     private int bufHeight;
 
     /// <summary>
-    /// レンダリングアクション
-    /// </summary>
-    protected Action? Rendering { get; set; }
-
-    /// <summary>
     /// ビルドするか
     /// </summary>
     public bool IsBuild { get; set; }
@@ -44,6 +39,11 @@ public class UIView : UIResponder, IUIDisposable
     /// 背景の透明度
     /// </summary>
     public int BackgroundAlpha { get; set; }
+
+    /// <summary>
+    /// 前景の透明度
+    /// </summary>
+    public int ForegroundAlpha { get; set; }
 
     /// <summary>
     /// ボーダーの透明度
@@ -86,6 +86,11 @@ public class UIView : UIResponder, IUIDisposable
     public Color BackgroundColor { get; set; }
 
     /// <summary>
+    /// 前景の色
+    /// </summary>
+    public Color ForegroundColor { get; set; }
+
+    /// <summary>
     /// ボーダーの色
     /// </summary>
     public Color BorderColor { get; set; }
@@ -110,10 +115,12 @@ public class UIView : UIResponder, IUIDisposable
         bufWidth = width;
         bufHeight = height;
         BackgroundAlpha = 255;
+        ForegroundAlpha = 255;
         BorderAlpha = 255;
         BackgroundCornerRadius = 35.0f;
         BorderSize = 1.0f;
         BackgroundColor = Color.FromArgb(254, 252, 255);
+        ForegroundColor = Color.Black;
         BorderColor = Color.FromArgb(240, 240, 240);
         HorizontalAlignment = HorizontalAlignment.Center;
         VerticalAlignment = VerticalAlignment.Center;
@@ -213,6 +220,25 @@ public class UIView : UIResponder, IUIDisposable
     protected virtual void UpdateRenderProperty()
     {
         RoundCornerRadius();
+    }
+
+    /// <summary>
+    /// 背景をレンダリングする
+    /// </summary>
+    protected virtual void RenderBackground()
+    {
+        uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
+
+        // 背景をレンダリング
+        if (BackgroundColor != Color.Empty)
+            DX.DrawFillBox(0, 0, Width, Height, backColor);
+    }
+
+    /// <summary>
+    /// 前景のレンダリング
+    /// </summary>
+    protected virtual void RenderForeground()
+    {
     }
 
     /// <summary>
@@ -345,14 +371,21 @@ public class UIView : UIResponder, IUIDisposable
         uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
 
         // 背景をレンダリング
-        if (BackgroundColor != Color.Empty && BackgroundAlpha > 0)
+        if (BackgroundAlpha > 0)
         {
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
-            DX.DrawFillBox(0, 0, Width, Height, backColor);
+            RenderBackground();
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
         }
 
-        Rendering?.Invoke();
+        // 前景をレンダリング
+        if (ForegroundAlpha > 0)
+        {
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, ForegroundAlpha);
+            RenderForeground();
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+        }
+
         OnRendering?.Invoke();
 
         DX.SetUseMaskScreenFlag(DX.FALSE);
