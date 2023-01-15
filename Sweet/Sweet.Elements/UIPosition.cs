@@ -1,3 +1,5 @@
+namespace Sweet.Elements;
+
 /// <summary>
 /// 水平方向の位置
 /// </summary>
