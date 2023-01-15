@@ -352,6 +352,9 @@ public class UIResponder
             return;
 
         if (isActive)
+        {
+            Tracer.Log("Active Action.");
             action();
+        }
     }
 }

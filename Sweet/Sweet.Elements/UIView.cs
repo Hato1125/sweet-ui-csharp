@@ -108,7 +108,6 @@ public class UIView : UIResponder, IUIDisposable
     public UIView(int width, int height) : base(width, height)
     {
         IsBuild = true;
-        RunBuild();
 
         IsRoundRadius = true;
         IsChangeNoBlend = true;
@@ -156,12 +155,20 @@ public class UIView : UIResponder, IUIDisposable
     /// </summary>
     public virtual void Dispose(bool isChildDispoes = true)
     {
+#if DEBUG
+        if (isChildDispoes
+            || _viewHandle != -1 && _viewHandle != 0
+            || _maskHandle != -1 && _maskHandle != 0)
+            Tracer.Log($"{this.GetType()} Run Dispose.");
+#endif
+
         if (_viewHandle != -1 && _viewHandle != 0)
             DX.DeleteGraph(_viewHandle);
 
         if (_maskHandle != -1 && _maskHandle != 0)
             DX.DeleteGraph(_maskHandle);
 
+        // 子要素も解放
         if (isChildDispoes)
         {
             foreach (var item in Children)
@@ -182,6 +189,8 @@ public class UIView : UIResponder, IUIDisposable
     /// </summary>
     protected virtual void Build()
     {
+        Tracer.Log($"{this.GetType()} Run Build.");
+
         Dispose(false);
         _viewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
         _maskHandle = DX.MakeScreen(Width, Height, DX.TRUE);
@@ -194,6 +203,8 @@ public class UIView : UIResponder, IUIDisposable
     {
         if (bufWidth != Width || bufHeight != Height)
         {
+            Tracer.Log("ChangeUISize.");
+
             bufWidth = Width;
             bufHeight = Height;
 

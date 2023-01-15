@@ -48,7 +48,6 @@ public class UITextBase : UIView
         _bufFontThick = fontThick;
 
         IsBuild = true;
-        RunBuild();
     }
 
     protected override void Build()
