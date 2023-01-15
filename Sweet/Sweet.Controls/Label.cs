@@ -73,8 +73,8 @@ public class Label : UITextBase
             TextVerticalAlignment,
             TextHorizontalOffset,
             TextVerticalOffset,
-            Width,
-            Height,
+            ActualWidth,
+            ActualHeight,
             width,
             height
         );

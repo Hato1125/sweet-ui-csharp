@@ -7,8 +7,8 @@ public class UIView : UIResponder, IUIDisposable
 {
     private int _viewHandle;
     private int _maskHandle;
-    private int bufWidth;
-    private int bufHeight;
+    private int bufActualWidth;
+    private int bufActualHeight;
 
     /// <summary>
     /// ビルドするか
@@ -24,16 +24,6 @@ public class UIView : UIResponder, IUIDisposable
     /// Radiusを丸めるか
     /// </summary>
     public bool IsRoundRadius { get; set; }
-
-    /// <summary>
-    /// 親要素の横幅
-    /// </summary>
-    public int ParentWidth { get; set; }
-
-    /// <summary>
-    /// 親要素の高さ
-    /// </summary>
-    public int ParentHeight { get; set; }
 
     /// <summary>
     /// 背景の透明度
@@ -111,8 +101,8 @@ public class UIView : UIResponder, IUIDisposable
 
         IsRoundRadius = true;
         IsChangeNoBlend = true;
-        bufWidth = width;
-        bufHeight = height;
+        bufActualWidth = ActualWidth;
+        bufActualHeight = ActualHeight;
         BackgroundAlpha = 255;
         ForegroundAlpha = 255;
         BorderAlpha = 255;
@@ -192,8 +182,10 @@ public class UIView : UIResponder, IUIDisposable
         Tracer.Log($"{this.GetType()} Run Build.");
 
         Dispose(false);
-        _viewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
-        _maskHandle = DX.MakeScreen(Width, Height, DX.TRUE);
+
+        Console.WriteLine($"{ActualWidth} : {ActualHeight}");
+        _viewHandle = DX.MakeScreen(ActualWidth, ActualHeight, DX.TRUE);
+        _maskHandle = DX.MakeScreen(ActualWidth, ActualHeight, DX.TRUE);
     }
 
     /// <summary>
@@ -201,12 +193,12 @@ public class UIView : UIResponder, IUIDisposable
     /// </summary>
     protected virtual bool WatchBuild()
     {
-        if (bufWidth != Width || bufHeight != Height)
+        if (bufActualWidth != ActualWidth || bufActualHeight != ActualHeight)
         {
             Tracer.Log("ChangeUISize.");
 
-            bufWidth = Width;
-            bufHeight = Height;
+            bufActualWidth = ActualWidth;
+            bufActualHeight = ActualHeight;
 
             return true;
         }
@@ -242,7 +234,7 @@ public class UIView : UIResponder, IUIDisposable
 
         // 背景をレンダリング
         if (BackgroundColor != Color.Empty)
-            DX.DrawFillBox(0, 0, Width, Height, backColor);
+            DX.DrawFillBox(0, 0, ActualWidth, ActualHeight, backColor);
     }
 
     /// <summary>
@@ -289,8 +281,8 @@ public class UIView : UIResponder, IUIDisposable
             VerticalOffset,
             ParentWidth,
             ParentHeight,
-            Width,
-            Height
+            ActualWidth,
+            ActualHeight
         );
 
         (X, Y) = pos;
@@ -303,14 +295,8 @@ public class UIView : UIResponder, IUIDisposable
     {
         foreach (var item in Children)
         {
-            // UIResponderは位置指定機能はないので
-            // UIResponder以外の子要素の親サイズを更新
-            if (IsUIView())
-            {
-                var child = (UIView)item;
-                child.ParentWidth = Width;
-                child.ParentHeight = Height;
-            }
+            item.ParentWidth = ActualWidth;
+            item.ParentHeight = ActualHeight;
         }
     }
 
@@ -350,8 +336,8 @@ public class UIView : UIResponder, IUIDisposable
                 DX.DrawFillBox(
                     0,
                     0,
-                    Width,
-                    Height,
+                    ActualWidth,
+                    ActualHeight,
                     0xffffff
                 );
             }
@@ -360,8 +346,8 @@ public class UIView : UIResponder, IUIDisposable
                 DX.DrawRoundRectAA(
                     0,
                     0,
-                    Width,
-                    Height,
+                    ActualWidth,
+                    ActualHeight,
                     BackgroundCornerRadius,
                     BackgroundCornerRadius,
                     byte.MaxValue,
@@ -420,8 +406,8 @@ public class UIView : UIResponder, IUIDisposable
             DX.DrawBoxAA(
                 X,
                 Y,
-                X + Width,
-                Y + Height,
+                X + ActualWidth,
+                Y + ActualHeight,
                 borderColor,
                 DX.FALSE,
                 BorderSize * 2
@@ -432,8 +418,8 @@ public class UIView : UIResponder, IUIDisposable
             DX.DrawRoundRectAA(
                 X,
                 Y,
-                X + Width,
-                Y + Height,
+                X + ActualWidth,
+                Y + ActualHeight,
                 BackgroundCornerRadius,
                 BackgroundCornerRadius,
                 byte.MaxValue,

@@ -33,7 +33,8 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        view = new(100, 100, "Segoe UI", 18, 5);
+        view = new(50, 50, "Segoe UI", 18, 5);
+        view.SizeType = UISize.Percent;
     }
 
     private void Loop()
@@ -59,8 +60,8 @@ internal class App
             if (view != null)
             {
                 view.OnPushed = () => {
-                     view.Width += 10;
-                     view.Height += 5;
+                     view.Width--;
+                     view.Height--;
                 };
 
                 view.ParentWidth = w;

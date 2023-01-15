@@ -10,6 +10,16 @@ public class UIResponder
     private bool isHoverJudge;
 
     /// <summary>
+    /// 実際の横幅
+    /// </summary>
+    protected int ActualWidth { get; private set; }
+
+    /// <summary>
+    /// 実際の高さ
+    /// </summary>
+    protected int ActualHeight { get; private set; }
+
+    /// <summary>
     /// 相対的なX座標
     /// </summary>
     public int RelativeX { get; set; }
@@ -38,6 +48,16 @@ public class UIResponder
     /// 高さ
     /// </summary>
     public int Height { get; set; }
+
+    /// <summary>
+    /// 親要素の横幅
+    /// </summary>
+    public int ParentWidth { get; set; }
+
+    /// <summary>
+    /// 親要素の高さ
+    /// </summary>
+    public int ParentHeight { get; set; }
 
     /// <summary>
     /// 操作を受け付けるか
@@ -110,6 +130,11 @@ public class UIResponder
     public Action? OnJoypadSeparate { get; set; }
 
     /// <summary>
+    /// サイズの計算方法
+    /// </summary>
+    public UISize SizeType { get; set; }
+
+    /// <summary>
     /// キーコードリスト
     /// </summary>
     public readonly List<int> KeyList = new(5);
@@ -139,6 +164,8 @@ public class UIResponder
         Height = height;
         IsResponse = true;
         isHoverJudge = true;
+        SizeType = UISize.Pixel;
+        CalUISize();
     }
 
     /// <summary>
@@ -157,6 +184,7 @@ public class UIResponder
             mouseY = Mouse.Y - RelativeY;
         }
 
+        CalUISize();
         UpdateChildPosition();
 
         // Actionを発生させる
@@ -191,6 +219,23 @@ public class UIResponder
     }
 
     /// <summary>
+    /// UIサイズを計算する
+    /// </summary>
+    protected void CalUISize()
+    {
+        if (SizeType == UISize.Pixel)
+        {
+            ActualWidth = Width;
+            ActualHeight = Height;
+        }
+        else
+        {
+            ActualWidth = (int)(ParentWidth * (Width / 100.0));
+            ActualHeight = (int)(ParentHeight * (Height / 100.0));
+        }
+    }
+
+    /// <summary>
     /// ホバーしているかを取得する
     /// </summary>
     public bool IsHover()
@@ -198,8 +243,8 @@ public class UIResponder
         if (!IsResponse || !isHoverJudge)
             return false;
 
-        if (mouseX >= 0 && mouseX <= Width
-            && mouseY >= 0 && mouseY <= Height)
+        if (mouseX >= 0 && mouseX <= ActualWidth
+            && mouseY >= 0 && mouseY <= ActualHeight)
             return true;
         else
             return false;
