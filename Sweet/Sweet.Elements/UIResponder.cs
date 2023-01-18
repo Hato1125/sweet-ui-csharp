@@ -30,6 +30,11 @@ public class UIResponder
     public (int Width, int Height) ParentSize { get; set; }
 
     /// <summary>
+    /// 入力を受け付けるか
+    /// </summary>
+    public bool IsInput { get; set; }
+
+    /// <summary>
     /// キーボードの入力ができるか
     /// </summary>
     public bool IsKeyboardInput { get; set; }
@@ -44,26 +49,6 @@ public class UIResponder
     /// タップでの入力ができるか
     /// </summary>
     public bool IsTopInput { get; set; }
-
-    /// <summary>
-    /// 水平方向の位置
-    /// </summary>
-    public HorizontalAlignment HorizontalAlignment { get; set; }
-
-    /// <summary>
-    /// 垂直方向の位置
-    /// </summary>
-    public VerticalAlignment VerticalAlignment { get; set; }
-
-    /// <summary>
-    /// 水平方向のオフセット
-    /// </summary>
-    public int HorizontalOffset { get; set; }
-
-    /// <summary>
-    /// 垂直方向のオフセット
-    /// </summary>
-    public int VerticalOffset { get; set; }
 
     /// <summary>
     /// ダブルプッシュの間隔
@@ -115,6 +100,7 @@ public class UIResponder
         Size = (width, height);
         _stopwatch.Reset();
         DoublePushMs = 0.4;
+        IsInput = true;
         IsKeyboardInput = true;
         IsJoypadInput = true;
         IsTopInput = true;
@@ -125,7 +111,6 @@ public class UIResponder
     /// </summary>
     public virtual void Update()
     {
-        CalculatePosition();
         CalculateMousePosition();
         UpdateChildren();
         CallAllAction();
@@ -160,25 +145,6 @@ public class UIResponder
     }
 
     /// <summary>
-    /// UIの位置の計算
-    /// </summary>
-    protected virtual void CalculatePosition()
-    {
-        var pos = UIPositionUtilt.CalUIPosition(
-            HorizontalAlignment,
-            VerticalAlignment,
-            HorizontalOffset,
-            VerticalOffset,
-            ParentSize.Width,
-            ParentSize.Height,
-            Size.Width,
-            Size.Height
-        );
-
-        Position = pos;
-    }
-
-    /// <summary>
     /// 子要素の更新
     /// </summary>
     protected virtual void UpdateChildren()
@@ -199,6 +165,9 @@ public class UIResponder
     /// </summary>
     public bool IsHover()
     {
+        if (!IsInput)
+            return false;
+
         if (_mousePosition.X >= 0 && _mousePosition.X <= Size.Width
             && _mousePosition.Y >= 0 && _mousePosition.Y <= Size.Height)
             return true;
@@ -382,4 +351,3 @@ public class UIResponder
         Separate,
     }
 }
-

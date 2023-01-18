@@ -34,7 +34,7 @@ public static class UIPositionUtilt
     /// <param name="tergetWidth">ターゲットの横幅</param>
     /// <param name="tergetHeight">ターゲットの高さ</param>
     /// <returns>座標</returns>
-    public static (int X, int Y) CalUIPosition(
+    public static (int X, int Y) CalculateUIPosition(
         HorizontalAlignment horizontal,
         VerticalAlignment vertical,
         int horizontalOffset,

@@ -11,7 +11,8 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UIResponder responder = new(100, 100);
+    private UIControls responder = new(100, 100);
+    private UIControls responder2 = new(35, 35);
 
     public void Run()
     {
@@ -31,6 +32,9 @@ internal class App
         DX.DxLib_Init();
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
+
+        responder2.BackgroundColor = Color.SkyBlue;
+        responder.Children.Add(responder2);
     }
 
     private void Loop()
@@ -53,41 +57,22 @@ internal class App
 
             DX.GetWindowSize(out int w, out int h);
 
-            responder.HorizontalAlignment = HorizontalAlignment.Center;
-            responder.VerticalAlignment = VerticalAlignment.Center;
             responder.ParentSize = (w, h);
             responder.Update();
-            DX.DrawFillBox(
-                responder.Position.X,
-                responder.Position.Y,
-                responder.Position.X + responder.Size.Width,
-                responder.Position.Y + responder.Size.Height,
-                DX.GetColor(255, 255, 255)
-            );
-
-            if (responder.IsHover())
-                DX.DrawString(200, 100, "Hover", 0xffffff);
-
-            if (responder.IsPushing())
-                DX.DrawString(200, 120, "Pushing", 0xffffff);
+            responder.DrawView();
 
             if (responder.IsPushed())
-                DX.DrawString(200, 140, "Pushed", 0xffffff);
-
-            if (responder.IsSeparate())
-                DX.DrawString(200, 160, "Separate", 0xffffff);
+                responder.HorizontalOffset += 10;
 
             if (responder.IsDoublePush())
             {
                 DX.DrawString(200, 180, "DoublePush", 0xffffff);
-
-            DX.DrawFillBox(
-                responder.Position.X,
-                responder.Position.Y,
-                responder.Position.X + responder.Size.Width,
-                responder.Position.Y + responder.Size.Height,
-                DX.GetColor(255, 0, 0)
-            );
+                responder.Size = (responder.Size.Width + 10, responder.Size.Height + 10);
+                responder.BackgroundColor = Color.Red;
+            }
+            else
+            {
+                responder.BackgroundColor = Color.White;
             }
 
             DX.ScreenFlip();
