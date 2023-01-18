@@ -1,148 +1,104 @@
-using DxLibDLL;
 using Sweet.Input;
+using System.Diagnostics;
 
 namespace Sweet.Elements;
 
 public class UIResponder
 {
-    private int mouseX;
-    private int mouseY;
-    private bool isHoverJudge;
+    private readonly Stopwatch _stopwatch = new();
+    private int _doublePushCounter;
+    private (int X, int Y) _mousePosition;
 
     /// <summary>
-    /// 実際の横幅
+    /// 相対位置
     /// </summary>
-    protected int ActualWidth { get; private set; }
+    public (int X, int Y) RelativePosition { get; set; }
 
     /// <summary>
-    /// 実際の高さ
+    /// 位置
     /// </summary>
-    protected int ActualHeight { get; private set; }
+    public (int X, int Y) Position { get; set; }
 
     /// <summary>
-    /// 相対的なX座標
+    /// サイズ
     /// </summary>
-    public int RelativeX { get; set; }
+    public (int Width, int Height) Size { get; set; }
 
     /// <summary>
-    /// 相対的なY座標
+    /// 親要素のサイズ
     /// </summary>
-    public int RelativeY { get; set; }
+    public (int Width, int Height) ParentSize { get; set; }
 
     /// <summary>
-    /// X座標
+    /// キーボードの入力ができるか
     /// </summary>
-    public int X { get; set; }
+    public bool IsKeyboardInput { get; set; }
 
     /// <summary>
-    /// Y座標
+    /// ジョイパッドの入力ができるか
     /// </summary>
-    public int Y { get; set; }
+    /// <value></value>
+    public bool IsJoypadInput { get; set; }
 
     /// <summary>
-    /// 横幅
+    /// タップでの入力ができるか
     /// </summary>
-    public int Width { get; set; }
+    public bool IsTopInput { get; set; }
 
     /// <summary>
-    /// 高さ
+    /// 水平方向の位置
     /// </summary>
-    public int Height { get; set; }
+    public HorizontalAlignment HorizontalAlignment { get; set; }
 
     /// <summary>
-    /// 親要素の横幅
+    /// 垂直方向の位置
     /// </summary>
-    public int ParentWidth { get; set; }
+    public VerticalAlignment VerticalAlignment { get; set; }
 
     /// <summary>
-    /// 親要素の高さ
+    /// 水平方向のオフセット
     /// </summary>
-    public int ParentHeight { get; set; }
+    public int HorizontalOffset { get; set; }
 
     /// <summary>
-    /// 操作を受け付けるか
+    /// 垂直方向のオフセット
     /// </summary>
-    public bool IsResponse { get; set; }
+    public int VerticalOffset { get; set; }
 
     /// <summary>
-    /// ホバー時に呼び出される
+    /// ダブルプッシュの間隔
+    /// </summary>
+    public double DoublePushMs { get; set; }
+
+    /// <summary>
+    /// ホバー時に呼ばれる
     /// </summary>
     public Action? OnHover { get; set; }
 
     /// <summary>
-    /// ホバー時に押していたら呼び出される
+    /// 押されている間呼ばれる
     /// </summary>
     public Action? OnPushing { get; set; }
 
     /// <summary>
-    /// ホバー時に押した瞬間に呼び出される
+    /// 押された瞬間のみ呼ばれる
     /// </summary>
     public Action? OnPushed { get; set; }
 
     /// <summary>
-    /// ホバー時に離した瞬間に呼び出される
+    /// 離された瞬間のみ呼ばれる
     /// </summary>
     public Action? OnSeparate { get; set; }
 
     /// <summary>
-    /// ホバー時にタッチしていたら呼び出される
+    /// キー入力のキーコードリスト
     /// </summary>
-    public Action? OnTaping { get; set; }
+    public readonly List<int> KeyCodes = new(5);
 
     /// <summary>
-    /// ホバー時にタッチした瞬間に呼び出される
+    /// ジョイパッド入力のキーコード
     /// </summary>
-    public Action? OnTaped { get; set; }
-
-    /// <summary>
-    /// ホバー時にタッチを離した瞬間に呼び出される
-    /// </summary>
-    public Action? OnTapSeparate { get; set; }
-
-    /// <summary>
-    /// ホバー時にキーを押していたら呼び出される
-    /// </summary>
-    public Action? OnKeyPushing { get; set; }
-
-    /// <summary>
-    /// ホバー時にキーを押した瞬間に呼び出される
-    /// </summary>
-    public Action? OnKeyPushed { get; set; }
-
-    /// <summary>
-    /// ホバー時にキーを離した瞬間に呼び出される
-    /// </summary>
-    public Action? OnKeySeparate { get; set; }
-
-    /// <summary>
-    /// ホバー時にジョイパッドのボタンを押していたら呼び出される
-    /// </summary>
-    public Action? OnJoypadPushing { get; set; }
-
-    /// <summary>
-    /// ホバー時にジョイパッドのボタンを押した瞬間に呼び出される
-    /// </summary>
-    public Action? OnJoypadPushed { get; set; }
-
-    /// <summary>
-    /// ホバー時にジョイパッドのボタンを離した瞬間に呼び出される
-    /// </summary>
-    public Action? OnJoypadSeparate { get; set; }
-
-    /// <summary>
-    /// サイズの計算方法
-    /// </summary>
-    public UISize SizeType { get; set; }
-
-    /// <summary>
-    /// キーコードリスト
-    /// </summary>
-    public readonly List<int> KeyList = new(5);
-
-    /// <summary>
-    /// ジョイパッドのキーリスト
-    /// </summary>
-    public readonly List<JoypadKey> JoypadList = new(5);
+    public readonly List<JoypadKey> joypadKeys = new(5);
 
     /// <summary>
     /// 子要素リスト
@@ -156,16 +112,12 @@ public class UIResponder
     /// <param name="height">高さ</param>
     public UIResponder(int width, int height)
     {
-        KeyList.Add(DX.KEY_INPUT_SPACE);
-        KeyList.Add(DX.KEY_INPUT_RETURN);
-        JoypadList.Add(JoypadKey.Right);
-        JoypadList.Add(JoypadKey.Input_1);
-        Width = width;
-        Height = height;
-        IsResponse = true;
-        isHoverJudge = true;
-        SizeType = UISize.Pixel;
-        CalUISize();
+        Size = (width, height);
+        _stopwatch.Reset();
+        DoublePushMs = 0.4;
+        IsKeyboardInput = true;
+        IsJoypadInput = true;
+        IsTopInput = true;
     }
 
     /// <summary>
@@ -173,233 +125,261 @@ public class UIResponder
     /// </summary>
     public virtual void Update()
     {
-        if (RelativeX == 0 && RelativeY == 0)
+        CalculatePosition();
+        CalculateMousePosition();
+        UpdateChildren();
+        CallAllAction();
+    }
+
+    /// <summary>
+    /// マウスの位置の計算
+    /// </summary>
+    private void CalculateMousePosition()
+    {
+        if (RelativePosition == (0, 0))
         {
-            mouseX = Mouse.X - X;
-            mouseY = Mouse.Y - Y;
+            _mousePosition.X = Mouse.X - Position.X;
+            _mousePosition.X = Mouse.Y - Position.Y;
         }
         else
         {
-            mouseX = Mouse.X - RelativeX;
-            mouseY = Mouse.Y - RelativeY;
+            _mousePosition.X = Mouse.X - RelativePosition.X;
+            _mousePosition.X = Mouse.Y - RelativePosition.Y;
         }
-
-        CalUISize();
-        UpdateChildPosition();
-
-        // Actionを発生させる
-        ActiveOnAction(OnHover, IsHover());
-        ActiveOnAction(OnPushing, IsPushing());
-        ActiveOnAction(OnPushed, IsPushed());
-        ActiveOnAction(OnSeparate, IsSeparate());
-        ActiveOnAction(OnTaping, IsTaping());
-        ActiveOnAction(OnTaped, IsTaped());
-        ActiveOnAction(OnTapSeparate, IsTapSeparate());
-        ActiveOnAction(OnKeyPushing, IsKeyPushing());
-        ActiveOnAction(OnKeyPushed, IsKeyPushed());
-        ActiveOnAction(OnKeySeparate, IsKeySeparate());
-        ActiveOnAction(OnJoypadPushing, IsJoyPadPushing());
-        ActiveOnAction(OnJoypadPushed, IsJoyPadPushed());
-        ActiveOnAction(OnJoypadSeparate, IsJoyPadSeparate());
     }
 
     /// <summary>
-    /// 子要素の位置を更新する
+    /// アクションを呼び出す
     /// </summary>
-    protected virtual void UpdateChildPosition()
+    private void CallAllAction()
     {
-        foreach (var child in Children)
-        {
-            child.RelativeX = X + child.X;
-            child.RelativeY = Y + child.Y;
-            child.Update();
-
-            isHoverJudge = child.IsHover() ? false : true;
-        }
+        CallAction(OnHover, IsHover());
+        CallAction(OnPushing, IsPushing());
+        CallAction(OnPushed, IsPushed());
+        CallAction(OnSeparate, IsSeparate());
     }
 
     /// <summary>
-    /// UIサイズを計算する
+    /// UIの位置の計算
     /// </summary>
-    protected void CalUISize()
+    protected virtual void CalculatePosition()
     {
-        if (SizeType == UISize.Pixel)
+        var pos = UIPositionUtilt.CalUIPosition(
+            HorizontalAlignment,
+            VerticalAlignment,
+            HorizontalOffset,
+            VerticalOffset,
+            ParentSize.Width,
+            ParentSize.Height,
+            Size.Width,
+            Size.Height
+        );
+
+        Position = pos;
+    }
+
+    /// <summary>
+    /// 子要素の更新
+    /// </summary>
+    protected virtual void UpdateChildren()
+    {
+        foreach (var item in Children)
         {
-            ActualWidth = Width;
-            ActualHeight = Height;
-        }
-        else
-        {
-            ActualWidth = (int)(ParentWidth * (Width / 100.0));
-            ActualHeight = (int)(ParentHeight * (Height / 100.0));
+            item.ParentSize = Size;
+            item.RelativePosition = (
+                item.Position.X - Position.X,
+                item.Position.Y - Position.Y
+            );
+            item.Update();
         }
     }
 
     /// <summary>
-    /// ホバーしているかを取得する
+    /// ホバーしたかを取得する
     /// </summary>
     public bool IsHover()
     {
-        if (!IsResponse || !isHoverJudge)
-            return false;
-
-        if (mouseX >= 0 && mouseX <= ActualWidth
-            && mouseY >= 0 && mouseY <= ActualHeight)
+        if (_mousePosition.X >= 0 && _mousePosition.X <= Size.Width
+            && _mousePosition.Y >= 0 && _mousePosition.Y <= Size.Height)
             return true;
         else
             return false;
     }
 
     /// <summary>
-    /// 押している間を取得する
+    /// ホバー時に押しているかを取得する
     /// </summary>
     public bool IsPushing()
-        => (IsHover() && Mouse.IsPushing(MouseKey.Left))
-            || IsKeyPushing()
-            || IsTaping()
-            || IsJoyPadPushing();
+    {
+        if (!IsHover())
+            return false;
+
+        if (Mouse.IsPushing(MouseKey.Left)
+            || IsKeyPush(JudgeInputType.Pushing)
+            || IsJoypadPush(JudgeInputType.Pushing)
+            || IsTouchPush(JudgeInputType.Pushing))
+            return true;
+        else
+            return false;
+    }
 
     /// <summary>
-    /// 押した瞬間を取得する
+    /// ホバー時に押した瞬間を取得する
     /// </summary>
     public bool IsPushed()
-        => (IsHover() && Mouse.IsPushed(MouseKey.Left))
-            || IsKeyPushed()
-            || IsTaped()
-            || IsJoyPadPushed();
+    {
+        if (!IsHover())
+            return false;
+
+        if (Mouse.IsPushed(MouseKey.Left)
+            || IsKeyPush(JudgeInputType.Pushed)
+            || IsJoypadPush(JudgeInputType.Pushed)
+            || IsTouchPush(JudgeInputType.Pushed))
+            return true;
+        else
+            return false;
+    }
 
     /// <summary>
-    /// 離した瞬間を取得する
+    /// ホバー時に離した瞬間を取得する
+    /// </summary>
+    public bool IsSeparate()
+    {
+        if (!IsHover())
+            return false;
+
+        if (Mouse.IsSeparate(MouseKey.Left)
+            || IsKeyPush(JudgeInputType.Separate)
+            || IsJoypadPush(JudgeInputType.Separate)
+            || IsTouchPush(JudgeInputType.Separate))
+            return true;
+        else
+            return false;
+    }
+
+    /// <summary>
+    /// ホバー時にダブルプッシュしたかを取得する
     /// </summary>
     /// <returns></returns>
-    public bool IsSeparate()
-        => (IsHover() && Mouse.IsSeparate(MouseKey.Left))
-            || IsKeySeparate()
-            || IsTapSeparate()
-            || IsJoyPadSeparate();
-
-    /// <summary>
-    /// ホバー時にタップしている間を取得する
-    /// </summary>
-    public bool IsTaping()
-        => IsHover() && Touch.IsPushing();
-
-    /// <summary>
-    /// ホバー時にタップした瞬間を取得する
-    /// </summary>
-    public bool IsTaped()
-        => IsHover() && Touch.IsPushed();
-
-    /// <summary>
-    /// ホバー時にタップを離した瞬間を取得する
-    /// </summary>
-    public bool IsTapSeparate()
-        => IsHover() && Touch.IsSeparate();
-
-    /// <summary>
-    /// ホバー時にキーを押している間を取得する
-    /// </summary>
-    public bool IsKeyPushing()
+    public bool IsDoublePush()
     {
-        if (!IsHover())
-            return false;
-
-        foreach (var key in KeyList)
-            if (Keyboard.IsPushing(key))
-                return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// ホバー時にキーを押した瞬間を取得する
-    /// </summary>
-    public bool IsKeyPushed()
-    {
-        if (!IsHover())
-            return false;
-
-        foreach (var key in KeyList)
-            if (Keyboard.IsPushed(key))
-                return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// ホバー時にキーを離した瞬間を取得する
-    /// </summary>
-    public bool IsKeySeparate()
-    {
-        if (!IsHover())
-            return false;
-
-        foreach (var key in KeyList)
-            if (Keyboard.IsSeparate(key))
-                return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// ホバー時にジョイパッドのボタンを押している間を取得する
-    /// </summary>
-    public bool IsJoyPadPushing()
-    {
-        if (!IsHover())
-            return false;
-
-        foreach (var key in JoypadList)
-            if (Joypad.IsPushing(key))
-                return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// ホバー時にジョイパッドの押した瞬間を取得する
-    /// </summary>
-    public bool IsJoyPadPushed()
-    {
-        if (!IsHover())
-            return false;
-
-        foreach (var key in JoypadList)
-            if (Joypad.IsPushed(key))
-                return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// ホバー時にジョイパッドのボタンを離した瞬間を取得する
-    /// </summary>
-    public bool IsJoyPadSeparate()
-    {
-        if (!IsHover())
-            return false;
-
-        foreach (var key in JoypadList)
-            if (Joypad.IsSeparate(key))
-                return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// アクションを発生させる
-    /// </summary>
-    /// <param name="action">アクション</param>
-    /// <param name="isActive">発生させるか</param>
-    private void ActiveOnAction(Action? action, bool isActive)
-    {
-        if (action == null)
-            return;
-
-        if (isActive)
+        if (IsPushed())
         {
-            Tracer.Log("Active Action.");
-            action();
+            if (_doublePushCounter <= 0)
+                _stopwatch.Start();
+
+            _doublePushCounter++;
+        }
+
+        // ストップウォッチのタイムが一秒を越していたらリセット
+        if (_stopwatch.Elapsed.TotalSeconds > DoublePushMs)
+        {
+            _doublePushCounter = 0;
+            _stopwatch.Reset();
+            _stopwatch.Stop();
+            return false;
+        }
+
+        // もしカウンタが1回を超えていたらダブルクリック成功！
+        if (_doublePushCounter > 1)
+        {
+            _doublePushCounter = 0;
+            _stopwatch.Reset();
+            _stopwatch.Stop();
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
+
+    /// <summary>
+    /// キーで操作したかを取得する
+    /// </summary>
+    /// <param name="inputType">操作方法</param>
+    /// <returns></returns>
+    private bool IsKeyPush(JudgeInputType inputType)
+    {
+        if (!IsKeyboardInput)
+            return false;
+
+        foreach (var item in KeyCodes)
+        {
+            return inputType switch
+            {
+                JudgeInputType.Pushing => Keyboard.IsPushing(item),
+                JudgeInputType.Pushed => Keyboard.IsPushed(item),
+                JudgeInputType.Separate => Keyboard.IsSeparate(item),
+                _ => Keyboard.IsPushing(item)
+            };
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ジョイパッドで操作したかを取得する
+    /// </summary>
+    /// <param name="inputType">操作方法</param>
+    /// <returns></returns>
+    private bool IsJoypadPush(JudgeInputType inputType)
+    {
+        if (!IsKeyboardInput)
+            return false;
+
+        foreach (var item in joypadKeys)
+        {
+            return inputType switch
+            {
+                JudgeInputType.Pushing => Joypad.IsPushing(item),
+                JudgeInputType.Pushed => Joypad.IsPushed(item),
+                JudgeInputType.Separate => Joypad.IsSeparate(item),
+                _ => Joypad.IsPushing(item)
+            };
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// タッチで操作したかを取得する
+    /// </summary>
+    /// <param name="inputType">操作方法</param>
+    /// <returns></returns>
+    private bool IsTouchPush(JudgeInputType inputType)
+    {
+        if (!IsTopInput)
+            return false;
+
+        return inputType switch
+        {
+            JudgeInputType.Pushing => Touch.IsPushing(),
+            JudgeInputType.Pushed => Touch.IsPushed(),
+            JudgeInputType.Separate => Touch.IsSeparate(),
+            _ => Touch.IsPushing()
+        };
+    }
+
+    /// <summary>
+    /// アクションを呼ぶ
+    /// </summary>
+    /// <param name="action">アクション</param>
+    /// <param name="isCall">呼ぶか</param>
+    private void CallAction(Action? action, bool isCall)
+    {
+        if (isCall)
+            action?.Invoke();
+    }
+
+    /// <summary>
+    /// 操作方法の列挙型
+    /// </summary>
+    private enum JudgeInputType
+    {
+        Pushing,
+        Pushed,
+        Separate,
+    }
 }
+

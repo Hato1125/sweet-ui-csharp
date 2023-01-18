@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Sweet.Input;
 using Sweet.Elements;
-using Sweet.Controls;
 using System.Drawing;
 
 namespace TestApp;
@@ -12,7 +11,7 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private Label? view;
+    private UIResponder responder = new(100, 100);
 
     public void Run()
     {
@@ -32,9 +31,6 @@ internal class App
         DX.DxLib_Init();
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
-
-        view = new(50, 50, "Segoe UI", 18, 5);
-        view.SizeType = UISize.Percent;
     }
 
     private void Loop()
@@ -57,17 +53,41 @@ internal class App
 
             DX.GetWindowSize(out int w, out int h);
 
-            if (view != null)
-            {
-                view.OnPushed = () => {
-                     view.Width--;
-                     view.Height--;
-                };
+            responder.HorizontalAlignment = HorizontalAlignment.Center;
+            responder.VerticalAlignment = VerticalAlignment.Center;
+            responder.ParentSize = (w, h);
+            responder.Update();
+            DX.DrawFillBox(
+                responder.Position.X,
+                responder.Position.Y,
+                responder.Position.X + responder.Size.Width,
+                responder.Position.Y + responder.Size.Height,
+                DX.GetColor(255, 255, 255)
+            );
 
-                view.ParentWidth = w;
-                view.ParentHeight = h;
-                view.Update();
-                view.Render();
+            if (responder.IsHover())
+                DX.DrawString(200, 100, "Hover", 0xffffff);
+
+            if (responder.IsPushing())
+                DX.DrawString(200, 120, "Pushing", 0xffffff);
+
+            if (responder.IsPushed())
+                DX.DrawString(200, 140, "Pushed", 0xffffff);
+
+            if (responder.IsSeparate())
+                DX.DrawString(200, 160, "Separate", 0xffffff);
+
+            if (responder.IsDoublePush())
+            {
+                DX.DrawString(200, 180, "DoublePush", 0xffffff);
+
+            DX.DrawFillBox(
+                responder.Position.X,
+                responder.Position.Y,
+                responder.Position.X + responder.Size.Width,
+                responder.Position.Y + responder.Size.Height,
+                DX.GetColor(255, 0, 0)
+            );
             }
 
             DX.ScreenFlip();
@@ -87,8 +107,6 @@ internal class App
 
     private void End()
     {
-        view?.Dispose();
-
         DX.DxLib_End();
     }
 }
