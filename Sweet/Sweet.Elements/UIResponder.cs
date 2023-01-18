@@ -1,5 +1,6 @@
 using Sweet.Input;
 using System.Diagnostics;
+using DxLibDLL;
 
 namespace Sweet.Elements;
 
@@ -7,6 +8,7 @@ public class UIResponder
 {
     private readonly Stopwatch _stopwatch = new();
     private int _doublePushCounter;
+    private bool _isHoverJudge;
     private (int X, int Y) _mousePosition;
 
     /// <summary>
@@ -104,6 +106,7 @@ public class UIResponder
         IsKeyboardInput = true;
         IsJoypadInput = true;
         IsTopInput = true;
+        _isHoverJudge = true;
     }
 
     /// <summary>
@@ -124,12 +127,12 @@ public class UIResponder
         if (RelativePosition == (0, 0))
         {
             _mousePosition.X = Mouse.X - Position.X;
-            _mousePosition.X = Mouse.Y - Position.Y;
+            _mousePosition.Y = Mouse.Y - Position.Y;
         }
         else
         {
             _mousePosition.X = Mouse.X - RelativePosition.X;
-            _mousePosition.X = Mouse.Y - RelativePosition.Y;
+            _mousePosition.Y = Mouse.Y - RelativePosition.Y;
         }
     }
 
@@ -153,10 +156,13 @@ public class UIResponder
         {
             item.ParentSize = Size;
             item.RelativePosition = (
-                item.Position.X - Position.X,
-                item.Position.Y - Position.Y
+                item.Position.X + Position.X,
+                item.Position.Y + Position.Y
             );
             item.Update();
+
+            if (IsInput)
+                _isHoverJudge = item.IsHover() ? false : true;
         }
     }
 
@@ -165,7 +171,7 @@ public class UIResponder
     /// </summary>
     public bool IsHover()
     {
-        if (!IsInput)
+        if (!IsInput || !_isHoverJudge)
             return false;
 
         if (_mousePosition.X >= 0 && _mousePosition.X <= Size.Width

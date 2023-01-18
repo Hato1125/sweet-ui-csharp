@@ -63,10 +63,10 @@ internal class App
 
             if (responder.IsPushed())
                 responder.HorizontalOffset += 10;
+            
 
             if (responder.IsDoublePush())
             {
-                DX.DrawString(200, 180, "DoublePush", 0xffffff);
                 responder.Size = (responder.Size.Width + 10, responder.Size.Height + 10);
                 responder.BackgroundColor = Color.Red;
             }
