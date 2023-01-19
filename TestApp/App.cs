@@ -11,8 +11,9 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UIControls responder = new(100, 100);
-    private UIControls responder2 = new(35, 35);
+    private UIControls responder = new(200, 200);
+    private UIControls responder2 = new(130, 130);
+    private UIControls responder3 = new(70, 70);
 
     public void Run()
     {
@@ -35,6 +36,8 @@ internal class App
 
         responder2.BackgroundColor = Color.SkyBlue;
         responder.Children.Add(responder2);
+        responder2.Children.Add(responder3);
+        responder3.BackgroundColor = Color.Yellow;
     }
 
     private void Loop()
@@ -63,16 +66,33 @@ internal class App
 
             if (responder.IsPushed())
                 responder.HorizontalOffset += 10;
-            
 
-            if (responder.IsDoublePush())
+
+            if (responder.IsHover())
             {
-                responder.Size = (responder.Size.Width + 10, responder.Size.Height + 10);
                 responder.BackgroundColor = Color.Red;
             }
             else
             {
                 responder.BackgroundColor = Color.White;
+            }
+
+            if (responder2.IsHover())
+            {
+                responder2.BackgroundColor = Color.Red;
+            }
+            else
+            {
+                responder2.BackgroundColor = Color.SkyBlue;
+            }
+
+            if (responder3.IsHover())
+            {
+                responder3.BackgroundColor = Color.Red;
+            }
+            else
+            {
+                responder3.BackgroundColor = Color.Yellow;
             }
 
             DX.ScreenFlip();

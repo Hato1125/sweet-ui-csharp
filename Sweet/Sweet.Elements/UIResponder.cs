@@ -130,8 +130,8 @@ public class UIResponder
         }
         else
         {
-            _mousePosition.X = Mouse.X - RelativePosition.X;
-            _mousePosition.Y = Mouse.Y - RelativePosition.Y;
+            _mousePosition.X = RelativePosition.X - Position.X;
+            _mousePosition.Y = RelativePosition.Y - Position.Y;
         }
     }
 
@@ -155,8 +155,8 @@ public class UIResponder
         {
             item.ParentSize = Size;
             item.RelativePosition = (
-                item.Position.X + Position.X,
-                item.Position.Y + Position.Y
+                _mousePosition.X,
+                _mousePosition.Y
             );
             item.Update();
 
