@@ -11,24 +11,44 @@ public class UIResponder
     private (int X, int Y) _mousePosition;
 
     /// <summary>
-    /// 相対位置
+    /// 相対X座標
     /// </summary>
-    public (int X, int Y) RelativePosition { get; set; }
+    public int RelativeX { get; set; }
+    
+    /// <summary>
+    /// 相対Y座標
+    /// </summary>
+    public int RelativeY { get; set; }
 
     /// <summary>
-    /// 位置
+    /// UIのX座標の位置
     /// </summary>
-    public (int X, int Y) Position { get; set; }
+    public int X { get; set; }
+    
+    /// <summary>
+    /// UIのY座標の位置
+    /// </summary>
+    public int Y { get; set; }
 
     /// <summary>
-    /// サイズ
+    /// 横幅
     /// </summary>
-    public (int Width, int Height) Size { get; set; }
+    public int Width { get; set; }
 
     /// <summary>
-    /// 親要素のサイズ
+    /// 高さ
     /// </summary>
-    public (int Width, int Height) ParentSize { get; set; }
+    public int Height { get; set; }
+
+    /// <summary>
+    /// 親要素の横幅
+    /// </summary>
+    public int ParentWidth { get; set; }
+
+    /// <summary>
+    /// 親要素の高さ
+    /// </summary>
+    public int ParentHeight { get; set; }
 
     /// <summary>
     /// 入力を受け付けるか
@@ -43,7 +63,6 @@ public class UIResponder
     /// <summary>
     /// ジョイパッドの入力ができるか
     /// </summary>
-    /// <value></value>
     public bool IsJoypadInput { get; set; }
 
     /// <summary>
@@ -98,7 +117,8 @@ public class UIResponder
     /// <param name="height">高さ</param>
     public UIResponder(int width, int height)
     {
-        Size = (width, height);
+        Width = width;
+        Height = height;
         _stopwatch.Reset();
         DoublePushMs = 0.4;
         IsInput = true;
@@ -123,15 +143,15 @@ public class UIResponder
     /// </summary>
     private void CalculateMousePosition()
     {
-        if (RelativePosition == (0, 0))
+        if (RelativeX == 0 && RelativeY == 0)
         {
-            _mousePosition.X = Mouse.X - Position.X;
-            _mousePosition.Y = Mouse.Y - Position.Y;
+            _mousePosition.X = Mouse.X - X;
+            _mousePosition.Y = Mouse.Y - Y;
         }
         else
         {
-            _mousePosition.X = RelativePosition.X - Position.X;
-            _mousePosition.Y = RelativePosition.Y - Position.Y;
+            _mousePosition.X = RelativeX - X;
+            _mousePosition.Y = RelativeY - Y;
         }
     }
 
@@ -153,11 +173,10 @@ public class UIResponder
     {
         foreach (var item in Children)
         {
-            item.ParentSize = Size;
-            item.RelativePosition = (
-                _mousePosition.X,
-                _mousePosition.Y
-            );
+            item.ParentWidth = Width;
+            item.ParentHeight = Height;
+            item.RelativeX = _mousePosition.X;
+            item.RelativeY = _mousePosition.Y;
             item.Update();
 
             if (IsInput)
@@ -173,8 +192,8 @@ public class UIResponder
         if (!IsInput || !_isHoverJudge)
             return false;
 
-        if (_mousePosition.X >= 0 && _mousePosition.X <= Size.Width
-            && _mousePosition.Y >= 0 && _mousePosition.Y <= Size.Height)
+        if (_mousePosition.X >= 0 && _mousePosition.X <= Width
+            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height)
             return true;
         else
             return false;

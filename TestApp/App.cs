@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Sweet.Input;
 using Sweet.Elements;
+using Sweet.Controls;
 using System.Drawing;
 
 namespace TestApp;
@@ -11,9 +12,15 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UIControls responder = new(200, 200);
-    private UIControls responder2 = new(130, 130);
-    private UIControls responder3 = new(70, 70);
+    private HStackPanel hresponder = new(200, 200);
+    private UIControl hcontrol = new(30, 30);
+    private UIControl hcontrol2 = new(30, 30);
+    private UIControl hcontrol3 = new(30, 30);
+
+    private VStackPanel vresponder = new(200, 200);
+    private UIControl vcontrol = new(30, 30);
+    private UIControl vcontrol2 = new(30, 30);
+    private UIControl vcontrol3 = new(30, 30);
 
     public void Run()
     {
@@ -34,10 +41,29 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        responder2.BackgroundColor = Color.SkyBlue;
-        responder.Children.Add(responder2);
-        responder2.Children.Add(responder3);
-        responder3.BackgroundColor = Color.Yellow;
+        hresponder.StackInterval = 35;
+        hresponder.HorizontalAlignment = HorizontalAlignment.Left;
+        hresponder.HorizontalOffset = 200;
+
+        hcontrol.BackgroundColor = Color.SkyBlue;
+        hcontrol2.BackgroundColor = Color.SkyBlue;
+        hcontrol3.BackgroundColor = Color.SkyBlue;
+
+        hresponder.Children.Add(hcontrol);
+        hresponder.Children.Add(hcontrol2);
+        hresponder.Children.Add(hcontrol3);
+
+        vresponder.StackInterval = 35;
+        vresponder.HorizontalAlignment = HorizontalAlignment.Right;
+        vresponder.HorizontalOffset = -200;
+
+        vcontrol.BackgroundColor = Color.SkyBlue;
+        vcontrol2.BackgroundColor = Color.SkyBlue;
+        vcontrol3.BackgroundColor = Color.SkyBlue;
+
+        vresponder.Children.Add(vcontrol);
+        vresponder.Children.Add(vcontrol2);
+        vresponder.Children.Add(vcontrol3);
     }
 
     private void Loop()
@@ -60,40 +86,15 @@ internal class App
 
             DX.GetWindowSize(out int w, out int h);
 
-            responder.ParentSize = (w, h);
-            responder.Update();
-            responder.DrawView();
+            hresponder.ParentWidth = w;
+            hresponder.ParentHeight = h;
+            hresponder.Update();
+            hresponder.DrawView();
 
-            if (responder.IsPushed())
-                responder.HorizontalOffset += 10;
-
-
-            if (responder.IsHover())
-            {
-                responder.BackgroundColor = Color.Red;
-            }
-            else
-            {
-                responder.BackgroundColor = Color.White;
-            }
-
-            if (responder2.IsHover())
-            {
-                responder2.BackgroundColor = Color.Red;
-            }
-            else
-            {
-                responder2.BackgroundColor = Color.SkyBlue;
-            }
-
-            if (responder3.IsHover())
-            {
-                responder3.BackgroundColor = Color.Red;
-            }
-            else
-            {
-                responder3.BackgroundColor = Color.Yellow;
-            }
+            vresponder.ParentWidth = w;
+            vresponder.ParentHeight = h;
+            vresponder.Update();
+            vresponder.DrawView();
 
             DX.ScreenFlip();
 

@@ -1,6 +1,6 @@
 namespace Sweet.Elements;
 
-public class UIControls : UIView
+public class UIControl : UIView
 {
     /// <summary>
     /// 水平方向の位置
@@ -41,7 +41,7 @@ public class UIControls : UIView
     /// </summary>
     /// <param name="width">横幅</param>
     /// <param name="height">高さ</param>
-    public UIControls(int width, int height)
+    public UIControl(int width, int height)
         : base(width, height)
     {
         HorizontalAlignment = HorizontalAlignment.Center;
@@ -60,16 +60,17 @@ public class UIControls : UIView
     protected virtual void CalculatePosition()
     {
         var pos = UIPositionUtilt.CalculateUIPosition(
-            HorizontalAlignment.Center,
-            VerticalAlignment.Center,
+            HorizontalAlignment,
+            VerticalAlignment,
             HorizontalOffset,
             VerticalOffset,
-            ParentSize.Width,
-            ParentSize.Height,
-            Size.Width,
-            Size.Height
+            ParentWidth,
+            ParentHeight,
+            Width,
+            Height
         );
 
-        Position = pos;
+        X = pos.X;
+        Y = pos.Y;
     }
 }

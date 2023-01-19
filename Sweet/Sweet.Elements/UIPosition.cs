@@ -58,10 +58,38 @@ public static class UIPositionUtilt
         {
             VerticalAlignment.Top => verticalOffset,
             VerticalAlignment.Center => (parentHeight - tergetHeight) / 2 + verticalOffset,
-            VerticalAlignment.Bottom => parentHeight - parentWidth + verticalOffset,
+            VerticalAlignment.Bottom => parentHeight - tergetHeight + verticalOffset,
             _ => verticalOffset
         };
 
         return result;
     }
+
+    /// <summary>
+    /// 位置を計算する
+    /// </summary>
+    /// <param name="parentSize">親要素のサイズ</param>
+    /// <param name="tergetSize">ターゲットのサイズ</param>
+    /// <param name="pos">位置</param>
+    public static int CalculateBeginPosition(int parentSize, int tergetSize, HorizontalAlignment pos) => pos switch
+    {
+        HorizontalAlignment.Left => 0,
+        HorizontalAlignment.Center => (parentSize - tergetSize) / 2,
+        HorizontalAlignment.Right => parentSize - tergetSize,
+        _ => 0
+    };
+
+    /// <summary>
+    /// 位置を計算する
+    /// </summary>
+    /// <param name="parentSize">親要素のサイズ</param>
+    /// <param name="tergetSize">ターゲットのサイズ</param>
+    /// <param name="pos">位置</param>
+    public static int CalculateBeginPosition(int parentSize, int tergetSize, VerticalAlignment pos) => pos switch
+    {
+        VerticalAlignment.Top => 0,
+        VerticalAlignment.Center => (parentSize - tergetSize) / 2,
+        VerticalAlignment.Bottom => parentSize - tergetSize,
+        _ => 0
+    };
 }

@@ -69,7 +69,7 @@ public class UIView : UIResponder, IDisposable
         if (IsVisible)
         {
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, Alpha);
-            DX.DrawGraph(Position.X, Position.Y, ViewHandle, DX.TRUE);
+            DX.DrawGraph(X, Y, ViewHandle, DX.TRUE);
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
         }
     }
@@ -92,11 +92,11 @@ public class UIView : UIResponder, IDisposable
 
         if (Radius <= 0)
         {
-            DX.DrawFillBox(0, 0, Size.Width, Size.Height, backColor);
+            DX.DrawFillBox(0, 0, Width, Height, backColor);
         }
         else
         {
-            DX.DrawRoundRectAA(0, 0, Size.Width, Size.Height, Radius, Radius, 100, backColor, DX.TRUE);
+            DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, backColor, DX.TRUE);
         }
     }
 
@@ -120,7 +120,7 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     private void ViewSizeUpdate()
     {
-        if (Size == _bufSize)
+        if (Width == _bufSize.Width && Height == _bufSize.Height)
             return;
 
         Tracer.Log("SizeUpdate.");
@@ -128,9 +128,9 @@ public class UIView : UIResponder, IDisposable
         if (ViewHandle != -1)
             DX.DeleteGraph(ViewHandle);
 
-        ViewHandle = DX.MakeScreen(Size.Width, Size.Height, DX.TRUE);
+        ViewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
 
         // 次のフレームで再生成しないようにSizeと_bufSizeは同じにする
-        _bufSize = Size;
+        _bufSize = (Width, Height);
     }
 }
