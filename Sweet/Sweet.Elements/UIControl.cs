@@ -29,10 +29,7 @@ public class UIControl : UIView
     {
         get
         {
-            if (IsInput)
-                return UIState.Enable;
-            else
-                return UIState.Disable;
+            return IsInput ? UIState.Enable : UIState.Disable;
         }
     }
 

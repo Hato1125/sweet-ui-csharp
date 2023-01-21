@@ -43,7 +43,6 @@ public class UITextBaseControl : UIControl
         FontName = fontName;
         FontSize = fontSize;
         FontThick = fontThick;
-
     }
 
     public override void Update()
@@ -56,6 +55,11 @@ public class UITextBaseControl : UIControl
     {
         base.Dispose();
 
+        DisposeFont();
+    }
+
+    protected void DisposeFont()
+    {
         if (FontHandle != -1)
             DX.DeleteFontToHandle(FontHandle);
     }
@@ -71,8 +75,7 @@ public class UITextBaseControl : UIControl
         {
             Tracer.Log("FontUpdate.");
 
-            if (FontHandle != -1)
-                DX.DeleteFontToHandle(FontHandle);
+            DisposeFont();
 
             DX.SetFontCacheUsePremulAlphaFlag(DX.TRUE);
             FontHandle = DX.CreateFontToHandle(FontName, FontSize, FontThick, DX.DX_FONTTYPE_ANTIALIASING_16X16);

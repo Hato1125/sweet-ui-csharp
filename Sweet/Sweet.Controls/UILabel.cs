@@ -51,7 +51,7 @@ public class UILabel : UITextBaseControl
     /// <summary>
     /// 前景の透明度
     /// </summary>
-    public int ForegroundAlpha { get; set; }
+    public byte ForegroundAlpha { get; set; }
 
     /// <summary>
     /// 前景の色
@@ -109,7 +109,7 @@ public class UILabel : UITextBaseControl
     /// </summary>
     private void GetSplitTextSize()
     {
-        Tracer.Log("SprlitText.");
+        Tracer.Log("SplitText.");
 
         _texts = Text.Split("\n");
         _textWidths = new int[_texts.Length];
@@ -127,8 +127,9 @@ public class UILabel : UITextBaseControl
     {
         Tracer.Log("SingleText.");
 
-        _textWidths = new int[1];
-        _textWidths[0] = DX.GetDrawStringWidthToHandle(Text, Text.Length, FontHandle);
+        _textWidths = new int[1] {
+            DX.GetDrawStringWidthToHandle(Text, Text.Length, FontHandle),
+        };
         _textHeight = DX.GetFontSizeToHandle(FontHandle);
     }
 
@@ -151,34 +152,34 @@ public class UILabel : UITextBaseControl
 
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, ForegroundAlpha);
 
-        // 改行すべきか
-        if (Text.Contains("\n"))
+        if (_textWidths != null)
         {
-            if (_texts != null && _textWidths != null)
+            // 改行すべきか
+            if (Text.Contains("\n"))
             {
-                // TODO: 毎フレーム位置を計算してFPSが低下しているので一フレームだけ計算するようにする
-                for (int i = 0; i < _texts.Length; i++)
+                if (_texts != null)
                 {
-                    int tergetHeight = (_textHeight + LineSpace) * _texts.Length;
+                    // TODO: 毎フレーム位置を計算してFPSが低下しているので一フレームだけ計算するようにする
+                    for (int i = 0; i < _texts.Length; i++)
+                    {
+                        int tergetHeight = (_textHeight + LineSpace) * _texts.Length;
 
-                    var pos = UIPositionUtilt.CalculateUIPosition(
-                        TextHorizontalAlignment,
-                        TextVerticalAlignment,
-                        TextHorizontalOffset,
-                        TextVerticalOffset,
-                        Width,
-                        Height,
-                        _textWidths[i],
-                        tergetHeight
-                    );
+                        var pos = UIPositionUtilt.CalculateUIPosition(
+                            TextHorizontalAlignment,
+                            TextVerticalAlignment,
+                            TextHorizontalOffset,
+                            TextVerticalOffset,
+                            Width,
+                            Height,
+                            _textWidths[i],
+                            tergetHeight
+                        );
 
-                    DX.DrawStringFToHandle(pos.X, pos.Y + (_textHeight + LineSpace) * i, _texts[i], foreColor, FontHandle);
+                        DX.DrawStringFToHandle(pos.X, pos.Y + (_textHeight + LineSpace) * i, _texts[i], foreColor, FontHandle);
+                    }
                 }
             }
-        }
-        else
-        {
-            if (_textWidths != null)
+            else
             {
                 var pos = UIPositionUtilt.CalculateUIPosition(
                     TextHorizontalAlignment,

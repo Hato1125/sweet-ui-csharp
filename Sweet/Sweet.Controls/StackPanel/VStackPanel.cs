@@ -35,15 +35,13 @@ public class VStackPanel : UIControl
     {
         base.UpdateChildren();
 
-        if (Children.Count() > 0)
+        if (Children.Count > 0)
         {
-            int height = 0;
-
             // UIの横幅と間隔の合計を計算
-            foreach (var item in Children)
-                height += item.Height + StackInterval;
+            int height = Children.Aggregate(0, (prev, current) => prev + current.Height + StackInterval);
 
             height -= StackInterval;
+
             int posY = UIPositionUtilt.CalculateBeginPosition(this.Height, height, StackVerticalAlignment);
 
             // 配置する
