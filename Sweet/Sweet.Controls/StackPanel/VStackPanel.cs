@@ -38,7 +38,7 @@ public class VStackPanel : UIControl
         if (Children.Count > 0)
         {
             // UIの横幅と間隔の合計を計算
-            int height = Children.Aggregate(0, (prev, current) => prev + current.Height);
+            int height = Children.Aggregate(0, (prev, current) => prev + current.Height + StackInterval);
 
             height -= StackInterval;
 
