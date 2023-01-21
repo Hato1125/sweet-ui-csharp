@@ -9,11 +9,12 @@ namespace TestApp;
 
 internal class App
 {
-    private double ms = 1.0 / 60.0;
+    private double ms = 1.0 / 30.0;
     private Stopwatch stopwatch = new();
 
     private UILabel label = new(225, 350, "Segoe UI", 25, 0);
     private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
+    private UIButtonBase btn = new(225, 350, "Segoe UI", 25, 0);
 
     public void Run()
     {
@@ -81,6 +82,10 @@ internal class App
             label2.Update();
             label2.DrawView();
 
+            btn.ParentWidth = w;
+            btn.ParentHeight = h;
+            btn.Update();
+
             DX.ScreenFlip();
 
             if (stopwatch.Elapsed.TotalSeconds < ms)
@@ -88,7 +93,7 @@ internal class App
                 double sleepMs = (ms - stopwatch.Elapsed.TotalSeconds) * 1000.0;
 
                 // Thread.Sleepで止めたらCPU使用率上がらない!!!!
-                //Thread.Sleep((int)sleepMs);
+                Thread.Sleep((int)sleepMs);
 
                 // WaitTimerで止めるとCPU使用率が上がる...
                 //DX.WaitTimer((int)sleepMs);
