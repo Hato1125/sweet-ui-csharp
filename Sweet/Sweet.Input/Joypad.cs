@@ -4,7 +4,7 @@ namespace Sweet.Input;
 
 public static class Joypad
 {
-    private static sbyte[] value = new sbyte[14];
+    private static readonly sbyte[] value = new sbyte[14];
 
     /// <summary>
     /// 入力を取得するパッド
@@ -27,17 +27,11 @@ public static class Joypad
         {
             if (DX.GetJoypadInputState((int)InputType) == (int)GetJoypadKey(i))
             {
-                if (!IsPushing(GetJoypadKey(i)))
-                    value[i] = 1;
-                else
-                    value[i] = 2;
+                value[i] = (sbyte)(IsPushing(GetJoypadKey(i)) ? 2 : 1);
             }
             else
             {
-                if (IsPushing(GetJoypadKey(i)))
-                    value[i] = -1;
-                else
-                    value[i] = 0;
+                value[i] = (sbyte)(IsPushing(GetJoypadKey(i)) ? -1 : 0);
             }
         }
     }

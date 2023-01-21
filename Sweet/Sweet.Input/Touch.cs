@@ -7,7 +7,7 @@ public static class Touch
     /// <summary>
     /// タッチ情報リスト
     /// </summary>
-    public static readonly List<TouchInfo> TouchInfos = new(20)
+    public static readonly List<TouchInfo> TouchInfos = new()
     {
         { new TouchInfo(1) },
         { new TouchInfo(2) },

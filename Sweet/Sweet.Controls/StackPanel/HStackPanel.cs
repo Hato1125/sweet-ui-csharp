@@ -35,15 +35,13 @@ public class HStackPanel : UIControl
     {
         base.UpdateChildren();
 
-        if (Children.Count() > 0)
+        if (Children.Count > 0)
         {
-            int width = 0;
-
             // UIの横幅と間隔の合計を計算
-            foreach (var item in Children)
-                width += item.Width + StackInterval;
+            int width = Children.Aggregate(0, (prev, current) => prev + current.Width + StackInterval);
 
             width -= StackInterval;
+
             int posX = UIPositionUtilt.CalculateBeginPosition(this.Width, width, StackHorizontalAlignment);
 
             // 配置する

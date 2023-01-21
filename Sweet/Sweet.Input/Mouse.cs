@@ -35,17 +35,11 @@ public static class Mouse
         {
             if (DX.GetMouseInput() == (int)GetMouseKey(i))
             {
-                if (!IsPushing(GetMouseKey(i)))
-                    value[i] = 1;
-                else
-                    value[i] = 2;
+                value[i] = (sbyte)(IsPushing(GetMouseKey(i)) ? 2 : 1);
             }
             else
             {
-                if (IsPushing(GetMouseKey(i)))
-                    value[i] = -1;
-                else
-                    value[i] = 0;
+                value[i] = (sbyte)(IsPushing(GetMouseKey(i)) ? -1 : 0);
             }
         }
     }

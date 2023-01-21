@@ -11,7 +11,7 @@ public class UIView : UIResponder, IDisposable
     /// <summary>
     /// 透明度
     /// </summary>
-    public int Alpha { get; set; }
+    public byte Alpha { get; set; }
 
     /// <summary>
     /// 背景の角の半径
@@ -26,7 +26,7 @@ public class UIView : UIResponder, IDisposable
     /// <summary>
     /// 背景の透明度
     /// </summary>
-    public int BackgroundAlpha { get; set; }
+    public byte BackgroundAlpha { get; set; }
 
     /// <summary>
     /// 背景の色
@@ -94,8 +94,7 @@ public class UIView : UIResponder, IDisposable
         {
             if(item.GetType() != typeof(UIResponder))
             {
-                var child = (UIView)item;
-                child.Dispose();
+                ((UIView)item).Dispose();
             }
         }
     }
@@ -128,8 +127,7 @@ public class UIView : UIResponder, IDisposable
         {
             if (item.GetType() != typeof(UIResponder))
             {
-                var child = (UIView)item;
-                child.DrawView();
+                ((UIView)item).DrawView();
             }
         }
     }

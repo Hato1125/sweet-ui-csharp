@@ -78,37 +78,37 @@ public class UIResponder
     /// <summary>
     /// ホバー時に呼ばれる
     /// </summary>
-    public Action? OnHover { get; set; }
+    public event Action OnHover = delegate { };
 
     /// <summary>
     /// 押されている間呼ばれる
     /// </summary>
-    public Action? OnPushing { get; set; }
+    public event Action OnPushing = delegate { };
 
     /// <summary>
     /// 押された瞬間のみ呼ばれる
     /// </summary>
-    public Action? OnPushed { get; set; }
+    public event Action OnPushed = delegate { };
 
     /// <summary>
     /// 離された瞬間のみ呼ばれる
     /// </summary>
-    public Action? OnSeparate { get; set; }
+    public event Action OnSeparate = delegate { };
 
     /// <summary>
     /// キー入力のキーコードリスト
     /// </summary>
-    public readonly List<int> KeyCodes = new(5);
+    public readonly int[] KeyCodes = new int[256];
 
     /// <summary>
     /// ジョイパッド入力のキーコード
     /// </summary>
-    public readonly List<JoypadKey> joypadKeys = new(5);
+    public readonly JoypadKey[] joypadKeys = new JoypadKey[14];
 
     /// <summary>
     /// 子要素リスト
     /// </summary>
-    public readonly List<UIResponder> Children = new(100);
+    public readonly List<UIResponder> Children = new();
 
     /// <summary>
     /// 初期化する
@@ -135,7 +135,7 @@ public class UIResponder
     {
         CalculateMousePosition();
         UpdateChildren();
-        CallAllAction();
+        FireEvents();
     }
 
     /// <summary>
@@ -158,12 +158,12 @@ public class UIResponder
     /// <summary>
     /// アクションを呼び出す
     /// </summary>
-    private void CallAllAction()
+    private void FireEvents()
     {
-        CallAction(OnHover, IsHover());
-        CallAction(OnPushing, IsPushing());
-        CallAction(OnPushed, IsPushed());
-        CallAction(OnSeparate, IsSeparate());
+        if (IsHover()) OnHover();
+        if (IsPushing()) OnPushing();
+        if (IsPushed()) OnPushed();
+        if(IsSeparate()) OnSeparate();
     }
 
     /// <summary>
@@ -180,9 +180,11 @@ public class UIResponder
             item.Update();
 
             if (IsInput)
-                _isHoverJudge = item.IsHover() ? false : true;
+                _isHoverJudge = !item.IsHover();
         }
     }
+
+    private bool JudgePhysicalDeviceState(JudgeInputType type) => IsKeyPush(type) && IsJoypadPush(type) && IsTouchPush(type);
 
     /// <summary>
     /// ホバーしたかを取得する
@@ -192,11 +194,8 @@ public class UIResponder
         if (!IsInput || !_isHoverJudge)
             return false;
 
-        if (_mousePosition.X >= 0 && _mousePosition.X <= Width
-            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height)
-            return true;
-        else
-            return false;
+        return _mousePosition.X >= 0 && _mousePosition.X <= Width
+            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height;
     }
 
     /// <summary>
@@ -207,13 +206,7 @@ public class UIResponder
         if (!IsHover())
             return false;
 
-        if (Mouse.IsPushing(MouseKey.Left)
-            || IsKeyPush(JudgeInputType.Pushing)
-            || IsJoypadPush(JudgeInputType.Pushing)
-            || IsTouchPush(JudgeInputType.Pushing))
-            return true;
-        else
-            return false;
+        return Mouse.IsPushing(MouseKey.Left) || JudgePhysicalDeviceState(JudgeInputType.Pushing);
     }
 
     /// <summary>
@@ -224,13 +217,7 @@ public class UIResponder
         if (!IsHover())
             return false;
 
-        if (Mouse.IsPushed(MouseKey.Left)
-            || IsKeyPush(JudgeInputType.Pushed)
-            || IsJoypadPush(JudgeInputType.Pushed)
-            || IsTouchPush(JudgeInputType.Pushed))
-            return true;
-        else
-            return false;
+        return Mouse.IsPushed(MouseKey.Left) || JudgePhysicalDeviceState(JudgeInputType.Pushed);
     }
 
     /// <summary>
@@ -241,13 +228,7 @@ public class UIResponder
         if (!IsHover())
             return false;
 
-        if (Mouse.IsSeparate(MouseKey.Left)
-            || IsKeyPush(JudgeInputType.Separate)
-            || IsJoypadPush(JudgeInputType.Separate)
-            || IsTouchPush(JudgeInputType.Separate))
-            return true;
-        else
-            return false;
+        return Mouse.IsSeparate(MouseKey.Left) || JudgePhysicalDeviceState(JudgeInputType.Separate);
     }
 
     /// <summary>
@@ -352,17 +333,6 @@ public class UIResponder
             JudgeInputType.Separate => Touch.IsSeparate(),
             _ => Touch.IsPushing()
         };
-    }
-
-    /// <summary>
-    /// アクションを呼ぶ
-    /// </summary>
-    /// <param name="action">アクション</param>
-    /// <param name="isCall">呼ぶか</param>
-    private void CallAction(Action? action, bool isCall)
-    {
-        if (isCall)
-            action?.Invoke();
     }
 
     /// <summary>

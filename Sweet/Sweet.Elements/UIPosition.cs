@@ -44,12 +44,10 @@ public static class UIPositionUtilt
         int tergetWidth,
         int tergetHeight)
     {
-        var result = (X: 0, Y: 0);
-
-        result.X = CalculateBeginPosition(parentWidth, tergetWidth, horizontal) + horizontalOffset;
-        result.Y = CalculateBeginPosition(parentHeight, tergetHeight, vertical) + verticalOffset;
-
-        return result;
+        return (
+            X: CalculateBeginPosition(parentWidth, tergetWidth, horizontal) + horizontalOffset,
+            Y: CalculateBeginPosition(parentHeight, tergetHeight, vertical) + verticalOffset
+        );
     }
 
     /// <summary>
