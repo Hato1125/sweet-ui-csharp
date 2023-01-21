@@ -2,12 +2,12 @@ using Sweet.Elements;
 
 namespace Sweet.Controls;
 
-public class HStackPanel : UIControl
+public class VStackPanel : UIControl
 {
     /// <summary>
     /// スタックの水平方向の位置
     /// </summary>
-    public HorizontalAlignment StackHorizontalAlignment { get; set; }
+    public VerticalAlignment StackVerticalAlignment { get; set; }
 
     /// <summary>
     /// 水平方向のオフセット
@@ -24,10 +24,10 @@ public class HStackPanel : UIControl
     /// </summary>
     /// <param name="width">横幅</param>
     /// <param name="height">高さ</param>
-    public HStackPanel(int width, int height)
+    public VStackPanel(int width, int height)
         : base(width, height)
     {
-        StackHorizontalAlignment = HorizontalAlignment.Center;
+        StackVerticalAlignment = VerticalAlignment.Center;
         StackInterval = 10;
     }
 
@@ -37,26 +37,26 @@ public class HStackPanel : UIControl
 
         if (Children.Count() > 0)
         {
-            int width = 0;
+            int height = 0;
 
             // UIの横幅と間隔の合計を計算
             foreach (var item in Children)
-                width += item.Width + StackInterval;
+                height += item.Height + StackInterval;
 
-            width -= StackInterval;
-            int posX = UIPositionUtilt.CalculateBeginPosition(this.Width, width, StackHorizontalAlignment);
+            height -= StackInterval;
+            int posY = UIPositionUtilt.CalculateBeginPosition(this.Height, height, StackVerticalAlignment);
 
             // 配置する
             foreach (var item in Children)
             {
-                if (item.GetType() == typeof(UIControl))
+                if (item.GetType() != typeof(UIView) && item.GetType() != typeof(UIResponder))
                 {
                     var child = (UIControl)item;
-                    child.HorizontalAlignment = HorizontalAlignment.Left;
+                    child.VerticalAlignment = VerticalAlignment.Top;
                 }
 
-                item.X = posX;
-                posX += item.Width + StackInterval;
+                item.Y = posY;
+                posY += item.Height + StackInterval;
             }
         }
     }

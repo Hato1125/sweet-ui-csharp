@@ -14,7 +14,7 @@ namespace DxLibDLL
 		public const int MAX_MUSIC_NUM = 256;
 		public const int MAX_MOVIE_NUM = 100;
 		public const int MAX_MASK_NUM = 32768;
-		public const int MAX_FONT_NUM = 40;
+		public const int MAX_FONT_NUM = 256;
 		public const int MAX_INPUT_NUM = 256;
 		public const int MAX_SOCKET_NUM = 8192;
 		public const int MAX_LIGHT_NUM = 4096;
@@ -166,7 +166,26 @@ namespace DxLibDLL
 		public const int DX_BLENDMODE_SPINE_ADDITIVE = 29;
 		public const int DX_BLENDMODE_SPINE_MULTIPLY = 30;
 		public const int DX_BLENDMODE_SPINE_SCREEN = 31;
-		public const int DX_BLENDMODE_NUM = 32;
+		public const int DX_BLENDMODE_CUSTOM = 32;
+		public const int DX_BLENDMODE_NUM = 33;
+		public const int DX_BLEND_ZERO = 0;
+		public const int DX_BLEND_ONE = 1;
+		public const int DX_BLEND_SRC_COLOR = 2;
+		public const int DX_BLEND_INV_SRC_COLOR = 3;
+		public const int DX_BLEND_SRC_ALPHA = 4;
+		public const int DX_BLEND_INV_SRC_ALPHA = 5;
+		public const int DX_BLEND_DEST_COLOR = 6;
+		public const int DX_BLEND_INV_DEST_COLOR = 7;
+		public const int DX_BLEND_DEST_ALPHA = 8;
+		public const int DX_BLEND_INV_DEST_ALPHA = 9;
+		public const int DX_BLEND_SRC_ALPHA_SAT = 10;
+		public const int DX_BLEND_NUM = 11;
+		public const int DX_BLENDOP_ADD = 0;
+		public const int DX_BLENDOP_SUBTRACT = 1;
+		public const int DX_BLENDOP_REV_SUBTRACT = 2;
+		public const int DX_BLENDOP_MIX = 3;
+		public const int DX_BLENDOP_MAX = 4;
+		public const int DX_BLENDOP_NUM = 5;
 		public const int DX_DRAWFLOATCOORDTYPE_DIRECT3D9 = 0;
 		public const int DX_DRAWFLOATCOORDTYPE_DIRECT3D10 = 1;
 		public const int DX_BLENDGRAPHTYPE_NORMAL = 0;
@@ -464,6 +483,17 @@ namespace DxLibDLL
 		public const int DX_LIGHTTYPE_POINT = 1;
 		public const int DX_LIGHTTYPE_SPOT = 2;
 		public const int DX_LIGHTTYPE_DIRECTIONAL = 3;
+		public const int DX_LIVE2D_SHADER_SETUP_MASK_VERTEX = 0;
+		public const int DX_LIVE2D_SHADER_SETUP_MASK_PIXEL = 1;
+		public const int DX_LIVE2D_SHADER_NORMAL_VERTEX = 2;
+		public const int DX_LIVE2D_SHADER_NORMAL_VERTEX_MASKED = 3;
+		public const int DX_LIVE2D_SHADER_NORMAL_PIXEL = 4;
+		public const int DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED = 5;
+		public const int DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED_INVERTED = 6;
+		public const int DX_LIVE2D_SHADER_NORMAL_PIXEL_PREMULALPHA = 7;
+		public const int DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED_PREMULALPHA = 8;
+		public const int DX_LIVE2D_SHADER_NORMAL_PIXEL_MASKED_INVERTEX_PREMULALPHA = 9;
+		public const int DX_LIVE2D_SHADER_NUM = 10;
 		public const int DX_GRAPHICSIMAGE_FORMAT_3D_PAL4 = 0;
 		public const int DX_GRAPHICSIMAGE_FORMAT_3D_PAL8 = 1;
 		public const int DX_GRAPHICSIMAGE_FORMAT_3D_ALPHA_PAL4 = 2;
@@ -591,13 +621,14 @@ namespace DxLibDLL
 		public const int DX_PADTYPE_OTHER = 0;
 		public const int DX_PADTYPE_XBOX_360 = 1;
 		public const int DX_PADTYPE_XBOX_ONE = 2;
-		public const int DX_PADTYPE_DUAL_SHOCK_4 = 3;
-		public const int DX_PADTYPE_DUAL_SENSE = 4;
-		public const int DX_PADTYPE_SWITCH_JOY_CON_L = 5;
-		public const int DX_PADTYPE_SWITCH_JOY_CON_R = 6;
-		public const int DX_PADTYPE_SWITCH_PRO_CTRL = 7;
-		public const int DX_PADTYPE_SWITCH_HORI_PAD = 8;
-		public const int DX_PADTYPE_NUM = 9;
+		public const int DX_PADTYPE_DUAL_SHOCK_3 = 3;
+		public const int DX_PADTYPE_DUAL_SHOCK_4 = 4;
+		public const int DX_PADTYPE_DUAL_SENSE = 5;
+		public const int DX_PADTYPE_SWITCH_JOY_CON_L = 6;
+		public const int DX_PADTYPE_SWITCH_JOY_CON_R = 7;
+		public const int DX_PADTYPE_SWITCH_PRO_CTRL = 8;
+		public const int DX_PADTYPE_SWITCH_HORI_PAD = 9;
+		public const int DX_PADTYPE_NUM = 10;
 		public const int TOUCHINPUTPOINT_MAX = 16;
 		public const int PAD_INPUT_DOWN = 1;
 		public const int PAD_INPUT_LEFT = 2;
@@ -844,9 +875,10 @@ namespace DxLibDLL
 		public const int DX_TOUCHINPUT_TOOL_TYPE_STYLUS = 2;
 		public const int DX_TOUCHINPUT_TOOL_TYPE_MOUSE = 3;
 		public const int DX_TOUCHINPUT_TOOL_TYPE_ERASER = 4;
-		public const int DX_FSRESOLUTIONMODE_DESKTOP = 0;
-		public const int DX_FSRESOLUTIONMODE_NATIVE = 1;
-		public const int DX_FSRESOLUTIONMODE_MAXIMUM = 2;
+		public const int DX_FSRESOLUTIONMODE_BORDERLESS_WINDOW = 0;
+		public const int DX_FSRESOLUTIONMODE_DESKTOP = 1;
+		public const int DX_FSRESOLUTIONMODE_NATIVE = 2;
+		public const int DX_FSRESOLUTIONMODE_MAXIMUM = 3;
 		public const int DX_FSSCALINGMODE_BILINEAR = 0;
 		public const int DX_FSSCALINGMODE_NEAREST = 1;
 		public const int DX_CHANGESCREEN_OK = 0;
@@ -7306,6 +7338,33 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_DrawIMEInputExtendString", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_DrawIMEInputExtendString_x86( int  x, int  y, double  ExRateX, double  ExRateY, int  SelectStringNum, int  DrawCandidateList);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_DrawIMEInputExtendString", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_DrawIMEInputExtendString_x64( int  x, int  y, double  ExRateX, double  ExRateY, int  SelectStringNum, int  DrawCandidateList);
+		public static int  DrawIMEInputExtendString( int  x, int  y, double  ExRateX, double  ExRateY, int  SelectStringNum)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_DrawIMEInputExtendString_x86( x , y , ExRateX , ExRateY , SelectStringNum , TRUE );
+			}
+			else
+			{
+				return dx_DrawIMEInputExtendString_x64( x , y , ExRateX , ExRateY , SelectStringNum , TRUE );
+			}
+		}
+		public static int  DrawIMEInputExtendString( int  x, int  y, double  ExRateX, double  ExRateY, int  SelectStringNum, int  DrawCandidateList)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_DrawIMEInputExtendString_x86( x , y , ExRateX , ExRateY , SelectStringNum , DrawCandidateList );
+			}
+			else
+			{
+				return dx_DrawIMEInputExtendString_x64( x , y , ExRateX , ExRateY , SelectStringNum , DrawCandidateList );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_SetUseIMEFlag", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_SetUseIMEFlag_x86( int  UseFlag);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetUseIMEFlag", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -8291,6 +8350,33 @@ namespace DxLibDLL
 			else
 			{
 				return dx_DrawKeyInputString_x64( x , y , InputHandle , DrawCandidateList );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_DrawKeyInputExtendString", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_DrawKeyInputExtendString_x86( int  x, int  y, double  ExRateX, double  ExRateY, int  InputHandle, int  DrawCandidateList);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_DrawKeyInputExtendString", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_DrawKeyInputExtendString_x64( int  x, int  y, double  ExRateX, double  ExRateY, int  InputHandle, int  DrawCandidateList);
+		public static int  DrawKeyInputExtendString( int  x, int  y, double  ExRateX, double  ExRateY, int  InputHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_DrawKeyInputExtendString_x86( x , y , ExRateX , ExRateY , InputHandle , TRUE );
+			}
+			else
+			{
+				return dx_DrawKeyInputExtendString_x64( x , y , ExRateX , ExRateY , InputHandle , TRUE );
+			}
+		}
+		public static int  DrawKeyInputExtendString( int  x, int  y, double  ExRateX, double  ExRateY, int  InputHandle, int  DrawCandidateList)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_DrawKeyInputExtendString_x86( x , y , ExRateX , ExRateY , InputHandle , DrawCandidateList );
+			}
+			else
+			{
+				return dx_DrawKeyInputExtendString_x64( x , y , ExRateX , ExRateY , InputHandle , DrawCandidateList );
 			}
 		}
 
@@ -9372,6 +9458,22 @@ namespace DxLibDLL
 			else
 			{
 				return dx_ReSetupJoypad_x64( );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_ReSetupInputSystem", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_ReSetupInputSystem_x86( );
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_ReSetupInputSystem", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_ReSetupInputSystem_x64( );
+		public static int  ReSetupInputSystem( )
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_ReSetupInputSystem_x86( );
+			}
+			else
+			{
+				return dx_ReSetupInputSystem_x64( );
 			}
 		}
 
@@ -15899,6 +16001,38 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_SetDrawCustomBlendMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetDrawCustomBlendMode_x86( int  BlendEnable, int  SrcBlendRGB, int  DestBlendRGB, int  BlendOpRGB, int  SrcBlendA, int  DestBlendA, int  BlendOpA, int  BlendParam);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetDrawCustomBlendMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetDrawCustomBlendMode_x64( int  BlendEnable, int  SrcBlendRGB, int  DestBlendRGB, int  BlendOpRGB, int  SrcBlendA, int  DestBlendA, int  BlendOpA, int  BlendParam);
+		public static int  SetDrawCustomBlendMode( int  BlendEnable, int  SrcBlendRGB, int  DestBlendRGB, int  BlendOpRGB, int  SrcBlendA, int  DestBlendA, int  BlendOpA, int  BlendParam)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_SetDrawCustomBlendMode_x86( BlendEnable , SrcBlendRGB , DestBlendRGB , BlendOpRGB , SrcBlendA , DestBlendA , BlendOpA , BlendParam );
+			}
+			else
+			{
+				return dx_SetDrawCustomBlendMode_x64( BlendEnable , SrcBlendRGB , DestBlendRGB , BlendOpRGB , SrcBlendA , DestBlendA , BlendOpA , BlendParam );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_GetDrawCustomBlendMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_GetDrawCustomBlendMode_x86( out int  BlendEnable, out int  SrcBlendRGB, out int  DestBlendRGB, out int  BlendOpRGB, out int  SrcBlendA, out int  DestBlendA, out int  BlendOpA, out int  BlendParam);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_GetDrawCustomBlendMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_GetDrawCustomBlendMode_x64( out int  BlendEnable, out int  SrcBlendRGB, out int  DestBlendRGB, out int  BlendOpRGB, out int  SrcBlendA, out int  DestBlendA, out int  BlendOpA, out int  BlendParam);
+		public static int  GetDrawCustomBlendMode( out int  BlendEnable, out int  SrcBlendRGB, out int  DestBlendRGB, out int  BlendOpRGB, out int  SrcBlendA, out int  DestBlendA, out int  BlendOpA, out int  BlendParam)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_GetDrawCustomBlendMode_x86( out BlendEnable , out SrcBlendRGB , out DestBlendRGB , out BlendOpRGB , out SrcBlendA , out DestBlendA , out BlendOpA , out BlendParam );
+			}
+			else
+			{
+				return dx_GetDrawCustomBlendMode_x64( out BlendEnable , out SrcBlendRGB , out DestBlendRGB , out BlendOpRGB , out SrcBlendA , out DestBlendA , out BlendOpA , out BlendParam );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_SetDrawAlphaTest", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_SetDrawAlphaTest_x86( int  TestMode, int  TestParam);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetDrawAlphaTest", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -17634,6 +17768,22 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_GetUseFullScreenResolutionMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_GetUseFullScreenResolutionMode_x86( );
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_GetUseFullScreenResolutionMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_GetUseFullScreenResolutionMode_x64( );
+		public static int  GetUseFullScreenResolutionMode( )
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_GetUseFullScreenResolutionMode_x86( );
+			}
+			else
+			{
+				return dx_GetUseFullScreenResolutionMode_x64( );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_SetFullScreenScalingMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_SetFullScreenScalingMode_x86( int  ScalingMode, int  FitScaling);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetFullScreenScalingMode", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -17882,6 +18032,22 @@ namespace DxLibDLL
 			else
 			{
 				return dx_GetVideoMemorySize_x64( out AllSize , out FreeSize );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_GetVideoMemorySizeEx", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_GetVideoMemorySizeEx_x86( out ulong  TotalSize, out ulong  UseSize);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_GetVideoMemorySizeEx", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_GetVideoMemorySizeEx_x64( out ulong  TotalSize, out ulong  UseSize);
+		public static int  GetVideoMemorySizeEx( out ulong  TotalSize, out ulong  UseSize)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_GetVideoMemorySizeEx_x86( out TotalSize , out UseSize );
+			}
+			else
+			{
+				return dx_GetVideoMemorySizeEx_x64( out TotalSize , out UseSize );
 			}
 		}
 
@@ -23981,6 +24147,22 @@ namespace DxLibDLL
 			else
 			{
 				return dx_ChangeFontWithStrLen_x64( FontName , FontNameLength , CharSet );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_ChangeFontFromHandle", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_ChangeFontFromHandle_x86( int  FontHandle);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_ChangeFontFromHandle", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_ChangeFontFromHandle_x64( int  FontHandle);
+		public static int  ChangeFontFromHandle( int  FontHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_ChangeFontFromHandle_x86( FontHandle );
+			}
+			else
+			{
+				return dx_ChangeFontFromHandle_x64( FontHandle );
 			}
 		}
 
@@ -30605,6 +30787,22 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_SetUseConvertNormalFormatLoad", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetUseConvertNormalFormatLoad_x86( int  UseFlag);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetUseConvertNormalFormatLoad", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetUseConvertNormalFormatLoad_x64( int  UseFlag);
+		public static int  SetUseConvertNormalFormatLoad( int  UseFlag)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_SetUseConvertNormalFormatLoad_x86( UseFlag );
+			}
+			else
+			{
+				return dx_SetUseConvertNormalFormatLoad_x64( UseFlag );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_ReadJpegExif", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_ReadJpegExif_x86( string  JpegFilePath, [In, Out] byte[]  ExifBuffer_Array, uint ExifBufferSize);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_ReadJpegExif", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -30885,6 +31083,22 @@ namespace DxLibDLL
 			else
 			{
 				return dx_CreateBGRA8ColorData_x64( out ColorDataBuf );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_CreateBGR8ColorData", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_CreateBGR8ColorData_x86( out COLORDATA  ColorDataBuf);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_CreateBGR8ColorData", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_CreateBGR8ColorData_x64( out COLORDATA  ColorDataBuf);
+		public static int  CreateBGR8ColorData( out COLORDATA  ColorDataBuf)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_CreateBGR8ColorData_x86( out ColorDataBuf );
+			}
+			else
+			{
+				return dx_CreateBGR8ColorData_x64( out ColorDataBuf );
 			}
 		}
 
@@ -36676,6 +36890,22 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_MV1SetLoadModelIgnoreIK", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_MV1SetLoadModelIgnoreIK_x86( int  IgnoreFlag);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_MV1SetLoadModelIgnoreIK", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_MV1SetLoadModelIgnoreIK_x64( int  IgnoreFlag);
+		public static int  MV1SetLoadModelIgnoreIK( int  IgnoreFlag)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_MV1SetLoadModelIgnoreIK_x86( IgnoreFlag );
+			}
+			else
+			{
+				return dx_MV1SetLoadModelIgnoreIK_x64( IgnoreFlag );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_MV1SaveModelToMV1File", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_MV1SaveModelToMV1File_x86( int  MHandle, string  FileName, int  SaveType, int  AnimMHandle, int  AnimNameCheck, int  Normal8BitFlag, int  Position16BitFlag, int  Weight8BitFlag, int  Anim16BitFlag);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_MV1SaveModelToMV1File", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -38089,6 +38319,49 @@ namespace DxLibDLL
 			else
 			{
 				return dx_MV1GetAttachAnimBlendRateToFrame_x64( MHandle , AttachIndex , FrameIndex );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_MV1SetAttachAnimTimeToFrame", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_MV1SetAttachAnimTimeToFrame_x86( int  MHandle, int  AttachIndex, int  FrameIndex, float  Time, int  SetChild);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_MV1SetAttachAnimTimeToFrame", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_MV1SetAttachAnimTimeToFrame_x64( int  MHandle, int  AttachIndex, int  FrameIndex, float  Time, int  SetChild);
+		public static int  MV1SetAttachAnimTimeToFrame( int  MHandle, int  AttachIndex, int  FrameIndex, float  Time)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_MV1SetAttachAnimTimeToFrame_x86( MHandle , AttachIndex , FrameIndex , Time , TRUE );
+			}
+			else
+			{
+				return dx_MV1SetAttachAnimTimeToFrame_x64( MHandle , AttachIndex , FrameIndex , Time , TRUE );
+			}
+		}
+		public static int  MV1SetAttachAnimTimeToFrame( int  MHandle, int  AttachIndex, int  FrameIndex, float  Time, int  SetChild)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_MV1SetAttachAnimTimeToFrame_x86( MHandle , AttachIndex , FrameIndex , Time , SetChild );
+			}
+			else
+			{
+				return dx_MV1SetAttachAnimTimeToFrame_x64( MHandle , AttachIndex , FrameIndex , Time , SetChild );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_MV1GetAttachAnimTimeToFrame", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_MV1GetAttachAnimTimeToFrame_x86( int  MHandle, int  AttachIndex, int  FrameIndex);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_MV1GetAttachAnimTimeToFrame", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_MV1GetAttachAnimTimeToFrame_x64( int  MHandle, int  AttachIndex, int  FrameIndex);
+		public static float  MV1GetAttachAnimTimeToFrame( int  MHandle, int  AttachIndex, int  FrameIndex)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_MV1GetAttachAnimTimeToFrame_x86( MHandle , AttachIndex , FrameIndex );
+			}
+			else
+			{
+				return dx_MV1GetAttachAnimTimeToFrame_x64( MHandle , AttachIndex , FrameIndex );
 			}
 		}
 
@@ -42443,6 +42716,81 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_SetUserShader", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUserShader_x86( int  TargetShader, int  ShaderHandle);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_SetUserShader", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUserShader_x64( int  TargetShader, int  ShaderHandle);
+		public static int  Live2D_SetUserShader( int  TargetShader)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_SetUserShader_x86( TargetShader , -1 );
+			}
+			else
+			{
+				return dx_Live2D_SetUserShader_x64( TargetShader , -1 );
+			}
+		}
+		public static int  Live2D_SetUserShader( int  TargetShader, int  ShaderHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_SetUserShader_x86( TargetShader , ShaderHandle );
+			}
+			else
+			{
+				return dx_Live2D_SetUserShader_x64( TargetShader , ShaderHandle );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_SetUseAutoScaling", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUseAutoScaling_x86( int  UseFlag);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_SetUseAutoScaling", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUseAutoScaling_x64( int  UseFlag);
+		public static int  Live2D_SetUseAutoScaling( int  UseFlag)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_SetUseAutoScaling_x86( UseFlag );
+			}
+			else
+			{
+				return dx_Live2D_SetUseAutoScaling_x64( UseFlag );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_SetUseAutoCentering", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUseAutoCentering_x86( int  UseFlag);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_SetUseAutoCentering", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUseAutoCentering_x64( int  UseFlag);
+		public static int  Live2D_SetUseAutoCentering( int  UseFlag)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_SetUseAutoCentering_x86( UseFlag );
+			}
+			else
+			{
+				return dx_Live2D_SetUseAutoCentering_x64( UseFlag );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_SetUseReverseYAxis", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUseReverseYAxis_x86( int  UseFlag);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_SetUseReverseYAxis", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_SetUseReverseYAxis_x64( int  UseFlag);
+		public static int  Live2D_SetUseReverseYAxis( int  UseFlag)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_SetUseReverseYAxis_x86( UseFlag );
+			}
+			else
+			{
+				return dx_Live2D_SetUseReverseYAxis_x64( UseFlag );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_Model_Update", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_Live2D_Model_Update_x86( int  Live2DModelHandle, float  DeltaTimeSeconds);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_Model_Update", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -42555,6 +42903,22 @@ namespace DxLibDLL
 			}
 		}
 
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_Model_GetLastPlayMotionNo", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_Model_GetLastPlayMotionNo_x86( int  Live2DModelHandle);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_Model_GetLastPlayMotionNo", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_Live2D_Model_GetLastPlayMotionNo_x64( int  Live2DModelHandle);
+		public static int  Live2D_Model_GetLastPlayMotionNo( int  Live2DModelHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_Model_GetLastPlayMotionNo_x86( Live2DModelHandle );
+			}
+			else
+			{
+				return dx_Live2D_Model_GetLastPlayMotionNo_x64( Live2DModelHandle );
+			}
+		}
+
 		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_Model_IsMotionFinished", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
 		extern static int  dx_Live2D_Model_IsMotionFinished_x86( int  Live2DModelHandle);
 		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_Model_IsMotionFinished", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
@@ -42568,6 +42932,22 @@ namespace DxLibDLL
 			else
 			{
 				return dx_Live2D_Model_IsMotionFinished_x64( Live2DModelHandle );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_Model_GetMotionPlayTime", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_Live2D_Model_GetMotionPlayTime_x86( int  Live2DModelHandle);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_Model_GetMotionPlayTime", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_Live2D_Model_GetMotionPlayTime_x64( int  Live2DModelHandle);
+		public static float  Live2D_Model_GetMotionPlayTime( int  Live2DModelHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_Model_GetMotionPlayTime_x86( Live2DModelHandle );
+			}
+			else
+			{
+				return dx_Live2D_Model_GetMotionPlayTime_x64( Live2DModelHandle );
 			}
 		}
 
@@ -43336,6 +43716,38 @@ namespace DxLibDLL
 				{
 					return System.Runtime.InteropServices.Marshal.PtrToStringUni( resultIntPtr );
 				}
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_Model_GetCanvasWidth", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_Live2D_Model_GetCanvasWidth_x86( int  Live2DModelHandle);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_Model_GetCanvasWidth", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_Live2D_Model_GetCanvasWidth_x64( int  Live2DModelHandle);
+		public static float  Live2D_Model_GetCanvasWidth( int  Live2DModelHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_Model_GetCanvasWidth_x86( Live2DModelHandle );
+			}
+			else
+			{
+				return dx_Live2D_Model_GetCanvasWidth_x64( Live2DModelHandle );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_Live2D_Model_GetCanvasHeight", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_Live2D_Model_GetCanvasHeight_x86( int  Live2DModelHandle);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_Live2D_Model_GetCanvasHeight", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static float  dx_Live2D_Model_GetCanvasHeight_x64( int  Live2DModelHandle);
+		public static float  Live2D_Model_GetCanvasHeight( int  Live2DModelHandle)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_Live2D_Model_GetCanvasHeight_x86( Live2DModelHandle );
+			}
+			else
+			{
+				return dx_Live2D_Model_GetCanvasHeight_x64( Live2DModelHandle );
 			}
 		}
 
@@ -47392,6 +47804,60 @@ namespace DxLibDLL
 			else
 			{
 				return dx_SetEnableASIOFlag_x64( Flag , BufferSize , SamplePerSec );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_SetUseASIODriverIndex", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetUseASIODriverIndex_x86( int  Index);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetUseASIODriverIndex", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetUseASIODriverIndex_x64( int  Index);
+		public static int  SetUseASIODriverIndex( int  Index)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_SetUseASIODriverIndex_x86( Index );
+			}
+			else
+			{
+				return dx_SetUseASIODriverIndex_x64( Index );
+			}
+		}
+
+		[DllImport("DxLibW.dll", EntryPoint="dx_SetEnableMMEwaveOutFlag", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetEnableMMEwaveOutFlag_x86( int  Flag, int  BufferSamples, int  SamplePerSec);
+		[DllImport("DxLibW_x64.dll", EntryPoint="dx_SetEnableMMEwaveOutFlag", CallingConvention=CallingConvention.StdCall, CharSet=CharSet.Unicode)]
+		extern static int  dx_SetEnableMMEwaveOutFlag_x64( int  Flag, int  BufferSamples, int  SamplePerSec);
+		public static int  SetEnableMMEwaveOutFlag( int  Flag)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_SetEnableMMEwaveOutFlag_x86( Flag , -1 , 44100 );
+			}
+			else
+			{
+				return dx_SetEnableMMEwaveOutFlag_x64( Flag , -1 , 44100 );
+			}
+		}
+		public static int  SetEnableMMEwaveOutFlag( int  Flag, int  BufferSamples)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_SetEnableMMEwaveOutFlag_x86( Flag , BufferSamples , 44100 );
+			}
+			else
+			{
+				return dx_SetEnableMMEwaveOutFlag_x64( Flag , BufferSamples , 44100 );
+			}
+		}
+		public static int  SetEnableMMEwaveOutFlag( int  Flag, int  BufferSamples, int  SamplePerSec)
+		{
+			if( System.IntPtr.Size == 4 )
+			{
+				return dx_SetEnableMMEwaveOutFlag_x86( Flag , BufferSamples , SamplePerSec );
+			}
+			else
+			{
+				return dx_SetEnableMMEwaveOutFlag_x64( Flag , BufferSamples , SamplePerSec );
 			}
 		}
 

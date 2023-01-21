@@ -12,15 +12,8 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private HStackPanel hresponder = new(200, 200);
-    private UIControl hcontrol = new(30, 30);
-    private UIControl hcontrol2 = new(30, 30);
-    private UIControl hcontrol3 = new(30, 30);
-
-    private VStackPanel vresponder = new(200, 200);
-    private UIControl vcontrol = new(30, 30);
-    private UIControl vcontrol2 = new(30, 30);
-    private UIControl vcontrol3 = new(30, 30);
+    private UILabel label = new(225, 350, "Segoe UI", 25, 0);
+    private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
 
     public void Run()
     {
@@ -32,38 +25,30 @@ internal class App
     private void Init()
     {
         DX.SetOutApplicationLogValidFlag(DX.FALSE);
-        DX.SetGraphMode(1000, 1000, 32);
-        DX.SetWindowSize(1000, 1000);
+        // DX3D9EXにするとなんも表示されなくなる...　D3DX9EXはサポート対象外にしますか...
+        //DX.SetUseDirect3DVersion(DX.DX_DIRECT3D_9EX);
+        DX.SetGraphMode(352, 430, 32);
+        DX.SetWindowSize(352, 430);
         DX.SetBackgroundColor(0, 0, 0);
         DX.ChangeWindowMode(DX.TRUE);
-        DX.SetWaitVSyncFlag(DX.TRUE);
+        DX.SetWaitVSyncFlag(DX.FALSE);
         DX.DxLib_Init();
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        hresponder.StackInterval = 35;
-        hresponder.HorizontalAlignment = HorizontalAlignment.Left;
-        hresponder.HorizontalOffset = 200;
+        label.Text = "Text Size";
+        label.ForegroundColor = Color.FromArgb(0, 208, 101);
+        label.TextHorizontalAlignment = HorizontalAlignment.Left;
+        label.TextVerticalAlignment = VerticalAlignment.Top;
+        label.BackgroundColor = Color.Empty;
 
-        hcontrol.BackgroundColor = Color.SkyBlue;
-        hcontrol2.BackgroundColor = Color.SkyBlue;
-        hcontrol3.BackgroundColor = Color.SkyBlue;
-
-        hresponder.Children.Add(hcontrol);
-        hresponder.Children.Add(hcontrol2);
-        hresponder.Children.Add(hcontrol3);
-
-        vresponder.StackInterval = 35;
-        vresponder.HorizontalAlignment = HorizontalAlignment.Right;
-        vresponder.HorizontalOffset = -200;
-
-        vcontrol.BackgroundColor = Color.SkyBlue;
-        vcontrol2.BackgroundColor = Color.SkyBlue;
-        vcontrol3.BackgroundColor = Color.SkyBlue;
-
-        vresponder.Children.Add(vcontrol);
-        vresponder.Children.Add(vcontrol2);
-        vresponder.Children.Add(vcontrol3);
+        label2.Text = "Apps that support\nDynamic Type will\nadjust to your\npreferred reading\nsize below";
+        label2.ForegroundColor = Color.White;
+        label2.TextHorizontalAlignment = HorizontalAlignment.Left;
+        label2.TextVerticalAlignment = VerticalAlignment.Top;
+        label2.VerticalOffset = 50;
+        label.TextSpace = 3;
+        label2.BackgroundColor = Color.Empty;
     }
 
     private void Loop()
@@ -86,15 +71,15 @@ internal class App
 
             DX.GetWindowSize(out int w, out int h);
 
-            hresponder.ParentWidth = w;
-            hresponder.ParentHeight = h;
-            hresponder.Update();
-            hresponder.DrawView();
+            label.ParentWidth = w;
+            label.ParentHeight = h;
+            label.Update();
+            label.DrawView();
 
-            vresponder.ParentWidth = w;
-            vresponder.ParentHeight = h;
-            vresponder.Update();
-            vresponder.DrawView();
+            label2.ParentWidth = w;
+            label2.ParentHeight = h;
+            label2.Update();
+            label2.DrawView();
 
             DX.ScreenFlip();
 
@@ -103,7 +88,7 @@ internal class App
                 double sleepMs = (ms - stopwatch.Elapsed.TotalSeconds) * 1000.0;
 
                 // Thread.Sleepで止めたらCPU使用率上がらない!!!!
-                Thread.Sleep((int)sleepMs);
+                //Thread.Sleep((int)sleepMs);
 
                 // WaitTimerで止めるとCPU使用率が上がる...
                 //DX.WaitTimer((int)sleepMs);
@@ -113,6 +98,9 @@ internal class App
 
     private void End()
     {
+        label.Dispose();
+        label2.Dispose();
+
         DX.DxLib_End();
     }
 }

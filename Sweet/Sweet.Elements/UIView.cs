@@ -24,6 +24,11 @@ public class UIView : UIResponder, IDisposable
     public bool IsVisible { get; set; }
 
     /// <summary>
+    /// 背景の透明度
+    /// </summary>
+    public int BackgroundAlpha { get; set; }
+
+    /// <summary>
     /// 背景の色
     /// </summary>
     public Color BackgroundColor { get; set; }
@@ -45,6 +50,7 @@ public class UIView : UIResponder, IDisposable
         Radius = 8;
         IsVisible = true;
         BackgroundColor = Color.White;
+        BackgroundAlpha = 255;
     }
 
     public override void Update()
@@ -79,8 +85,19 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     public virtual void Dispose()
     {
+        Tracer.Log("Dispose.");
+
         if (ViewHandle != -1)
             DX.DeleteGraph(ViewHandle);
+
+        foreach(var item in Children)
+        {
+            if(item.GetType() != typeof(UIResponder))
+            {
+                var child = (UIView)item;
+                child.Dispose();
+            }
+        }
     }
 
     /// <summary>
@@ -90,6 +107,7 @@ public class UIView : UIResponder, IDisposable
     {
         uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
 
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
         if (Radius <= 0)
         {
             DX.DrawFillBox(0, 0, Width, Height, backColor);
@@ -98,6 +116,7 @@ public class UIView : UIResponder, IDisposable
         {
             DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, backColor, DX.TRUE);
         }
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
     }
 
     /// <summary>
@@ -130,7 +149,7 @@ public class UIView : UIResponder, IDisposable
 
         ViewHandle = DX.MakeScreen(Width, Height, DX.TRUE);
 
-        // 次のフレームで再生成しないようにSizeと_bufSizeは同じにする
+        // 次のフレームで再生成しないようにセットしとく
         _bufSize = (Width, Height);
     }
 }

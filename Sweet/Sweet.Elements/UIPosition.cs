@@ -46,21 +46,8 @@ public static class UIPositionUtilt
     {
         var result = (X: 0, Y: 0);
 
-        result.X = horizontal switch
-        {
-            HorizontalAlignment.Left => horizontalOffset,
-            HorizontalAlignment.Center => (parentWidth - tergetWidth) / 2 + horizontalOffset,
-            HorizontalAlignment.Right => parentWidth - tergetWidth + horizontalOffset,
-            _ => horizontalOffset
-        };
-
-        result.Y = vertical switch
-        {
-            VerticalAlignment.Top => verticalOffset,
-            VerticalAlignment.Center => (parentHeight - tergetHeight) / 2 + verticalOffset,
-            VerticalAlignment.Bottom => parentHeight - tergetHeight + verticalOffset,
-            _ => verticalOffset
-        };
+        result.X = CalculateBeginPosition(parentWidth, tergetWidth, horizontal) + horizontalOffset;
+        result.Y = CalculateBeginPosition(parentHeight, tergetHeight, vertical) + verticalOffset;
 
         return result;
     }
