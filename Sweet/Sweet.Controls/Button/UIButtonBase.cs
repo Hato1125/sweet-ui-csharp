@@ -51,9 +51,6 @@ public class UIButtonBase : UITextBaseControl
 
         base.Update();
         TickAnimation();
-
-
-        DX.DrawStringF((float)ClickAnimeValue, 150, DeltaTime.ToString(), 0xffffff);
     }
 
     /// <summary>
