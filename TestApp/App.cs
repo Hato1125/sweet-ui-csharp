@@ -9,12 +9,12 @@ namespace TestApp;
 
 internal class App
 {
-    private double ms = 1.0 / 30.0;
+    private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
     private UILabel label = new(225, 350, "Segoe UI", 25, 0);
     private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
-    private UIButtonBase btn = new(225, 350, "Segoe UI", 25, 0);
+    private UIButton btn = new(175, 50, "Segoe UI", 16, 4);
 
     public void Run()
     {
@@ -50,6 +50,14 @@ internal class App
         label2.VerticalOffset = 50;
         label.TextSpace = 3;
         label2.BackgroundColor = Color.Empty;
+
+        btn.VerticalOffset = 100;
+        btn.Text = "SweetUI\nButton";
+        btn.BackgroundAlpha = 20;
+        btn.ClickColor = Color.White;
+        btn.ForegroundColor = Color.White;
+        btn.ClickFadeAlpha = 10;
+        btn.AnimeSpeed = 1650;
     }
 
     private void Loop()
@@ -85,6 +93,7 @@ internal class App
             btn.ParentWidth = w;
             btn.ParentHeight = h;
             btn.Update();
+            btn.DrawView();
 
             DX.ScreenFlip();
 

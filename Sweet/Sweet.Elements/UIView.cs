@@ -36,7 +36,7 @@ public class UIView : UIResponder, IDisposable
     /// <summary>
     /// レンダリング時に呼ばれる
     /// </summary>
-    public Action? OnRendering { get; set; }
+    public event Action OnRendering = delegate { };
 
     /// <summary>
     /// 初期化する
@@ -93,9 +93,7 @@ public class UIView : UIResponder, IDisposable
         foreach(var item in Children)
         {
             if(item.GetType() != typeof(UIResponder))
-            {
                 ((UIView)item).Dispose();
-            }
         }
     }
 
@@ -126,9 +124,7 @@ public class UIView : UIResponder, IDisposable
         foreach (var item in Children)
         {
             if (item.GetType() != typeof(UIResponder))
-            {
                 ((UIView)item).DrawView();
-            }
         }
     }
 

@@ -1,5 +1,4 @@
 ﻿using DxLibDLL;
-using System.Xml.Serialization;
 
 namespace Sweet.Input;
 

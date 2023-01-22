@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Sweet.Controls;
 
-public class UILabel : UITextBaseControl
+public class UIButton : UIButtonBase
 {
     private string _bufText = string.Empty;
     private string[]? _texts;
@@ -49,16 +49,6 @@ public class UILabel : UITextBaseControl
     public int TextVerticalOffset { get; set; }
 
     /// <summary>
-    /// 前景の透明度
-    /// </summary>
-    public byte ForegroundAlpha { get; set; }
-
-    /// <summary>
-    /// 前景の色
-    /// </summary>
-    public Color ForegroundColor { get; set; }
-
-    /// <summary>
     /// 初期化する
     /// </summary>
     /// <param name="width">横幅</param>
@@ -66,22 +56,29 @@ public class UILabel : UITextBaseControl
     /// <param name="fontName">フォント名</param>
     /// <param name="fontSize">フォントサイズ</param>
     /// <param name="fontThick">フォントの太さ</param>
-    public UILabel(int width, int height, string fontName, int fontSize, int fontThick)
+    public UIButton(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
         LineSpace = 3;
-        TextSpace = 2;
+        TextSpace = 1;
         TextHorizontalAlignment = HorizontalAlignment.Center;
         TextVerticalAlignment = VerticalAlignment.Center;
-        ForegroundAlpha = 255;
-        ForegroundColor = Color.Black;
-        Text = "Label";
+        Text = "Button";
     }
 
     public override void Update()
     {
         base.Update();
         CheckChangeText();
+
+        IsTickAnimation = IsPushing();
+    }
+
+    protected override void DrawViewArea()
+    {
+        base.DrawViewArea();
+        DrawFade();
+        DrawText();
     }
 
     /// <summary>
@@ -133,14 +130,28 @@ public class UILabel : UITextBaseControl
         _textHeight = DX.GetFontSizeToHandle(FontHandle);
     }
 
-    protected override void DrawViewArea()
+    /// <summary>
+    /// フェードの描画
+    /// </summary>
+    private void DrawFade()
     {
-        base.DrawViewArea();
-        DrawText();
+        uint clickColor = DX.GetColor(ClickColor.R, ClickColor.G, ClickColor.B);
+        double fade = Math.Sin(AnimeValue * Math.PI / 180) * ClickFadeAlpha;
+
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, (int)fade);
+        if (Radius <= 0)
+        {
+            DX.DrawFillBox(0, 0, Width, Height, clickColor);
+        }
+        else
+        {
+            DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, clickColor, DX.TRUE);
+        }
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
     }
 
     /// <summary>
-    /// テキストを描画
+    /// テキストの描画
     /// </summary>
     private void DrawText()
     {
