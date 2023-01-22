@@ -14,7 +14,7 @@ internal class App
 
     private UILabel label = new(225, 350, "Segoe UI", 25, 0);
     private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
-    private UIButton btn = new(175, 50, "Segoe UI", 16, 4);
+    private UIToggleButton btn = new(175, 50, "Segoe UI", 16, 4);
 
     public void Run()
     {
@@ -54,10 +54,9 @@ internal class App
         btn.VerticalOffset = 100;
         btn.Text = "SweetUI\nButton";
         btn.BackgroundAlpha = 20;
-        btn.ClickColor = Color.White;
         btn.ForegroundColor = Color.White;
-        btn.ClickFadeAlpha = 10;
-        btn.AnimeSpeed = 1650;
+        btn.AnimeSpeed = 850;
+        btn.ClickFadeAlpha = 255;
     }
 
     private void Loop()
