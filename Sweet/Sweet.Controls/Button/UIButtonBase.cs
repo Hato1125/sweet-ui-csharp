@@ -29,16 +29,6 @@ public class UIButtonBase : UITextBaseControl
     public double AnimeSpeed { get; set; }
 
     /// <summary>
-    /// 前景の色
-    /// </summary>
-    public Color ForegroundColor { get; set; }
-
-    /// <summary>
-    /// 前景の透明度
-    /// </summary>
-    public int  ForegroundAlpha { get; set; }
-
-    /// <summary>
     /// クリック時のアニメーションの透明度
     /// </summary>
     public byte ClickFadeAlpha { get; set; }
@@ -60,8 +50,6 @@ public class UIButtonBase : UITextBaseControl
         : base(width, height, fontName, fontSize, fontThick)
     {
         AnimeSpeed = 1025;
-        ForegroundColor = Color.Black;
-        ForegroundAlpha = 255;
         ClickFadeAlpha = 255;
         ClickColor = Color.FromArgb(220, 220, 220);
     }

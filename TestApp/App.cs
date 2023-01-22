@@ -14,7 +14,7 @@ internal class App
 
     private UILabel label = new(225, 350, "Segoe UI", 25, 0);
     private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
-    private UIToggleButton btn = new(175, 50, "Segoe UI", 16, 4);
+    private UIToggleButton btn = new(175, 50, "Segoe UI", 18, 0);
 
     public void Run()
     {
@@ -38,25 +38,20 @@ internal class App
         DX.CreateMaskScreen();
 
         label.Text = "Text Size";
-        label.ForegroundColor = Color.FromArgb(0, 208, 101);
-        label.TextHorizontalAlignment = HorizontalAlignment.Left;
-        label.TextVerticalAlignment = VerticalAlignment.Top;
+        label.TextContent.ForegroundColor = Color.FromArgb(0, 208, 101);
+        label.TextContent.HorizontalAlignment = HorizontalAlignment.Left;
+        label.TextContent.VerticalAlignment = VerticalAlignment.Top;
         label.BackgroundColor = Color.Empty;
 
         label2.Text = "Apps that support\nDynamic Type will\nadjust to your\npreferred reading\nsize below";
-        label2.ForegroundColor = Color.White;
-        label2.TextHorizontalAlignment = HorizontalAlignment.Left;
-        label2.TextVerticalAlignment = VerticalAlignment.Top;
+        label2.TextContent.ForegroundColor = Color.White;
+        label2.TextContent.HorizontalAlignment = HorizontalAlignment.Left;
+        label2.TextContent.VerticalAlignment = VerticalAlignment.Top;
         label2.VerticalOffset = 50;
-        label.TextSpace = 3;
+        label.TextContent.TextSpace = 3;
         label2.BackgroundColor = Color.Empty;
 
         btn.VerticalOffset = 100;
-        btn.Text = "SweetUI\nButton";
-        btn.BackgroundAlpha = 20;
-        btn.ForegroundColor = Color.White;
-        btn.AnimeSpeed = 850;
-        btn.ClickFadeAlpha = 255;
     }
 
     private void Loop()

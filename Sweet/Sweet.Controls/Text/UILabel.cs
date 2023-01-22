@@ -1,10 +1,6 @@
-using DxLibDLL;
-using Sweet.Elements;
-using System.Drawing;
-
 namespace Sweet.Controls;
 
-public class UIToggleButton : UIButtonBase
+public class UILabel : UITextBaseControl
 {
     private LineText _text = new();
 
@@ -27,11 +23,6 @@ public class UIToggleButton : UIButtonBase
     }
 
     /// <summary>
-    /// オンか
-    /// </summary>
-    public bool IsOn { get; set; }
-
-    /// <summary>
     /// 初期化する
     /// </summary>
     /// <param name="width">横幅</param>
@@ -39,52 +30,24 @@ public class UIToggleButton : UIButtonBase
     /// <param name="fontName">フォント名</param>
     /// <param name="fontSize">フォントサイズ</param>
     /// <param name="fontThick">フォントの太さ</param>
-    public UIToggleButton(int width, int height, string fontName, int fontSize, int fontThick)
+    public UILabel(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
-        ClickColor = Color.FromArgb(197, 112, 238);
-        Text = "ToggleButton";
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (IsPushed())
-            IsOn = !IsOn;
-
         _text.FontHandle = FontHandle;
         _text.ParentWidth = Width;
         _text.ParentHeight = Height;
         _text.UpdateText();
-
-        IsTickAnimation = IsOn;
     }
 
     protected override void DrawViewArea()
     {
         base.DrawViewArea();
-        DrawFade();
         _text.DrawText();
-    }
-
-    /// <summary>
-    /// フェードの描画
-    /// </summary>
-    private void DrawFade()
-    {
-        uint clickColor = DX.GetColor(ClickColor.R, ClickColor.G, ClickColor.B);
-        double fade = Math.Sin(AnimeValue * Math.PI / 180) * ClickFadeAlpha;
-
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, (int)fade);
-        if (Radius <= 0)
-        {
-            DX.DrawFillBox(0, 0, Width, Height, clickColor);
-        }
-        else
-        {
-            DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, clickColor, DX.TRUE);
-        }
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
     }
 }
