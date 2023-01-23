@@ -2,17 +2,6 @@ namespace Sweet.Controls;
 
 public class UILabel : UITextBaseControl
 {
-    private LineText _text = new();
-
-    /// <summary>
-    /// テキストコンテンツ
-    /// </summary>
-    public ILineText TextContent
-    {
-        get => (ILineText)_text;
-        set => _text = (LineText)value;
-    }
-
     /// <summary>
     /// テキスト
     /// </summary>
@@ -20,6 +9,17 @@ public class UILabel : UITextBaseControl
     {
         get => _text.Text;
         set => _text.Text = value;
+    }
+
+    protected UITextStyle _style = new();
+
+    /// <summary>
+    /// スタイル
+    /// </summary>
+    public IUITextStyle Style
+    {
+        get => (IUITextStyle)_style;
+        set => _style = (UITextStyle)value;
     }
 
     /// <summary>
@@ -33,10 +33,15 @@ public class UILabel : UITextBaseControl
     public UILabel(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
+        Style.FontName = fontName;
+        Style.FontSize = fontSize;
+        Style.FontThick = fontThick;
     }
 
     public override void Update()
     {
+        _style.Control = this;
+        _style.StyleAdapt();
         base.Update();
 
         _text.FontHandle = FontHandle;
