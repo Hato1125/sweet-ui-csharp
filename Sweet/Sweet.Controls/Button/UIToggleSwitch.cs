@@ -1,19 +1,20 @@
 using DxLibDLL;
 using System.Drawing;
+using Sweet.Elements;
 
 namespace Sweet.Controls;
 
-public class UIToggleButton : UIButtonBase
+public class UIToggleSwitch : UIButtonBase
 {
-    protected UIButtonStyle _style = new();
+    protected UIToggleSwitchStyle _style = new();
 
     /// <summary>
     /// スタイル
     /// </summary>
-    public IUIButtonStyle Style
+    public IUIToggleSwitchStyle Style
     {
-        get => (IUIButtonStyle)_style;
-        set => _style = (UIButtonStyle)value;
+        get => (IUIToggleSwitchStyle)_style;
+        set => _style = (UIToggleSwitchStyle)value;
     }
 
     /// <summary>
@@ -38,14 +39,19 @@ public class UIToggleButton : UIButtonBase
     /// <param name="fontName">フォント名</param>
     /// <param name="fontSize">フォントサイズ</param>
     /// <param name="fontThick">フォントの太さ</param>
-    public UIToggleButton(int width, int height, string fontName, int fontSize, int fontThick)
+    public UIToggleSwitch(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
         Style.FontName = fontName;
         Style.FontSize = fontSize;
         Style.FontThick = fontThick;
         Style.ClickColor = Color.FromArgb(197, 112, 238);
-        Text = "ToggleButton";
+        Style.Radius = height / 2;
+        Style.ForeColor = Color.White;
+        Style.AnimeSpeed = 700;
+        TextContent.HorizontalAlignment = HorizontalAlignment.Left;
+        TextContent.HorizontalOffset = 10;
+        Text = "ToggleSwitch";
     }
 
     public override void Update()
@@ -65,11 +71,19 @@ public class UIToggleButton : UIButtonBase
         IsTickAnimation = IsOn;
     }
 
+    public override void DrawView()
+    {
+        base.DrawView();
+
+        (_text.X, _text.Y) = (X + Width, Y);
+        _text.DrawText();
+    }
+
     protected override void DrawViewArea()
     {
         base.DrawViewArea();
         DrawFade();
-        _text.DrawText();
+        DrawToggle();
     }
 
     /// <summary>
@@ -89,6 +103,27 @@ public class UIToggleButton : UIButtonBase
         {
             DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, clickColor, DX.TRUE);
         }
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+    }
+
+    /// <summary>
+    /// トグルの描画
+    /// </summary>
+    private void DrawToggle()
+    {
+        uint toggleColor = DX.GetColor(Style.ToggleColor.R, Style.ToggleColor.G, Style.ToggleColor.B);
+        int radius = Height / 2;
+        double moveArea = Width - radius * 2;
+        double move = Math.Sin(AnimeValue * Math.PI / 180) * moveArea;
+
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, (int)Style.ToggleAlpha);
+        DX.DrawCircleAA(
+            radius + (float)move,
+            radius,
+            radius - Style.TogglePadding,
+            byte.MaxValue,
+            toggleColor
+        );
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
     }
 }

@@ -4,6 +4,17 @@ namespace Sweet.Controls;
 
 public class UIButton : UIButtonBase
 {
+    protected UIButtonStyle _style = new();
+
+    /// <summary>
+    /// スタイル
+    /// </summary>
+    public IUIButtonStyle Style
+    {
+        get => (IUIButtonStyle)_style;
+        set => _style = (UIButtonStyle)value;
+    }
+
     /// <summary>
     /// テキスト
     /// </summary>
@@ -24,11 +35,16 @@ public class UIButton : UIButtonBase
     public UIButton(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
+        Style.FontName = fontName;
+        Style.FontSize = fontSize;
+        Style.FontThick = fontThick;
         Text = "Button";
     }
 
     public override void Update()
     {
+        _style.Control = this;
+        _style.StyleAdapt();
         base.Update();
         _text.FontHandle = FontHandle;
         _text.ParentWidth = Width;

@@ -8,17 +8,6 @@ public class UIButtonBase : UITextBaseControl
     private readonly Stopwatch _stopwatch = new();
     private TimeSpan Time;
 
-    protected UIButtonStyle _style = new();
-
-    /// <summary>
-    /// スタイル
-    /// </summary>
-    public IUIButtonStyle Style
-    {
-        get => (IUIButtonStyle)_style;
-        set => _style = (UIButtonStyle)value;
-    }
-
     /// <summary>
     /// アニメの現在の値
     /// </summary>
@@ -60,12 +49,6 @@ public class UIButtonBase : UITextBaseControl
     public UIButtonBase(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
-        Style.AnimeSpeed = 1025;
-        Style.FadeAlpha = 255;
-        Style.ClickColor = Color.FromArgb(220, 220, 220);
-        Style.FontName = fontName;
-        Style.FontSize = fontSize;
-        Style.FontThick = fontThick;
     }
 
     public override void Update()
@@ -74,8 +57,6 @@ public class UIButtonBase : UITextBaseControl
         DeltaTime = Time.TotalSeconds;
         _stopwatch.Restart();
 
-        _style.Control = this;
-        _style.StyleAdapt();
         base.Update();
         TickAnimation();
     }

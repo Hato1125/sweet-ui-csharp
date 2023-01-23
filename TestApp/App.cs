@@ -14,7 +14,7 @@ internal class App
 
     private UILabel label = new(225, 350, "Segoe UI", 25, 0);
     private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
-    private UIButton btn = new(100, 47, "Segoe UI", 16, 0);
+    private UIToggleSwitch btn = new(70, 35, "Segoe UI", 16, 0);
     private UIButton btn2 = new(100, 47, "Segoe UI", 16, 0);
 
     public UIButtonStyle BtnStyle = new();
@@ -61,13 +61,13 @@ internal class App
 
         btn.VerticalOffset = 100;
         btn.HorizontalAlignment = HorizontalAlignment.Left;
-        btn.HorizontalOffset = 50;
-        btn.Text = "Ok";
-        btn.Style = BtnStyle;
+        btn.HorizontalOffset = 30;
+        btn.Style.BackAlpha = 30;
+        btn.Style.ToggleColor = Color.White;
 
         btn2.VerticalOffset = 100;
         btn2.HorizontalAlignment = HorizontalAlignment.Right;
-        btn2.HorizontalOffset = -50;
+        btn2.HorizontalOffset = -20;
         btn2.Text = "Cancel";
         btn2.Style = BtnStyle;
     }

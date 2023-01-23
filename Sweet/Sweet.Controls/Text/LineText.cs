@@ -12,6 +12,8 @@ public class LineText : ILineText
     private int[]? _textWidths;
     private int _textHeight;
 
+    public int X { get; set; }
+    public int Y { get; set; }
     public int TextSpace { get; set; }
     public int LineSpace { get; set; }
     public int FontHandle { get; set; }
@@ -83,7 +85,7 @@ public class LineText : ILineText
                         tergetHeight
                     );
 
-                    DX.DrawStringFToHandle(pos.X, pos.Y + (_textHeight + LineSpace) * i, _texts[i], foreColor, FontHandle);
+                    DX.DrawStringFToHandle(pos.X + X, pos.Y + Y + (_textHeight + LineSpace) * i, _texts[i], foreColor, FontHandle);
                 }
             }
         }
@@ -100,7 +102,7 @@ public class LineText : ILineText
                 _textHeight
             );
 
-            DX.DrawStringFToHandle(pos.X, pos.Y, Text, foreColor, FontHandle);
+            DX.DrawStringFToHandle(pos.X + X, pos.Y + Y, Text, foreColor, FontHandle);
         }
 
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
