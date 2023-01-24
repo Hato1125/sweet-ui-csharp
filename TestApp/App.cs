@@ -34,8 +34,8 @@ internal class App
         DX.SetOutApplicationLogValidFlag(DX.FALSE);
         // DX3D9EXにするとなんも表示されなくなる...　D3DX9EXはサポート対象外にしますか...
         //DX.SetUseDirect3DVersion(DX.DX_DIRECT3D_9EX);
-        DX.SetGraphMode(352, 430, 32);
-        DX.SetWindowSize(352, 430);
+        DX.SetGraphMode(1920, 1080, 32);
+        DX.SetWindowSize(1920, 1080);
         DX.SetBackgroundColor(0, 0, 0);
         DX.ChangeWindowMode(DX.TRUE);
         DX.SetWaitVSyncFlag(DX.FALSE);
@@ -127,12 +127,7 @@ internal class App
             Touch.Update();
             Joypad.Update();
 
-            DX.GetWindowSize(out int w, out int h);
-
-            radio.Stack.ParentWidth = w;
-            radio.Stack.ParentHeight = h;
-            radio.Update();
-            radio.DrawView();
+            loop();
 
             DX.ScreenFlip();
 

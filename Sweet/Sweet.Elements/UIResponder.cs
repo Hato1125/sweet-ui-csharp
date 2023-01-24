@@ -9,6 +9,7 @@ public class UIResponder
     private int _doublePushCounter;
     private bool _isHoverJudge;
     private (int X, int Y) _mousePosition;
+    private (int X, int Y) _touchPosition;
 
     /// <summary>
     /// 相対X座標
@@ -147,11 +148,17 @@ public class UIResponder
         {
             _mousePosition.X = Mouse.X - X;
             _mousePosition.Y = Mouse.Y - Y;
+
+            _touchPosition.X = Touch.X - X;
+            _touchPosition.Y = Touch.Y - Y;
         }
         else
         {
             _mousePosition.X = RelativeX - X;
             _mousePosition.Y = RelativeY - Y;
+
+            _touchPosition.X = RelativeX - X;
+            _touchPosition.Y = RelativeY - Y;
         }
     }
 
@@ -194,8 +201,8 @@ public class UIResponder
         if (!IsInput || !_isHoverJudge)
             return false;
 
-        return _mousePosition.X >= 0 && _mousePosition.X <= Width
-            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height;
+        // タッチしている間はマウスカーソルはないのでタッチのみ判定する
+        return Touch.IsPushing() ? IsTouchHover() : IsMouseHover();
     }
 
     /// <summary>
@@ -266,6 +273,24 @@ public class UIResponder
         {
             return false;
         }
+    }
+
+    /// <summary>
+    /// マウスカーソルがホバーしてるかを取得する
+    /// </summary>
+    private bool IsMouseHover()
+    {
+        return _mousePosition.X >= 0 && _mousePosition.X <= Width
+            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height;
+    }
+
+    /// <summary>
+    /// タッチカーソルがホバーしてるかを取得する
+    /// </summary>
+    private bool IsTouchHover()
+    {
+        return _touchPosition.X >= 0 && _touchPosition.X <= Width
+            && _touchPosition.Y >= 0 && _touchPosition.Y <= Height;
     }
 
     /// <summary>
