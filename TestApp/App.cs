@@ -12,12 +12,8 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UILabel label = new(225, 350, "Segoe UI", 25, 0);
-    private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
-    private UIToggleSwitch btn = new(70, 35, "Segoe UI", 16, 0);
-    private UIButton btn2 = new(100, 47, "Segoe UI", 16, 0);
-
-    public UIButtonStyle BtnStyle = new();
+    private UIToggleButton toggle = new(200, 40, "Segoe UI", 20, 0);
+    private HRadioButton radio = new(352, 300);
 
     public void Run()
     {
@@ -40,36 +36,12 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        label.Text = "Text Size";
-        label.Style.ForeColor = Color.FromArgb(0, 208, 101);
-        label.TextContent.HorizontalAlignment = HorizontalAlignment.Left;
-        label.TextContent.VerticalAlignment = VerticalAlignment.Top;
-        label.Style.BackColor = Color.Empty;
-
-        label2.Text = "Apps that support\nDynamic Type will\nadjust to your\npreferred reading\nsize below";
-        label2.Style.ForeColor = Color.White;
-        label2.TextContent.HorizontalAlignment = HorizontalAlignment.Left;
-        label2.TextContent.VerticalAlignment = VerticalAlignment.Top;
-        label2.VerticalOffset = 50;
-        label.Style.TextSpace = 3;
-        label2.Style.BackColor = Color.Empty;
-
-        BtnStyle.BackAlpha = 20;
-        BtnStyle.FadeAlpha = 20;
-        BtnStyle.ClickColor = Color.White;
-        BtnStyle.ForeColor = Color.White;
-
-        btn.VerticalOffset = 100;
-        btn.HorizontalAlignment = HorizontalAlignment.Left;
-        btn.HorizontalOffset = 30;
-        btn.Style.BackAlpha = 30;
-        btn.Style.ToggleColor = Color.White;
-
-        btn2.VerticalOffset = 100;
-        btn2.HorizontalAlignment = HorizontalAlignment.Right;
-        btn2.HorizontalOffset = -20;
-        btn2.Text = "Cancel";
-        btn2.Style = BtnStyle;
+        radio.Stack.BackgroundColor = Color.Empty;
+        radio.Stack.HorizontalOffset = -30;
+        radio.AddRadioButton("AKSK1");
+        radio.AddRadioButton("AKSK2");
+        radio.AddRadioButton("AKSK3");
+        radio.Style.TogglePadding = 9;
     }
 
     private void Loop()
@@ -92,26 +64,10 @@ internal class App
 
             DX.GetWindowSize(out int w, out int h);
 
-            label.ParentWidth = w;
-            label.ParentHeight = h;
-            label.Update();
-            label.DrawView();
-
-            label2.ParentWidth = w;
-            label2.ParentHeight = h;
-            label2.Update();
-            label2.DrawView();
-
-            btn.ParentWidth = w;
-            btn.ParentHeight = h;
-            btn.Update();
-            btn.DrawView();
-
-            btn2.ParentWidth = w;
-            btn2.ParentHeight = h;
-            btn2.Update();
-            btn2.DrawView();
-
+            radio.Stack.ParentWidth = w;
+            radio.Stack.ParentHeight = h;
+            radio.Update();
+            radio.DrawView();
 
             DX.ScreenFlip();
 
@@ -130,9 +86,6 @@ internal class App
 
     private void End()
     {
-        label.Dispose();
-        label2.Dispose();
-
         DX.DxLib_End();
     }
 }

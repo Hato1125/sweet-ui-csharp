@@ -47,8 +47,8 @@ public class UIControl : UIView
 
     public override void Update()
     {
-        CalculatePosition();
         base.Update();
+        CalculatePosition();
     }
 
     /// <summary>
