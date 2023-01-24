@@ -12,8 +12,10 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UIToggleButton toggle = new(200, 40, "Segoe UI", 20, 0);
-    private HRadioButton radio = new(352, 300);
+    private readonly UIButtonStyle BtnStyle = new();
+
+    private readonly UIButton Btn1 = new(300, 65, "Segoe UI", 30, 5);
+    private readonly UIButton Btn2 = new(300, 65, "Segoe UI", 30, 5);
 
     public void Run()
     {
@@ -27,8 +29,8 @@ internal class App
         DX.SetOutApplicationLogValidFlag(DX.FALSE);
         // DX3D9EXにするとなんも表示されなくなる...　D3DX9EXはサポート対象外にしますか...
         //DX.SetUseDirect3DVersion(DX.DX_DIRECT3D_9EX);
-        DX.SetGraphMode(352, 430, 32);
-        DX.SetWindowSize(352, 430);
+        DX.SetGraphMode(1920, 1080, 32);
+        DX.SetWindowSize(1920, 1080);
         DX.SetBackgroundColor(0, 0, 0);
         DX.ChangeWindowMode(DX.TRUE);
         DX.SetWaitVSyncFlag(DX.FALSE);
@@ -36,12 +38,20 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        radio.Stack.BackgroundColor = Color.Empty;
-        radio.Stack.HorizontalOffset = -30;
-        radio.AddRadioButton("AKSK1");
-        radio.AddRadioButton("AKSK2");
-        radio.AddRadioButton("AKSK3");
-        radio.Style.TogglePadding = 9;
+        BtnStyle.BackAlpha = 20;
+        BtnStyle.FadeAlpha = 20;
+        BtnStyle.Radius = 20;
+        BtnStyle.FontSize = 30;
+        BtnStyle.FontThick = 5;
+        BtnStyle.ForeColor = Color.White;
+
+        Btn1.HorizontalAlignment = HorizontalAlignment.Left;
+        Btn2.HorizontalAlignment = HorizontalAlignment.Right;
+        Btn1.HorizontalOffset = 600;
+        Btn2.HorizontalOffset = -600;
+
+        Btn1.Style = BtnStyle;
+        Btn2.Style = BtnStyle;
     }
 
     private void Loop()
@@ -62,12 +72,7 @@ internal class App
             Touch.Update();
             Joypad.Update();
 
-            DX.GetWindowSize(out int w, out int h);
-
-            radio.Stack.ParentWidth = w;
-            radio.Stack.ParentHeight = h;
-            radio.Update();
-            radio.DrawView();
+            loop();
 
             DX.ScreenFlip();
 
@@ -87,5 +92,22 @@ internal class App
     private void End()
     {
         DX.DxLib_End();
+    }
+
+    private void loop()
+    {
+        DX.GetWindowSize(out int w, out int h);
+
+        Btn1.ParentWidth = w;
+        Btn1.ParentHeight = h;
+        Btn1.Update();
+        Btn1.DrawView();
+
+        Btn2.ParentWidth = w;
+        Btn2.ParentHeight = h;
+        Btn2.Update();
+        Btn2.DrawView();
+
+        DX.DrawString(0, 0, $"{Touch.X} : {Touch.Y}", 0xffffff);
     }
 }
