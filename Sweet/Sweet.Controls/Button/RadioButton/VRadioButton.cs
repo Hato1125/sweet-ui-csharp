@@ -45,13 +45,6 @@ public class VRadioButton
     /// <param name="fontThick">フォントの太さ</param>
     public void AddRadioButton(string text, int size = 30, string fontName = "Segoe UI", int fontSize = 15, int fontThick = 0)
     {
-        Style.FontName = fontName;
-        Style.FontSize = fontSize;
-        Style.FontThick = fontThick;
-        Style.ClickColor = Color.FromArgb(197, 112, 238);
-        Style.Radius = (size / 2) - 0.5f;
-        Style.ForeColor = Color.White;
-        Style.AnimeSpeed = 700;
         Stack.Children.Add(new RadioButton(size, fontName, fontSize, fontThick) { Text = text });
     }
 
