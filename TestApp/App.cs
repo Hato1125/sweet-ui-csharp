@@ -9,12 +9,11 @@ namespace TestApp;
 
 internal class App
 {
-    private double ms = 1.0 / 30.0;
+    private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UILabel label = new(225, 350, "Segoe UI", 25, 0);
-    private UILabel label2 = new(225, 350, "Segoe UI", 25, 0);
-    private UIButtonBase btn = new(225, 350, "Segoe UI", 25, 0);
+    private UIToggleButton toggle = new(200, 40, "Segoe UI", 20, 0);
+    private HRadioButton radio = new(352, 300);
 
     public void Run()
     {
@@ -37,19 +36,12 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        label.Text = "Text Size";
-        label.ForegroundColor = Color.FromArgb(0, 208, 101);
-        label.TextHorizontalAlignment = HorizontalAlignment.Left;
-        label.TextVerticalAlignment = VerticalAlignment.Top;
-        label.BackgroundColor = Color.Empty;
-
-        label2.Text = "Apps that support\nDynamic Type will\nadjust to your\npreferred reading\nsize below";
-        label2.ForegroundColor = Color.White;
-        label2.TextHorizontalAlignment = HorizontalAlignment.Left;
-        label2.TextVerticalAlignment = VerticalAlignment.Top;
-        label2.VerticalOffset = 50;
-        label.TextSpace = 3;
-        label2.BackgroundColor = Color.Empty;
+        radio.Stack.BackgroundColor = Color.Empty;
+        radio.Stack.HorizontalOffset = -30;
+        radio.AddRadioButton("AKSK1");
+        radio.AddRadioButton("AKSK2");
+        radio.AddRadioButton("AKSK3");
+        radio.Style.TogglePadding = 9;
     }
 
     private void Loop()
@@ -72,19 +64,10 @@ internal class App
 
             DX.GetWindowSize(out int w, out int h);
 
-            label.ParentWidth = w;
-            label.ParentHeight = h;
-            label.Update();
-            label.DrawView();
-
-            label2.ParentWidth = w;
-            label2.ParentHeight = h;
-            label2.Update();
-            label2.DrawView();
-
-            btn.ParentWidth = w;
-            btn.ParentHeight = h;
-            btn.Update();
+            radio.Stack.ParentWidth = w;
+            radio.Stack.ParentHeight = h;
+            radio.Update();
+            radio.DrawView();
 
             DX.ScreenFlip();
 
@@ -103,9 +86,6 @@ internal class App
 
     private void End()
     {
-        label.Dispose();
-        label2.Dispose();
-
         DX.DxLib_End();
     }
 }

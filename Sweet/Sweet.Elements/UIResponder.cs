@@ -184,7 +184,7 @@ public class UIResponder
         }
     }
 
-    private bool JudgePhysicalDeviceState(JudgeInputType type) => IsKeyPush(type) && IsJoypadPush(type) && IsTouchPush(type);
+    private bool JudgePhysicalDeviceState(JudgeInputType type) => IsKeyPush(type) || IsJoypadPush(type) || IsTouchPush(type);
 
     /// <summary>
     /// ホバーしたかを取得する

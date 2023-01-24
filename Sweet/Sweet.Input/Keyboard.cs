@@ -18,17 +18,11 @@ public static class Keyboard
         {
             if (buffer[i] == 1)
             {
-                if (!IsPushing(i))
-                    value[i] = 1;
-                else
-                    value[i] = 2;
+                value[i] = (sbyte)(IsPushing(i) ? 2 : 1);
             }
             else
             {
-                if (IsPushing(i))
-                    value[i] = -1;
-                else
-                    value[i] = 0;
+                value[i] = (sbyte)(IsPushing(i) ? -1 : 0);
             }
         }
     }

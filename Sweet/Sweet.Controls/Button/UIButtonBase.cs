@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Sweet.Controls;
 
@@ -10,7 +11,7 @@ public class UIButtonBase : UITextBaseControl
     /// <summary>
     /// アニメの現在の値
     /// </summary>
-    protected double ClickAnimeValue { get; set; }
+    protected double AnimeValue { get; set; }
 
     /// <summary>
     /// アニメを進行するか
@@ -28,6 +29,16 @@ public class UIButtonBase : UITextBaseControl
     public double AnimeSpeed { get; set; }
 
     /// <summary>
+    /// クリック時のアニメーションの透明度
+    /// </summary>
+    public byte FadeAlpha { get; set; }
+
+    /// <summary>
+    /// クリック時の色
+    /// </summary>
+    public Color ClickColor { get; set; }
+
+    /// <summary>
     ///初期化する
     /// </summary>
     /// <param name="width">横幅</param>
@@ -38,7 +49,6 @@ public class UIButtonBase : UITextBaseControl
     public UIButtonBase(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
-        AnimeSpeed = 250;
     }
 
     public override void Update()
@@ -58,17 +68,17 @@ public class UIButtonBase : UITextBaseControl
     {
         if (IsTickAnimation)
         {
-            ClickAnimeValue += AnimeSpeed * DeltaTime;
+            AnimeValue += AnimeSpeed * DeltaTime;
 
-            if (ClickAnimeValue > 90)
-                ClickAnimeValue = 90;
+            if (AnimeValue > 90)
+                AnimeValue = 90;
         }
         else
         {
-            ClickAnimeValue -= AnimeSpeed * DeltaTime;
+            AnimeValue -= AnimeSpeed * DeltaTime;
 
-            if (ClickAnimeValue < 0)
-                ClickAnimeValue = 0;
+            if (AnimeValue < 0)
+                AnimeValue = 0;
         }
     }
 }

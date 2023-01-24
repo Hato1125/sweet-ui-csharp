@@ -9,6 +9,17 @@ public class UITextBaseControl : UIControl
     private int _bufFontSize;
     private int _bufFontThick;
 
+    protected LineText _text = new();
+
+    /// <summary>
+    /// テキストコンテンツ
+    /// </summary>
+    public ILineText TextContent
+    {
+        get => (ILineText)_text;
+        set => _text = (LineText)value;
+    }
+
     /// <summary>
     /// フォントハンドル
     /// </summary>
