@@ -2,12 +2,23 @@ using Sweet.Elements;
 
 namespace Sweet.Controls;
 
-public class VStackPanel : UIControl
+public class HStackPanel : UIControl
 {
+    protected UIControlBaseStyle _style = new();
+
+    /// <summary>
+    /// スタイル
+    /// </summary>
+    public IUIControlBaseStyle Style
+    {
+        get => (IUIControlBaseStyle)_style;
+        set => _style = (UIControlBaseStyle)value;
+    }
+
     /// <summary>
     /// スタックの水平方向の位置
     /// </summary>
-    public VerticalAlignment StackVerticalAlignment { get; set; }
+    public HorizontalAlignment StackHorizontalAlignment { get; set; }
 
     /// <summary>
     /// 水平方向のオフセット
@@ -24,11 +35,18 @@ public class VStackPanel : UIControl
     /// </summary>
     /// <param name="width">横幅</param>
     /// <param name="height">高さ</param>
-    public VStackPanel(int width, int height)
+    public HStackPanel(int width, int height)
         : base(width, height)
     {
-        StackVerticalAlignment = VerticalAlignment.Center;
+        StackHorizontalAlignment = HorizontalAlignment.Center;
         StackInterval = 10;
+    }
+
+    public override void Update()
+    {
+        _style.Control = this;
+        _style.StyleAdapt();
+        base.Update();
     }
 
     protected override void UpdateChildren()
@@ -38,11 +56,11 @@ public class VStackPanel : UIControl
         if (Children.Count > 0)
         {
             // UIの横幅と間隔の合計を計算
-            int height = Children.Aggregate(0, (prev, current) => prev + current.Height + StackInterval);
+            int width = Children.Aggregate(0, (prev, current) => prev + current.Width + StackInterval);
 
-            height -= StackInterval;
+            width -= StackInterval;
 
-            int posY = UIPositionUtilt.CalculateBeginPosition(this.Height, height, StackVerticalAlignment);
+            int posX = UIPositionUtilt.CalculateBeginPosition(this.Width, width, StackHorizontalAlignment);
 
             // 配置する
             foreach (var item in Children)
@@ -50,11 +68,11 @@ public class VStackPanel : UIControl
                 if (item.GetType() != typeof(UIView) && item.GetType() != typeof(UIResponder))
                 {
                     var child = (UIControl)item;
-                    child.VerticalAlignment = VerticalAlignment.Top;
+                    child.HorizontalAlignment = HorizontalAlignment.Left;
                 }
 
-                item.Y = posY;
-                posY += item.Height + StackInterval;
+                item.X = posX;
+                posX += item.Width + StackInterval;
             }
         }
     }

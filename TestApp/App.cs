@@ -14,8 +14,8 @@ internal class App
 
     private readonly UIButtonStyle BtnStyle = new();
     private readonly UIButtonStyle TglBtnStyle = new();
-    private readonly UIToggleSwitchStyle TglSwtStyle = new();
-    private readonly UIToggleSwitchStyle TglSwtStyle2 = new();
+    private readonly IUIToggleSwitchStyle TglSwtStyle = new UIToggleSwitchStyle();
+    private readonly IUIToggleSwitchStyle TglSwtStyle2 = new UIToggleSwitchStyle();
 
     private readonly UIButton Btn1 = new(300, 65, "Segoe UI", 30, 5);
     private readonly UIToggleButton TglBtn = new(300, 65, "Segoe UI", 30, 5);
