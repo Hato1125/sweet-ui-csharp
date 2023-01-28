@@ -102,7 +102,7 @@ internal class App
         Radio.Stack.VerticalAlignment = VerticalAlignment.Top;
         Radio.Stack.HorizontalOffset = 850;
         Radio.Stack.VerticalOffset = 100;
-        Radio.Stack.BackgroundColor = Color.Empty;
+        Radio.Stack.Style.BackColor = Color.Empty;
         Radio.Style = TglSwtStyle2;
         Radio.AddRadioButton("Test1", 50);
         Radio.AddRadioButton("Test2", 50);

@@ -102,6 +102,14 @@ public class UIView : UIResponder, IDisposable
     /// </summary>
     protected virtual void DrawViewArea()
     {
+        DrawRect();
+    }
+
+    private void DrawRect()
+    {
+        if (BackgroundAlpha <= 0 || BackgroundColor == Color.Empty)
+            return;
+
         uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
 
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);

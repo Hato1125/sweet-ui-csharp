@@ -91,6 +91,9 @@ public class UIToggleSwitch : UIButtonBase
     /// </summary>
     private void DrawFade()
     {
+        if (AnimeSpeed <= 0 || FadeAlpha <= 0 || ClickColor == Color.Empty)
+            return;
+
         uint clickColor = DX.GetColor(ClickColor.R, ClickColor.G, ClickColor.B);
         double fade = Math.Sin(AnimeValue * Math.PI / 180) * FadeAlpha;
 
@@ -111,12 +114,15 @@ public class UIToggleSwitch : UIButtonBase
     /// </summary>
     private void DrawToggle()
     {
+        if (Style.ToggleAlpha <= 0 || Style.ToggleColor == Color.Empty)
+            return;
+
         uint toggleColor = DX.GetColor(Style.ToggleColor.R, Style.ToggleColor.G, Style.ToggleColor.B);
         int radius = Height / 2;
         double moveArea = Width - radius * 2;
         double move = Math.Sin(AnimeValue * Math.PI / 180) * moveArea;
 
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, (int)Style.ToggleAlpha);
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, Style.ToggleAlpha);
         DX.DrawCircleAA(
             radius + (float)move,
             radius,

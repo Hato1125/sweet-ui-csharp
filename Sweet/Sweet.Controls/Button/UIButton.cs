@@ -1,4 +1,5 @@
 using DxLibDLL;
+using System.Drawing;
 
 namespace Sweet.Controls;
 
@@ -66,6 +67,9 @@ public class UIButton : UIButtonBase
     /// </summary>
     private void DrawFade()
     {
+        if (AnimeSpeed <= 0 || FadeAlpha <= 0 || ClickColor == Color.Empty)
+            return;
+
         uint clickColor = DX.GetColor(ClickColor.R, ClickColor.G, ClickColor.B);
         double fade = Math.Sin(AnimeValue * Math.PI / 180) * FadeAlpha;
 
