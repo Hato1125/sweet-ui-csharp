@@ -46,7 +46,7 @@ public class LineText : ILineText
             DX.SetFontSpaceToHandle(TextSpace, FontHandle);
 
             // 改行するか
-            if (Text.Contains("\n"))
+            if (Text.Contains('\n'))
                 GetMultipleLineTextSize();
             else
                 GetSingleLineTextSize();
@@ -66,7 +66,7 @@ public class LineText : ILineText
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, ForegroundAlpha);
 
         // 改行するか
-        if (Text.Contains("\n"))
+        if (Text.Contains('\n'))
         {
             if (_texts != null)
             {
@@ -110,7 +110,7 @@ public class LineText : ILineText
 
     private void GetMultipleLineTextSize()
     {
-        _texts = Text.Split("\n");
+        _texts = Text.Split('\n');
         _textWidths = new int[_texts.Length];
 
         for (int i = 0; i < _texts.Length; i++)

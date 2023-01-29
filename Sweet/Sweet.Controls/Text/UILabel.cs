@@ -18,7 +18,7 @@ public class UILabel : UITextBaseControl
     /// </summary>
     public IUITextStyle Style
     {
-        get => (IUITextStyle)_style;
+        get => _style;
         set => _style = (UITextStyle)value;
     }
 
@@ -33,6 +33,7 @@ public class UILabel : UITextBaseControl
     public UILabel(int width, int height, string fontName, int fontSize, int fontThick)
         : base(width, height, fontName, fontSize, fontThick)
     {
+        Text = "Label";
         Style.FontName = fontName;
         Style.FontSize = fontSize;
         Style.FontThick = fontThick;

@@ -24,6 +24,11 @@ public class UIView : UIResponder, IDisposable
     public bool IsVisible { get; set; }
 
     /// <summary>
+    /// アルファブレンドで描画するか
+    /// </summary>
+    public bool IsAlphaBlend { get; set; }
+
+    /// <summary>
     /// 背景の透明度
     /// </summary>
     public byte BackgroundAlpha { get; set; }
@@ -74,9 +79,11 @@ public class UIView : UIResponder, IDisposable
 
         if (IsVisible)
         {
-            DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, Alpha);
+            int blend = IsAlphaBlend ? DX.DX_BLENDMODE_PMA_ALPHA : DX.DX_BLENDMODE_ALPHA;
+
+            DX.SetDrawBlendMode(blend, Alpha);
             DX.DrawGraph(X, Y, ViewHandle, DX.TRUE);
-            DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+            DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
         }
     }
 
@@ -121,7 +128,7 @@ public class UIView : UIResponder, IDisposable
         {
             DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, backColor, DX.TRUE);
         }
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
     }
 
     /// <summary>
@@ -132,7 +139,11 @@ public class UIView : UIResponder, IDisposable
         foreach (var item in Children)
         {
             if (item.GetType() != typeof(UIResponder))
-                ((UIView)item).DrawView();
+            {
+                var child = (UIView)item;
+                child.IsAlphaBlend = true;
+                child.DrawView();
+            }
         }
     }
 

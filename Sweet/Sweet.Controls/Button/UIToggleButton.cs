@@ -12,7 +12,7 @@ public class UIToggleButton : UIButtonBase
     /// </summary>
     public IUIButtonStyle Style
     {
-        get => (IUIButtonStyle)_style;
+        get => _style;
         set => _style = (UIButtonStyle)value;
     }
 

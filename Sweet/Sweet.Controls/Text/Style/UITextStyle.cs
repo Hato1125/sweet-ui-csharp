@@ -31,10 +31,10 @@ public record UITextStyle : UIControlBaseStyle, IUITextStyle
     {
         base.StyleAdapt();
 
-        if(Control == null)
-        return;
+        if (Control == null)
+            return;
 
-        if(Control is UITextBaseControl)
+        if (Control is UITextBaseControl)
         {
             var cnt = (UITextBaseControl)Control;
             cnt.TextContent.TextSpace = TextSpace;

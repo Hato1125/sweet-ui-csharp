@@ -15,7 +15,7 @@ public class VRadioButton
     /// </summary>
     public IUIToggleSwitchStyle Style
     {
-        get => (IUIToggleSwitchStyle)_style;
+        get => _style;
         set => _style = (UIToggleSwitchStyle)value;
     }
 

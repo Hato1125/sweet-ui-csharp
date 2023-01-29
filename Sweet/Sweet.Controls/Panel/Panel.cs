@@ -11,7 +11,7 @@ public class Panel : UIControl
     /// </summary>
     public IUIControlBaseStyle Style
     {
-        get => (IUIControlBaseStyle)_style;
+        get => _style;
         set => _style = (UIControlBaseStyle)value;
     }
 

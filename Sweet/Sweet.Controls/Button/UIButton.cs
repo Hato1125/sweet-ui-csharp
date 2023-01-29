@@ -12,7 +12,7 @@ public class UIButton : UIButtonBase
     /// </summary>
     public IUIButtonStyle Style
     {
-        get => (IUIButtonStyle)_style;
+        get => _style;
         set => _style = (UIButtonStyle)value;
     }
 
@@ -82,6 +82,6 @@ public class UIButton : UIButtonBase
         {
             DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, clickColor, DX.TRUE);
         }
-        DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
+        DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
     }
 }

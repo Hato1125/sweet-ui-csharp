@@ -16,7 +16,7 @@ public class UITextBaseControl : UIControl
     /// </summary>
     public ILineText TextContent
     {
-        get => (ILineText)_text;
+        get => _text;
         set => _text = (LineText)value;
     }
 
