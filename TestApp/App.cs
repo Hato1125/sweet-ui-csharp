@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Sweet.Input;
 using Sweet.Elements;
 using Sweet.Controls;
-using Sweet.Animator;
 using System.Drawing;
 
 namespace TestApp;
