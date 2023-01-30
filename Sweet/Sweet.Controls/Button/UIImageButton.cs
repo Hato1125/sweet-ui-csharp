@@ -8,7 +8,11 @@ public class UIImageButton : UIButtonBase
     private int _bufImageHandle;
 
     protected UIButtonStyle _style = new();
-    protected int ImageHandle { get; private set; }
+
+    /// <summary>
+    /// 画像のハンドル
+    /// </summary>
+    public int ImageHandle { get; set; }
 
     /// <summary>
     /// スタイル
