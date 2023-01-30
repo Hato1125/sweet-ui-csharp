@@ -12,8 +12,7 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private readonly UIControl cnt = new(500, 500);
-    private readonly UIButton Btn1 = new(300, 65, "Segoe UI", 30, 5);
+    private UIImageButton? Btn1;
 
 
     public void Run()
@@ -36,10 +35,13 @@ internal class App
         DX.DxLib_Init();
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
-        Btn1.Style.BackAlpha = 120;
-        cnt.Radius = 60;
-        cnt.IsAlphaBlend = true;
-        cnt.Children.Add(Btn1);
+
+        Btn1 = new("test.png", "Segoe UI", 20, 0);
+        Btn1.Style.BackAlpha = 255;
+        Btn1.Style.ForeColor = Color.Orange;
+        Btn1.Style.ClickColor = Color.Pink;
+        Btn1.Text = string.Empty;
+        Btn1.OnPushed += Test;
     }
 
     private void Loop()
@@ -85,7 +87,7 @@ internal class App
     private void loop()
     {
         DX.GetWindowSize(out int w, out int h);
-        Call(cnt);
+        Call(Btn1);
 
         DX.DrawString(0, 0, $"{Touch.X} : {Touch.Y}", 0xffffff);
     }
@@ -97,5 +99,10 @@ internal class App
         cnt.ParentHeight = h;
         cnt.Update();
         cnt.DrawView();
+    }
+
+    private void Test()
+    {
+        Console.WriteLine("Akasoko");
     }
 }
