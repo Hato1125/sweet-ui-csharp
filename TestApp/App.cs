@@ -12,7 +12,10 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UIImageButton? Btn1;
+    private UIButton? Btn1;
+    private VStackPanel stack = new(300, 400);
+
+    private Scroller s = new(100, 500);
 
 
     public void Run()
@@ -36,12 +39,14 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        Btn1 = new("test.png", "Segoe UI", 20, 0);
+        Btn1 = new(200, 200, "Segoe UI", 20, 0);
         Btn1.Style.BackAlpha = 255;
         Btn1.Style.ForeColor = Color.Orange;
         Btn1.Style.ClickColor = Color.Pink;
         Btn1.Text = string.Empty;
         Btn1.OnPushed += Test;
+
+        stack.Children.Add(Btn1);
     }
 
     private void Loop()
@@ -87,9 +92,11 @@ internal class App
     private void loop()
     {
         DX.GetWindowSize(out int w, out int h);
-        Call(Btn1);
+        Call(stack);
+        s.Update();
 
-        DX.DrawString(0, 0, $"{Touch.X} : {Touch.Y}", 0xffffff);
+        DX.DrawString(0, 0 + (int)s.Value, $"{Touch.X} : {Touch.Y}", 0xffffff);
+        DX.DrawString(20, 100, $"{Touch.X} : {Touch.Y}", 0xffffff);
     }
 
     private void Call(UIControl cnt)
