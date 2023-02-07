@@ -65,7 +65,6 @@ public class UITextBaseControl : UIControl
     public override void Dispose()
     {
         base.Dispose();
-
         DisposeFont();
     }
 

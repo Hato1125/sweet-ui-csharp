@@ -106,6 +106,8 @@ public class UIView : UIResponder, IDisposable
             if(item.GetType() != typeof(UIResponder))
                 ((UIView)item).Dispose();
         }
+
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>
