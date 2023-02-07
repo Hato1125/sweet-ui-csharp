@@ -9,7 +9,6 @@ public class UIResponder
     private int _doublePushCounter;
     private bool _isHoverJudge;
     private (int X, int Y) _mousePosition;
-    private (int X, int Y) _touchPosition;
 
     /// <summary>
     /// 相対X座標
@@ -146,19 +145,22 @@ public class UIResponder
     {
         if (RelativeX == 0 && RelativeY == 0)
         {
-            _mousePosition.X = Mouse.X - X;
-            _mousePosition.Y = Mouse.Y - Y;
-
-            _touchPosition.X = Touch.X - X;
-            _touchPosition.Y = Touch.Y - Y;
+            // タップされている場合はタップされてる座標で計算する
+            if (Touch.IsPushing())
+            {
+                _mousePosition.X = Touch.X - X;
+                _mousePosition.Y = Touch.Y - Y;
+            }
+            else
+            {
+                _mousePosition.X = Mouse.X - X;
+                _mousePosition.Y = Mouse.Y - Y;
+            }
         }
         else
         {
             _mousePosition.X = RelativeX - X;
             _mousePosition.Y = RelativeY - Y;
-
-            _touchPosition.X = RelativeX - X;
-            _touchPosition.Y = RelativeY - Y;
         }
     }
 
@@ -170,7 +172,7 @@ public class UIResponder
         if (IsHover()) OnHover();
         if (IsPushing()) OnPushing();
         if (IsPushed()) OnPushed();
-        if(IsSeparate()) OnSeparate();
+        if (IsSeparate()) OnSeparate();
     }
 
     /// <summary>
@@ -191,7 +193,12 @@ public class UIResponder
         }
     }
 
-    private bool JudgePhysicalDeviceState(JudgeInputType type) => IsKeyPush(type) || IsJoypadPush(type) || IsTouchPush(type);
+    /// <summary>
+    /// 物理的なデバイスの状態を取得する
+    /// </summary>
+    /// <param name="type">取得する状態</param>
+    private bool JudgePhysicalDeviceState(JudgeInputType type)
+        => IsKeyPush(type) || IsJoypadPush(type) || IsTouchPush(type);
 
     /// <summary>
     /// ホバーしたかを取得する
@@ -201,8 +208,8 @@ public class UIResponder
         if (!IsInput || !_isHoverJudge)
             return false;
 
-        // タッチしている間はマウスカーソルはないのでタッチのみ判定する
-        return Touch.IsPushing() ? IsTouchHover() : IsMouseHover();
+        return _mousePosition.X >= 0 && _mousePosition.X <= Width
+            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height;
     }
 
     /// <summary>
@@ -241,7 +248,6 @@ public class UIResponder
     /// <summary>
     /// ホバー時にダブルプッシュしたかを取得する
     /// </summary>
-    /// <returns></returns>
     public bool IsDoublePush()
     {
         if (IsPushed())
@@ -276,28 +282,9 @@ public class UIResponder
     }
 
     /// <summary>
-    /// マウスカーソルがホバーしてるかを取得する
-    /// </summary>
-    private bool IsMouseHover()
-    {
-        return _mousePosition.X >= 0 && _mousePosition.X <= Width
-            && _mousePosition.Y >= 0 && _mousePosition.Y <= Height;
-    }
-
-    /// <summary>
-    /// タッチカーソルがホバーしてるかを取得する
-    /// </summary>
-    private bool IsTouchHover()
-    {
-        return _touchPosition.X >= 0 && _touchPosition.X <= Width
-            && _touchPosition.Y >= 0 && _touchPosition.Y <= Height;
-    }
-
-    /// <summary>
     /// キーで操作したかを取得する
     /// </summary>
     /// <param name="inputType">操作方法</param>
-    /// <returns></returns>
     private bool IsKeyPush(JudgeInputType inputType)
     {
         if (!IsKeyboardInput)
@@ -321,7 +308,6 @@ public class UIResponder
     /// ジョイパッドで操作したかを取得する
     /// </summary>
     /// <param name="inputType">操作方法</param>
-    /// <returns></returns>
     private bool IsJoypadPush(JudgeInputType inputType)
     {
         if (!IsKeyboardInput)
@@ -345,7 +331,6 @@ public class UIResponder
     /// タッチで操作したかを取得する
     /// </summary>
     /// <param name="inputType">操作方法</param>
-    /// <returns></returns>
     private bool IsTouchPush(JudgeInputType inputType)
     {
         if (!IsTopInput)

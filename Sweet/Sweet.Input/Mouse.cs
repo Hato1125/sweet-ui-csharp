@@ -33,13 +33,9 @@ public static class Mouse
         for (int i = 0; i < value.Length; i++)
         {
             if (DX.GetMouseInput() == (int)GetMouseKey(i))
-            {
                 value[i] = (sbyte)(IsPushing(GetMouseKey(i)) ? 2 : 1);
-            }
             else
-            {
                 value[i] = (sbyte)(IsPushing(GetMouseKey(i)) ? -1 : 0);
-            }
         }
     }
 

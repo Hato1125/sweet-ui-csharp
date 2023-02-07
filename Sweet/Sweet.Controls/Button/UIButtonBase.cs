@@ -53,9 +53,13 @@ public class UIButtonBase : UITextBaseControl
 
     public override void Update()
     {
-        Time = _stopwatch.Elapsed;
-        DeltaTime = Time.TotalSeconds;
-        _stopwatch.Restart();
+        // アニメーション時のみデルタタイムを取得する
+        if (IsTickAnimation)
+        {
+            Time = _stopwatch.Elapsed;
+            DeltaTime = Time.TotalSeconds;
+            _stopwatch.Restart();
+        }
 
         base.Update();
         TickAnimation();

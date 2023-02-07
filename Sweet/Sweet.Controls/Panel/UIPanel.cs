@@ -2,7 +2,7 @@ using Sweet.Elements;
 
 namespace Sweet.Controls;
 
-public class Panel : UIControl
+public class UIPanel : UIControl
 {
     protected UIControlBaseStyle _style = new();
 
@@ -20,8 +20,15 @@ public class Panel : UIControl
     /// </summary>
     /// <param name="width">横幅</param>
     /// <param name="height">高さ</param>
-    public Panel(int width, int height)
+    public UIPanel(int width, int height)
         : base(width, height)
     {
+    }
+
+    public override void Update()
+    {
+        _style.Control = this;
+        _style.StyleAdapt();
+        base.Update();
     }
 }

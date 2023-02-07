@@ -98,14 +98,12 @@ public class UIToggleSwitch : UIButtonBase
         double fade = Math.Sin(AnimeValue * Math.PI / 180) * FadeAlpha;
 
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, (int)fade);
+
         if (Radius <= 0)
-        {
             DX.DrawFillBox(0, 0, Width, Height, clickColor);
-        }
         else
-        {
             DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, clickColor, DX.TRUE);
-        }
+
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
     }
 
@@ -130,6 +128,7 @@ public class UIToggleSwitch : UIButtonBase
             byte.MaxValue,
             toggleColor
         );
+
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, 255);
     }
 }

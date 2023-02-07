@@ -121,10 +121,7 @@ public class LineText : ILineText
 
     private void GetSingleLineTextSize()
     {
-        _textWidths = new int[] {
-            DX.GetDrawStringWidthToHandle(Text, Text.Length, FontHandle)
-        };
-
+        _textWidths = new int[] { DX.GetDrawStringWidthToHandle(Text, Text.Length, FontHandle) };
         _textHeight = DX.GetFontSizeToHandle(FontHandle);
     }
 }

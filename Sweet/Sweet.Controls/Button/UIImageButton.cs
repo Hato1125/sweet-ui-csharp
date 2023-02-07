@@ -119,9 +119,9 @@ public class UIImageButton : UIButtonBase
         if (ImageHandle == -1)
             return;
 
-        var fade = CalculateFade();
+        var (R, G, B) = CalculateFade();
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
-        DX.SetDrawBright(255 - (int)fade.R, 255 - (int)fade.G, 255 - (int)fade.B);
+        DX.SetDrawBright(255 - (int)R, 255 - (int)G, 255 - (int)B);
         DX.DrawGraph(0, 0, ImageHandle, DX.TRUE);
         DX.SetDrawBright(255, 255, 255);
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);

@@ -4,6 +4,7 @@ using Sweet.Input;
 using Sweet.Elements;
 using Sweet.Controls;
 using System.Drawing;
+using System.Net.NetworkInformation;
 
 namespace TestApp;
 
@@ -92,8 +93,6 @@ internal class App
     private void loop()
     {
         DX.GetWindowSize(out int w, out int h);
-        Call(stack);
-        s.Update();
 
         DX.DrawString(0, 0 + (int)s.Value, $"{Touch.X} : {Touch.Y}", 0xffffff);
         DX.DrawString(20, 100, $"{Touch.X} : {Touch.Y}", 0xffffff);

@@ -17,13 +17,9 @@ public static class Keyboard
         for (int i = 0; i < buffer.Length; i++)
         {
             if (buffer[i] == 1)
-            {
                 value[i] = (sbyte)(IsPushing(i) ? 2 : 1);
-            }
             else
-            {
                 value[i] = (sbyte)(IsPushing(i) ? -1 : 0);
-            }
         }
     }
 

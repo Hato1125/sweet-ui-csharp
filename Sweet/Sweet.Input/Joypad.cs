@@ -26,13 +26,9 @@ public static class Joypad
         for (int i = 0; i < value.Length; i++)
         {
             if (DX.GetJoypadInputState((int)InputType) == (int)GetJoypadKey(i))
-            {
                 value[i] = (sbyte)(IsPushing(GetJoypadKey(i)) ? 2 : 1);
-            }
             else
-            {
                 value[i] = (sbyte)(IsPushing(GetJoypadKey(i)) ? -1 : 0);
-            }
         }
     }
 

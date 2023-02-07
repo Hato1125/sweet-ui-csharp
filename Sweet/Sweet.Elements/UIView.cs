@@ -6,6 +6,10 @@ namespace Sweet.Elements;
 public class UIView : UIResponder, IDisposable
 {
     private (int Width, int Height) _bufSize;
+
+    /// <summary>
+    /// Viewのグラフィックハンドル
+    /// </summary>
     protected int ViewHandle { get; set; }
 
     /// <summary>
@@ -120,14 +124,12 @@ public class UIView : UIResponder, IDisposable
         uint backColor = DX.GetColor(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B);
 
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_PMA_ALPHA, BackgroundAlpha);
+
         if (Radius <= 0)
-        {
             DX.DrawFillBox(0, 0, Width, Height, backColor);
-        }
         else
-        {
             DX.DrawRoundRectAA(0, 0, Width, Height, Radius, Radius, 100, backColor, DX.TRUE);
-        }
+
         DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 255);
     }
 

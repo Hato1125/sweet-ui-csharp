@@ -24,13 +24,9 @@ public class TouchInfo
     public void Update()
     {
         if(DX.GetTouchInputNum() >= TouchNumber)
-        {
             value = (sbyte)(IsPushing() ? 2 : 1);
-        }
         else
-        {
             value = (sbyte)(IsPushing() ? -1 : 0);
-        }
     }
 
     /// <summary>
