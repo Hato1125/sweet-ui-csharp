@@ -1,4 +1,7 @@
 # UIResponder Class
+```cs
+class UIResponder
+```
 
 ## 概要
 UIResponderクラスは、ユーザーのアクションを取得する機能やイベントを提供するクラスです。
