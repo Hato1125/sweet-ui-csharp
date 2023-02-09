@@ -60,7 +60,7 @@ public class VStackPanel : UIControl
 
             height -= StackInterval;
 
-            int posY = UIPositionUtilt.CalculateBeginPosition(this.Height, height, StackVerticalAlignment);
+            int posY = UIPositionUtilt.CalculateVerticalPosition(StackVerticalAlignment, Height, height);
 
             // 配置する
             foreach (var item in Children)

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Sweet.Input;
 using Sweet.Elements;
 using Sweet.Controls;
+using Sweet.Graphics;
 using System.Drawing;
 using System.Net.NetworkInformation;
 
@@ -17,6 +18,10 @@ internal class App
     private VStackPanel stack = new(300, 400);
 
     private Scroller s = new(100, 500);
+
+    private UIPanel panel = new(300, 300);
+
+    private Texture g;
 
 
     public void Run()
@@ -40,14 +45,20 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
+        g = new($"{AppContext.BaseDirectory}test.png");
+        g.HorizontalReferencePosition = HorizontalReferencePosition.Center;
+
         Btn1 = new(200, 200, "Segoe UI", 20, 0);
         Btn1.Style.BackAlpha = 255;
         Btn1.Style.ForeColor = Color.Orange;
         Btn1.Style.ClickColor = Color.Pink;
         Btn1.Text = string.Empty;
         Btn1.OnPushed += Test;
+        Btn1.HorizontalAlignment = HorizontalAlignment.Center;
+        Btn1.VerticalAlignment = VerticalAlignment.Top;
 
-        stack.Children.Add(Btn1);
+        panel.Texture = new($"{AppContext.BaseDirectory}test.png");
+        panel.Texture.BlendMode = BlendMode.PmaAlpha;
     }
 
     private void Loop()
@@ -92,7 +103,8 @@ internal class App
 
     private void loop()
     {
-        DX.GetWindowSize(out int w, out int h);
+        Call(panel);
+        //g.Draw(1920 / 2, 1080 / 2);
 
         DX.DrawString(0, 0 + (int)s.Value, $"{Touch.X} : {Touch.Y}", 0xffffff);
         DX.DrawString(20, 100, $"{Touch.X} : {Touch.Y}", 0xffffff);

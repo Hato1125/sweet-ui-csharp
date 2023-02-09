@@ -23,58 +23,54 @@ public enum VerticalAlignment
 public static class UIPositionUtilt
 {
     /// <summary>
-    /// UIの座標を計算する
+    /// 位置を計算する
     /// </summary>
     /// <param name="horizontal">水平方向の位置</param>
     /// <param name="vertical">垂直方向の位置</param>
-    /// <param name="horizontalOffset">水平方向のオフセット</param>
-    /// <param name="verticalOffset">垂直方向のオフセット</param>
     /// <param name="parentWidth">親要素の横幅</param>
     /// <param name="parentHeight">親要素の高さ</param>
     /// <param name="tergetWidth">ターゲットの横幅</param>
     /// <param name="tergetHeight">ターゲットの高さ</param>
-    /// <returns>座標</returns>
-    public static (int X, int Y) CalculateUIPosition(
+    public static (int X, int Y) CalculatePosition(
         HorizontalAlignment horizontal,
         VerticalAlignment vertical,
-        int horizontalOffset,
-        int verticalOffset,
         int parentWidth,
         int parentHeight,
         int tergetWidth,
-        int tergetHeight)
-    {
-        return (
-            X: CalculateBeginPosition(parentWidth, tergetWidth, horizontal) + horizontalOffset,
-            Y: CalculateBeginPosition(parentHeight, tergetHeight, vertical) + verticalOffset
-        );
-    }
+        int tergetHeight,
+        int horizontalOffset = 0,
+        int verticalOffset = 0
+    ) =>
+    (
+        X: CalculateHorizontalPosition(horizontal, parentWidth, tergetWidth) + horizontalOffset,
+        Y: CalculateVerticalPosition(vertical, parentHeight, tergetHeight) + verticalOffset
+    );
 
     /// <summary>
-    /// 位置を計算する
+    /// 水平方向の位置を計算する
     /// </summary>
-    /// <param name="parentSize">親要素のサイズ</param>
-    /// <param name="tergetSize">ターゲットのサイズ</param>
-    /// <param name="pos">位置</param>
-    public static int CalculateBeginPosition(int parentSize, int tergetSize, HorizontalAlignment pos) => pos switch
+    /// <param name="position">水平方向の位置</param>
+    /// <param name="parentWidth">親要素の横幅</param>
+    /// <param name="tergetWidth">ターゲットの横幅</param>
+    public static int CalculateHorizontalPosition(HorizontalAlignment position, int parentWidth, int tergetWidth) => position switch
     {
         HorizontalAlignment.Left => 0,
-        HorizontalAlignment.Center => (parentSize - tergetSize) / 2,
-        HorizontalAlignment.Right => parentSize - tergetSize,
+        HorizontalAlignment.Center => (parentWidth - tergetWidth) / 2,
+        HorizontalAlignment.Right => parentWidth - tergetWidth,
         _ => 0
     };
 
     /// <summary>
-    /// 位置を計算する
+    /// 垂直方向の位置を計算する
     /// </summary>
-    /// <param name="parentSize">親要素のサイズ</param>
-    /// <param name="tergetSize">ターゲットのサイズ</param>
-    /// <param name="pos">位置</param>
-    public static int CalculateBeginPosition(int parentSize, int tergetSize, VerticalAlignment pos) => pos switch
+    /// <param name="position">垂直方向の位置</param>
+    /// <param name="parentHeight">親要素の高さ</param>
+    /// <param name="tergetHeight">ターゲットの高さ</param>
+    public static int CalculateVerticalPosition(VerticalAlignment position, int parentHeight, int tergetHeight) => position switch
     {
         VerticalAlignment.Top => 0,
-        VerticalAlignment.Center => (parentSize - tergetSize) / 2,
-        VerticalAlignment.Bottom => parentSize - tergetSize,
+        VerticalAlignment.Center => (parentHeight - tergetHeight) / 2,
+        VerticalAlignment.Bottom => parentHeight - tergetHeight,
         _ => 0
     };
 }

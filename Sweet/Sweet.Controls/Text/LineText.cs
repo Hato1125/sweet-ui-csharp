@@ -74,15 +74,15 @@ public class LineText : ILineText
 
                 for (int i = 0; i < _texts.Length; i++)
                 {
-                    var pos = UIPositionUtilt.CalculateUIPosition(
+                    var pos = UIPositionUtilt.CalculatePosition(
                         HorizontalAlignment,
                         VerticalAlignment,
-                        HorizontalOffset,
-                        VerticalOffset,
                         ParentWidth,
                         ParentHeight,
                         _textWidths[i],
-                        tergetHeight
+                        tergetHeight,
+                        HorizontalOffset,
+                        VerticalOffset
                     );
 
                     DX.DrawStringFToHandle(pos.X + X, pos.Y + Y + (_textHeight + LineSpace) * i, _texts[i], foreColor, FontHandle);
@@ -91,15 +91,15 @@ public class LineText : ILineText
         }
         else
         {
-            var pos = UIPositionUtilt.CalculateUIPosition(
+            var pos = UIPositionUtilt.CalculatePosition(
                 HorizontalAlignment,
                 VerticalAlignment,
-                HorizontalOffset,
-                VerticalOffset,
                 ParentWidth,
                 ParentHeight,
                 _textWidths[0],
-                _textHeight
+                _textHeight,
+                HorizontalOffset,
+                VerticalOffset
             );
 
             DX.DrawStringFToHandle(pos.X + X, pos.Y + Y, Text, foreColor, FontHandle);

@@ -1,3 +1,5 @@
+using Sweet;
+
 namespace Sweet.Elements;
 
 public class UIControl : UIView
@@ -56,15 +58,15 @@ public class UIControl : UIView
     /// </summary>
     protected virtual void CalculatePosition()
     {
-        var pos = UIPositionUtilt.CalculateUIPosition(
+        var pos = UIPositionUtilt.CalculatePosition(
             HorizontalAlignment,
             VerticalAlignment,
-            HorizontalOffset,
-            VerticalOffset,
             ParentWidth,
             ParentHeight,
             Width,
-            Height
+            Height,
+            HorizontalOffset,
+            VerticalOffset
         );
 
         X = pos.X;

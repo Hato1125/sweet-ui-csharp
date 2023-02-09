@@ -60,7 +60,7 @@ public class HStackPanel : UIControl
 
             width -= StackInterval;
 
-            int posX = UIPositionUtilt.CalculateBeginPosition(this.Width, width, StackHorizontalAlignment);
+            int posX = UIPositionUtilt.CalculateHorizontalPosition(StackHorizontalAlignment, Width, width);
 
             // 配置する
             foreach (var item in Children)

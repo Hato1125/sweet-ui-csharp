@@ -1,4 +1,6 @@
 using Sweet.Elements;
+using Sweet.Graphics;
+using System.Drawing;
 
 namespace Sweet.Controls;
 
@@ -16,6 +18,26 @@ public class UIPanel : UIControl
     }
 
     /// <summary>
+    /// テクスチャのX座標
+    /// </summary>
+    public int TexturePositionX { get; set; }
+
+    /// <summary>
+    /// テクスチャのY座標
+    /// </summary>
+    public int TexturePositionY { get; set; }
+
+    /// <summary>
+    /// テクスチャのレクタングル
+    /// </summary>
+    public Rectangle? TextureRectangle { get; set; }
+
+    /// <summary>
+    /// テクスチャ
+    /// </summary>
+    public Texture? Texture { get; set; }
+
+    /// <summary>
     /// 初期化する
     /// </summary>
     /// <param name="width">横幅</param>
@@ -31,4 +53,23 @@ public class UIPanel : UIControl
         _style.StyleAdapt();
         base.Update();
     }
+
+    protected override void DrawViewArea()
+    {
+        base.DrawViewArea();
+        DrawImage();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        Texture?.Dispose();
+    }
+
+    private void DrawImage()
+        => Texture?.Draw(
+            TexturePositionX,
+            TexturePositionY,
+            TextureRectangle
+        );
 }
