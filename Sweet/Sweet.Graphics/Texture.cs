@@ -103,7 +103,6 @@ public class Texture : IDisposable
     /// 初期化する
     /// </summary>
     /// <param name="path">パス</param>
-    /// <returns></returns>
     public Texture(string path) : this()
     {
         _graphHandle = DX.LoadGraph(path);
@@ -116,8 +115,7 @@ public class Texture : IDisposable
     /// 初期化する
     /// </summary>
     /// <param name="gHandle">グラフィックハンドル</param>
-    /// <returns></returns>
-    private Texture(int gHandle) : this()
+    public Texture(int gHandle) : this()
     {
         _graphHandle = gHandle;
 
