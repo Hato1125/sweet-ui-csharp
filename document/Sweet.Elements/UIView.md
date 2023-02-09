@@ -40,7 +40,13 @@ internal class Program
             Touch.Update();
             Mouse.Update();
 
+            // Windowのサイズの取得
+            DX.GetWindowSize(out int w, out int h);
+
+            view.ParentWidth = w;
+            view.ParentHeight = h;
             view.Update();
+            view.DrawView();
 
             DX.ScreenFlip();
         }
