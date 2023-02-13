@@ -3,7 +3,7 @@ using DxLibDLL;
 
 namespace Sweet.Graphics;
 
-public class Texture : IDisposable
+public class Texture : ITexturable, IDisposable
 {
     private int _graphHandle;
     private int _bufGraphHandle;
@@ -169,12 +169,12 @@ public class Texture : IDisposable
         DX.DeleteGraph(_graphHandle);
         GC.SuppressFinalize(this);
     }
-
-    /// <summary>
-    /// グラフィックハンドルを取得する
-    /// </summary>
+    
     public int GetGraphHandle()
         => _graphHandle;
+
+    public Texture GetTexture()
+        => this;
 
     /// <summary>
     /// 描画モードをセットする

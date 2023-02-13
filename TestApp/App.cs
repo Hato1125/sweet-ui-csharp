@@ -14,15 +14,7 @@ internal class App
     private double ms = 1.0 / 60.0;
     private Stopwatch stopwatch = new();
 
-    private UIButton? Btn1;
-    private VStackPanel stack = new(300, 400);
-
-    private Scroller s = new(100, 500);
-
-    private UIPanel panel = new(300, 300);
-
-    private Texture g;
-
+    private FontText text = new();
 
     public void Run()
     {
@@ -45,20 +37,7 @@ internal class App
         DX.SetDrawScreen(DX.DX_SCREEN_BACK);
         DX.CreateMaskScreen();
 
-        g = new($"{AppContext.BaseDirectory}test.png");
-        g.HorizontalReferencePosition = HorizontalReferencePosition.Center;
-
-        Btn1 = new(200, 200, "Segoe UI", 20, 0);
-        Btn1.Style.BackAlpha = 255;
-        Btn1.Style.ForeColor = Color.Orange;
-        Btn1.Style.ClickColor = Color.Pink;
-        Btn1.Text = string.Empty;
-        Btn1.OnPushed += Test;
-        Btn1.HorizontalAlignment = HorizontalAlignment.Center;
-        Btn1.VerticalAlignment = VerticalAlignment.Top;
-
-        panel.Texture = new($"{AppContext.BaseDirectory}test.png");
-        panel.Texture.BlendMode = BlendMode.PmaAlpha;
+        text.FontStyle.FontSize = 50;
     }
 
     private void Loop()
@@ -79,7 +58,10 @@ internal class App
             Touch.Update();
             Joypad.Update();
 
-            loop();
+            text.Text = "Akasoko\nAosoko\nRedSoko";
+            text.Update();
+            text.GetTexture().BlendMode = BlendMode.PmaAlpha;
+            text.GetTexture().Draw(100, 100);
 
             DX.ScreenFlip();
 
@@ -101,15 +83,6 @@ internal class App
         DX.DxLib_End();
     }
 
-    private void loop()
-    {
-        Call(panel);
-        //g.Draw(1920 / 2, 1080 / 2);
-
-        DX.DrawString(0, 0 + (int)s.Value, $"{Touch.X} : {Touch.Y}", 0xffffff);
-        DX.DrawString(20, 100, $"{Touch.X} : {Touch.Y}", 0xffffff);
-    }
-
     private void Call(UIControl cnt)
     {
         DX.GetWindowSize(out int w, out int h);
@@ -117,10 +90,5 @@ internal class App
         cnt.ParentHeight = h;
         cnt.Update();
         cnt.DrawView();
-    }
-
-    private void Test()
-    {
-        Console.WriteLine("Akasoko");
     }
 }
